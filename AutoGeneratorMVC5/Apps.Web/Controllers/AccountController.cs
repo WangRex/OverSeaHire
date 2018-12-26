@@ -151,6 +151,7 @@ namespace Apps.Web.Controllers
                 Session["menu"] = "accordion";
             }
         }
+
         #region 验证码
         private int letterWidth = 15;//单个字体的宽度范围
         private int letterHeight = 27;//单个字体的高度范围
