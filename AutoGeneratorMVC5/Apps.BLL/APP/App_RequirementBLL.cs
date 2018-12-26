@@ -1306,79 +1306,23 @@ namespace Apps.BLL.App
         {
             //获取当前登录人所辖属的所有工人列表
             IQueryable<App_Customer> queryDataCustomer = customerRepository.GetList(EF => EF.ParentId != null);
+            IQueryable<App_Requirement> queryDataRequirement = m_Rep.GetList(EF => EF.SwitchBtnOpen == "1");
             if (!requirementQuery.AdminFlag)
             {
                 queryDataCustomer = queryDataCustomer.Where(EF => EF.ParentId == requirementQuery.CustomerId);
             }
-            List<SqlParameter> SqlParameterList = new List<SqlParameter>();
-            SqlParameterList.Add(new SqlParameter("@ParentId", requirementQuery.CustomerId));
-            StringBuilder sql = new StringBuilder();
-            StringBuilder sqlCount = new StringBuilder();
-            StringBuilder sqlQuery = new StringBuilder();
-            sqlCount.Append("SELECT COUNT(req.*) FROM App_Requirement req, App_Customer cus WHERE req.WorkLimitSex = cus.Sex and req.WorkLimitAgeLow >= cus.Age and req.WorkLimitAgeLow <= cus.Age and cus.ParentId =  @ParentId ");
-            sqlQuery.Append("SELECT * FROM (select row_number()over(order by ModificationTime desc)rownumber,* from GMGood WHERE DelFlag = 0 and statusupload = @statusupload ");
-            if (requirementQuery != null)
-            {
-                if (!string.IsNullOrWhiteSpace(requirementQuery.Title))
-                {
-                    sql.Append(" and Title = @Title");
-                    SqlParameterList.Add(new SqlParameter("@Title", requirementQuery.Title));
-                }
-            }
-            SqlParameter[] sqlParameters = SqlParameterList.ToArray();
-            DBContainer DbContext = new DBContainer();
-            DbRawSqlQuery<int> result2 = DbContext.Database.SqlQuery<int>(sqlCount.Append(sql.ToString()).ToString(), sqlParameters);
-            pager.totalRows = result2.FirstOrDefault();
-            sqlQuery.Append(sql);
-            sqlQuery.Append(" ) GMGood1 ");
-            sqlQuery.Append(" where rownumber between ");
-            sqlQuery.Append((pager.page - 1) * pager.rows + 1);
-            sqlQuery.Append(" and  ");
-            sqlQuery.Append(pager.page * pager.rows);
-            //排序
-            sqlQuery.Append(" Order by ");
-            sqlQuery.Append(pager.sort);
-            sqlQuery.Append(" ");
-            sqlQuery.Append(pager.order);
-            //return DbContext.Database.SqlQuery<GMGood>(sqlQuery.ToString(), sqlParameters.Select(x => ((ICloneable)x).Clone()).ToArray()).ToList();
-
-
-
-
             var listCustomer = queryDataCustomer.ToList();
-            //获取所有的工人的信息，做推荐用
-            var strSex = string.Join(",", listCustomer.Select(EF=>EF.))
-            //获取需求信息
-            var reqList = m_Rep.GetById(customerResumeQuery.RequirementId);
-            #region 如果入参为空，则默认使用需求信息
-            if (string.IsNullOrEmpty(customerResumeQuery.JobIntension))
-            {
-                customerResumeQuery.JobIntension = req.PK_App_Position_Name;
-            }
-            #endregion
-            if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
-            {
-                queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));
-            }
-            if (!string.IsNullOrWhiteSpace(customerResumeQuery.Sex))
-            {
-                queryData = queryData.Where(a => a.Sex == customerResumeQuery.Sex);
-            }
-            if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerPhone))
-            {
-                queryData = queryData.Where(a => a.Phone != null && a.Phone.Contains(customerResumeQuery.CustomerPhone));
-            }
-            if (customerResumeQuery.WorkLimitAgeHigh != 0)
-            {
-                queryData = queryData.Where(a => a.Age <= customerResumeQuery.WorkLimitAgeHigh);
-            }
-            if (customerResumeQuery.WorkLimitAgeLow != 0)
-            {
-                queryData = queryData.Where(a => a.Age >= customerResumeQuery.WorkLimitAgeLow);
-            }
-            pager.totalRows = queryData.Count();
+            //获取按照性别和年龄满足条件的需求列表
+            var strSex = string.Join(",", listCustomer.Select(EF => EF.Sex).ToArray());
+            int iAgeHigh = listCustomer.OrderByDescending(EF => EF.Age).FirstOrDefault().Age;
+            int iAgeLow = listCustomer.OrderBy(EF => EF.Age).FirstOrDefault().Age;
+            var app_Requirements = queryDataRequirement.ToList().Where(EF => strSex.Contains(EF.WorkLimitSex) && iAgeLow >= EF.WorkLimitAgeLow && iAgeHigh <= EF.WorkLimitAgeHigh).ToList();
+            //获取所有的工人的求职意向，做推荐用
+            var arrJobIntension = listCustomer.Select(EF => EF.JobIntension).ToList();
+            app_Requirements = app_Requirements.Where(EF => EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0).ToList();
+            pager.totalRows = app_Requirements.Count;
             //排序
-            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            var queryData = LinqHelper.SortingAndPaging(app_Requirements.AsQueryable(), pager.sort, pager.order, pager.page, pager.rows);
             return queryData;
         }
         #endregion
