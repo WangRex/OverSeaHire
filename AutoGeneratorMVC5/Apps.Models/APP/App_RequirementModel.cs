@@ -404,10 +404,10 @@ namespace Apps.Models.App
     }
     #endregion
 
-    #region 获取职位列表查询条件
+    #region 【后台】获取职位列表查询条件
     public class RequirementQuery
     {
-        public string CustomerName { get; set; }
+        public string Title { get; set; }
         public string Sex { get; set; }
         public string CustomerId { get; set; }
         public string CustomerPhone { get; set; }
@@ -420,7 +420,7 @@ namespace Apps.Models.App
         public string QueryFlag { get; set; }
         public override string ToString()
         {
-            return "CustomerId:" + CustomerId + ",CustomerName:" + CustomerName + ",Sex:" + Sex
+            return "CustomerId:" + CustomerId + ",Title:" + Title + ",Sex:" + Sex
                  + ",CustomerPhone:" + CustomerPhone + ",Age:" + Age + ",AdminFlag:" + AdminFlag
                   + ",QueryFlag:" + QueryFlag;
         }

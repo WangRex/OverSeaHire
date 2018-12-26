@@ -92,6 +92,7 @@ namespace Apps.Web.Controllers
             Session["Account"] = account;
             GetThemes(user.Id);
             Session["IdFlag"] = "0";
+            Session["PK_App_Customer_CustomerName"] = user.PK_App_Customer_CustomerName;
             Session["ohadmin"] = "0";
             if (_SysRoleBLL.ToBeCheckAuthorityRole(account.RoleId, "超级管理员"))
             {

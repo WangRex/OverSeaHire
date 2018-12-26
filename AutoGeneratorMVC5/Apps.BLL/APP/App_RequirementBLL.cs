@@ -8,6 +8,9 @@ using Apps.DAL.Sys;
 using Apps.BLL.Sys;
 using Apps.DAL.App;
 using System;
+using System.Data.SqlClient;
+using System.Text;
+using System.Data.Entity.Infrastructure;
 
 namespace Apps.BLL.App
 {
@@ -1164,14 +1167,11 @@ namespace Apps.BLL.App
         public List<App_RequirementModel> GetRequirementList(ref GridPager pager, RequirementQuery requirementQuery)
         {
             IQueryable<App_Requirement> queryData = m_Rep.GetList();
-            if (!requirementQuery.AdminFlag)
-            {
-                queryData = queryData.Where(EF => EF.SwitchBtnOpen == "1");
-            }
             //获取当前登录人所辖属的所有工人列表
             IQueryable<App_Customer> queryDataCustomer = customerRepository.GetList(EF => EF.ParentId != null);
             if (!requirementQuery.AdminFlag)
             {
+                queryData = queryData.Where(EF => EF.SwitchBtnOpen == "1");
                 queryDataCustomer = queryDataCustomer.Where(a => a.ParentId == requirementQuery.CustomerId);
             }
             var listApplyJob = applyJobRepository.FindList().ToList();
@@ -1268,6 +1268,94 @@ namespace Apps.BLL.App
             var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0" && EF.CurrentStep == "2");
             string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
             queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
+            {
+                queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));
+            }
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.Sex))
+            {
+                queryData = queryData.Where(a => a.Sex == customerResumeQuery.Sex);
+            }
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerPhone))
+            {
+                queryData = queryData.Where(a => a.Phone != null && a.Phone.Contains(customerResumeQuery.CustomerPhone));
+            }
+            if (customerResumeQuery.WorkLimitAgeHigh != 0)
+            {
+                queryData = queryData.Where(a => a.Age <= customerResumeQuery.WorkLimitAgeHigh);
+            }
+            if (customerResumeQuery.WorkLimitAgeLow != 0)
+            {
+                queryData = queryData.Where(a => a.Age >= customerResumeQuery.WorkLimitAgeLow);
+            }
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return queryData;
+        }
+        #endregion
+
+        #region 【后台】获取推荐职位列表
+        /// <summary>
+        /// 【后台】获取推荐职位列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="requirementQuery"></param>
+        /// <returns></returns>
+        public IQueryable<App_Requirement> GetRecommendRequirementList(ref GridPager pager, RequirementQuery requirementQuery)
+        {
+            //获取当前登录人所辖属的所有工人列表
+            IQueryable<App_Customer> queryDataCustomer = customerRepository.GetList(EF => EF.ParentId != null);
+            if (!requirementQuery.AdminFlag)
+            {
+                queryDataCustomer = queryDataCustomer.Where(EF => EF.ParentId == requirementQuery.CustomerId);
+            }
+            List<SqlParameter> SqlParameterList = new List<SqlParameter>();
+            SqlParameterList.Add(new SqlParameter("@ParentId", requirementQuery.CustomerId));
+            StringBuilder sql = new StringBuilder();
+            StringBuilder sqlCount = new StringBuilder();
+            StringBuilder sqlQuery = new StringBuilder();
+            sqlCount.Append("SELECT COUNT(req.*) FROM App_Requirement req, App_Customer cus WHERE req.WorkLimitSex = cus.Sex and req.WorkLimitAgeLow >= cus.Age and req.WorkLimitAgeLow <= cus.Age and cus.ParentId =  @ParentId ");
+            sqlQuery.Append("SELECT * FROM (select row_number()over(order by ModificationTime desc)rownumber,* from GMGood WHERE DelFlag = 0 and statusupload = @statusupload ");
+            if (requirementQuery != null)
+            {
+                if (!string.IsNullOrWhiteSpace(requirementQuery.Title))
+                {
+                    sql.Append(" and Title = @Title");
+                    SqlParameterList.Add(new SqlParameter("@Title", requirementQuery.Title));
+                }
+            }
+            SqlParameter[] sqlParameters = SqlParameterList.ToArray();
+            DBContainer DbContext = new DBContainer();
+            DbRawSqlQuery<int> result2 = DbContext.Database.SqlQuery<int>(sqlCount.Append(sql.ToString()).ToString(), sqlParameters);
+            pager.totalRows = result2.FirstOrDefault();
+            sqlQuery.Append(sql);
+            sqlQuery.Append(" ) GMGood1 ");
+            sqlQuery.Append(" where rownumber between ");
+            sqlQuery.Append((pager.page - 1) * pager.rows + 1);
+            sqlQuery.Append(" and  ");
+            sqlQuery.Append(pager.page * pager.rows);
+            //排序
+            sqlQuery.Append(" Order by ");
+            sqlQuery.Append(pager.sort);
+            sqlQuery.Append(" ");
+            sqlQuery.Append(pager.order);
+            //return DbContext.Database.SqlQuery<GMGood>(sqlQuery.ToString(), sqlParameters.Select(x => ((ICloneable)x).Clone()).ToArray()).ToList();
+
+
+
+
+            var listCustomer = queryDataCustomer.ToList();
+            //获取所有的工人的信息，做推荐用
+            var strSex = string.Join(",", listCustomer.Select(EF=>EF.))
+            //获取需求信息
+            var reqList = m_Rep.GetById(customerResumeQuery.RequirementId);
+            #region 如果入参为空，则默认使用需求信息
+            if (string.IsNullOrEmpty(customerResumeQuery.JobIntension))
+            {
+                customerResumeQuery.JobIntension = req.PK_App_Position_Name;
+            }
+            #endregion
             if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
             {
                 queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));

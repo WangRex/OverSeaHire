@@ -45,19 +45,14 @@ namespace Apps.Web.Areas.APP.Controllers
         [SupportFilter(ActionName = "Index")]
         public JsonResult GetApplyedReqList(GridPager pager, RequirementQuery requirementQuery)
         {
-            //先获取当前用户的对应customerId
-            var account = GetAccount();
-            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
-            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
-            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
-            if (ohadmin || admin)
+            if ("1" == Session["IdFlag"] as string || Session["ohadmin"] as string == "1")
             {
                 requirementQuery.AdminFlag = true;
             }
             else
             {
                 //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
-                requirementQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
+                requirementQuery.CustomerId = Session["PK_App_Customer_CustomerName"] as string;
             }
             List<App_RequirementModel> list = m_BLL.GetRequirementList(ref pager, requirementQuery);
             foreach (var Item in list)
