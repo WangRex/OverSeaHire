@@ -1,0 +1,132 @@
+﻿@model Apps.Models.Sys.SysConfigurationModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+             @Html.HiddenFor(model => model.ModificationTime)
+             @Html.HiddenFor(model => model.CreateUserName)
+             @Html.HiddenFor(model => model.ModificationUserName)
+             @Html.HiddenFor(model => model.SortCode)
+             @Html.HiddenFor(model => model.ParentId)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Tel)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Tel)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Tel)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.WebName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.WebName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.WebName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ComName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ComName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ComName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CompanyName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.CompanyName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.CompanyName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ContactName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ContactName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactPhone)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ContactPhone)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ContactPhone)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactWeChat)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ContactWeChat)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ContactWeChat)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactMail)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ContactMail)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ContactMail)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

@@ -1,0 +1,102 @@
+﻿@model Apps.Models.App.App_PositionModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Create")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2017-12-31" />
+    <input id="ModificationTime" type="hidden" name="ModificationTime" value="2017-12-31" />
+    @Html.HiddenFor(model => model.ParentId)
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    上级：
+                </th>
+                <td>
+                    @Html.TextBoxFor(model => model.ParentName, new { @readonly = "readonly" })
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ParentId)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.SwitchBtnCommonUse)：
+                </th>
+                <td>
+                    @Html.SwitchButtonByEdit("SwitchBtnCommonUse", false)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.SwitchBtnCommonUse)</td>
+            </tr>
+            <tr>
+                <th>
+                    排序：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.SortCode)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.SortCode)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Name)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Description)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Description)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Description)</td>
+            </tr>
+        </tbody>
+    </table>
+}
+

@@ -1,0 +1,167 @@
+﻿@model Apps.Models.App.App_OfficeModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+<style>
+    #container {
+        width: 100%;
+        height: 400px;
+        margin: 0 auto;
+    }
+
+    .info {
+        top: 4rem;
+    }
+
+</style>
+<script type="text/javascript">
+    $(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Create")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        $("#btnReturn").click();
+                    }
+                    else {
+                        $.messageBox5s('@Resource.Tip', data.message);
+                    }
+                }
+            });
+        }
+        return false;
+        });
+        $("#btnReturn").click(function () {
+            frameReturnByClose();
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        window.parent.closeTab("新增办事处", "办事处管理", "app/office", "fa fa-glass");
+    }
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+
+<div id="container"></div>
+<div class="info">
+    <div class="input-item">
+        <div class="input-item-prepend">
+            <span class="input-item-text" style="width:8rem;">请输入关键字</span>
+        </div>
+        <input id='tipinput' type="text">
+    </div>
+</div>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.11&key=fa379c1b2c60f3655daa4d4bd667a0c7&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+<script type="text/javascript">
+    var map = new AMap.Map("container", {
+        resizeEnable: true
+    });
+    //输入提示
+    var autoOptions = {
+        input: "tipinput"
+    };
+    var auto = new AMap.Autocomplete(autoOptions);
+    var placeSearch = new AMap.PlaceSearch({
+        map: map
+    });  //构造地点查询类
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name);  //关键字查询查询
+        $("#OfficeAddress").val(e.poi.district + e.poi.address + e.poi.name);
+        $("#Longitude").val(e.poi.location.lng);
+        $("#Latitude").val(e.poi.location.lat);
+    }
+</script>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2017-12-31" />
+    <input id="ModificationTime" type="hidden" name="ModificationTime" value="2017-12-31" />
+    <input id="Longitude" type="hidden" name="Longitude" value="" />
+    <input id="Latitude" type="hidden" name="Latitude" value="" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Tel)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Tel)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Tel)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficeName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficeName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficeName)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ContactName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ContactName)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactPhone)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ContactPhone)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ContactPhone)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactWeChat)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ContactWeChat)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ContactWeChat)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactMail)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ContactMail)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ContactMail)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficeAddress)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.OfficeAddress)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.OfficeAddress)</td>
+            </tr>
+        </tbody>
+    </table>
+}

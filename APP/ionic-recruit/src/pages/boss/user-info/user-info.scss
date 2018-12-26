@@ -1,0 +1,42 @@
+page-user-info {
+  .btn-footer {
+    height: 45px !important;
+  }
+
+  .underline {
+    text-decoration: underline;
+  }
+
+  .collect-button {
+    .button-inner {
+      color: #757575 !important;
+      font-size: 1.4rem !important;
+    }
+
+    img {
+      height: 20px;
+    }
+  }
+
+  .zIndex-fixed {
+    z-index: 905 !important;
+  }
+
+  .overlay-content {
+    width: 100%;
+    background: #fff;
+    border: 0;
+    display: block;
+    opacity: 1;
+    position: fixed;
+    -webkit-transition: opacity .1s ease-in-out .1s;
+    -moz-transition: opacity .1s ease-in-out .1s;
+    -o-transition: opacity .1s ease-in-out .1s;
+    -ms-transition: opacity .1s ease-in-out .1s;
+    transition: opacity .1s ease-in-out .1s;
+    z-index: 905;
+    left: 0;
+    right: 0;
+    bottom: 45px;
+  }
+}

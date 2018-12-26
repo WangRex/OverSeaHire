@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>支付保证金</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="bg-gray">
+  <ion-info-primary [label]="label"></ion-info-primary>
+  <!--<ion-row>-->
+    <!--<ion-col col-12 padding class="bg-primary aq-text-color-white-core">-->
+      <!--<strong>待支付保证金: &nbsp;&nbsp;2000.00 &nbsp;元</strong>-->
+    <!--</ion-col>-->
+  <!--</ion-row>-->
+
+  <ion-row class="aq-margin-top-8 aq-bg-color-white-core">
+    <ion-col col-12 class="col-padding">
+      <strong>请选择支付方式</strong>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="aq-margin-top-8 aq-bg-color-white-core" tappable (click)="switchPayMethod('wechat')">
+    <ion-col col-8 class="col-padding aq-vertical-middle brand-col">
+      <img src="assets/icon/p-wechat.png" class="brand-img"/>
+    </ion-col>
+    <ion-col col-4 class="col-padding aq-vertical-middle flex-end">
+      <img *ngIf="wechatPay" src="assets/icon/checked.png" class="icon-img" />
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="aq-margin-top-8 aq-bg-color-white-core" tappable (click)="switchPayMethod('alipay')">
+    <ion-col col-8 class="col-padding aq-vertical-middle brand-col">
+      <img src="assets/icon/p-alipay.png" class="brand-img"/>
+    </ion-col>
+    <ion-col col-4 class="col-padding aq-vertical-middle flex-end">
+      <img *ngIf="alipay" src="assets/icon/checked.png" class="icon-img" />
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="aq-margin-top-8 aq-bg-color-white-core" tappable (click)="switchPayMethod('offline')">
+    <ion-col col-8 class="col-padding aq-vertical-middle brand-col">
+      <img src="assets/icon/p-offline.png" class="brand-img"/>
+    </ion-col>
+    <ion-col col-4 class="col-padding aq-vertical-middle flex-end">
+      <img *ngIf="offlinePay" src="assets/icon/checked.png" class="icon-img" />
+    </ion-col>
+  </ion-row>
+
+  <ion-row margin-top>
+    <ion-col padding>
+      <button (click)="payment()" ion-button round block color="secondary" full>
+        支付保证金
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-content>

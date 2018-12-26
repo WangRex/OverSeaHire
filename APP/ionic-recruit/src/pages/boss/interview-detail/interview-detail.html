@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>招工详情</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding-bottom>
+  <ion-card>
+    <ion-card-content tappable (click)="goInterviewDetail(option)">
+      <ion-user-info [img]="customerPhoto" [name]="customerName" [description]="customerDes"></ion-user-info>
+    </ion-card-content>
+  </ion-card>
+  <ion-title-divider title="应聘进度"></ion-title-divider>
+  <div *ngFor="let option of orderDetail?.applyJobRecordVms; let i = index;">
+    <ion-row margin-top>
+      <ion-col class="aq-vertical-center step-num-col">
+        <span class="step-num aq-text-color-white-core aq-vertical-center">{{ i + 1 }}</span>
+      </ion-col>
+      <ion-col class="aq-vertical-center step-img-col">
+        <div>
+          <div text-center><img class="step-img" [src]="fileUrl + steps[i]?.Icon" /></div>
+          <div text-center class="aq-margin-top-4"><strong>{{ steps[i]?.Name }}</strong></div>
+        </div>
+      </ion-col>
+      <ion-col class="aq-vertical-middle color-dark aq-text-size-small">
+        <div>
+          <div *ngIf="option.ConfigPlace != ''">{{ option.ConfigPlace }}</div>
+          <div *ngIf="option.ConfigDate != ''">{{ option.ConfigDate }}</div>
+          <div>{{ option.Content == '' ? steps[i]?.Description : option.Content }}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div *ngFor="let option of steps; let i = index;" [ngClass]="{ 'inactive': i > currentStep}">
+    <ion-steps *ngIf="i >= orderDetail?.applyJobRecordVms.length" [index]="i + 1" [title]="option.Name" [icon]="option.Icon" [description]="option.Description"></ion-steps>
+  </div>
+</ion-content>
+
+<ion-footer no-padding class="zIndex-fixed">
+  <ion-row no-padding>
+    <ion-col col-6 no-padding>
+      <button class="color-gray btn-footer aq-border-top aq-border-color-grey-30" ion-button no-margin block color="white" full>
+        面试失败
+      </button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button class="btn-footer" ion-button no-margin block color="secondary" full>
+        面试通过
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+

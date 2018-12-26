@@ -1,0 +1,22 @@
+ion-single-select {
+  // 删除item文字和icon之间的距离
+  .item-inner {
+    margin-left: 0 !important;
+  }
+  // 修改border实现为虚线
+  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0.55px dashed #c8c7cc;
+  }
+  // 修改border实现为虚线
+  .list-ios > .item-block:first-child {
+    border-top: 0.55px dashed #c8c7cc;
+  }
+
+  .active-item {
+    background-color: rgba(70,235,235, 0.1);
+  }
+
+  .img-max-height {
+    max-height: 48px !important;
+  }
+}

@@ -1,0 +1,32 @@
+<ion-content class="bg-gray">
+  <div class="white-container aq-bg-color-white-core">
+    <ion-row>
+      <ion-col col-8 class="aq-vertical-middle aq-text-size-medium" *ngIf="userInfo ==  null">
+          <strong tappable (click)="goLoginPage()">点我登陆</strong>
+      </ion-col>
+      <ion-col col-8 class="aq-relative" *ngIf="userInfo !=  null">
+        <div class="user-name aq-text-size-medium">
+          <strong>{{userInfo.CustomerName}}</strong>
+        </div>
+        <div class="user-info aq-vertical-middle  color-gray" tappable (click)="goPersonalInfoPage()">
+          <span class="width30 aq-vertical-middle"><img src="assets/icon/write.png" class="icon-img-small aq-margin-right-8" /></span>
+          <span>编辑个人资料</span>
+        </div>
+      </ion-col>
+      <ion-col col-4 class="aq-vertical-middle flex-end">
+        <img *ngIf="userInfo == null || userInfo?.Photo ==  null || userInfo?.Photo ==  ''" src="assets/imgs/default-head.png" class="head-img" />
+        <img *ngIf="userInfo != null && userInfo?.Photo !=  null && userInfo?.Photo !=  ''" [src]="fileUrl + userInfo?.Photo" class="head-img" />
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div class="aq-margin-top-4">
+    <ion-profile-option tappable (click)="goCompayAuth()" label="我的认证" img="assets/icon/account.png"></ion-profile-option>
+    <ion-profile-option tappable label="我的面试" img="assets/icon/read-mode.png"></ion-profile-option>
+  </div>
+
+  <div class="aq-margin-top-4">
+    <ion-profile-option tappable (click)="goFeedback()" label="意见反馈" img="assets/icon/drafts.png"></ion-profile-option>
+    <ion-profile-option tappable (click)="goSettingPage()" label="设置" img="assets/icon/setting.png"></ion-profile-option>
+  </div>
+</ion-content>

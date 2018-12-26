@@ -1,0 +1,13 @@
+page-choose-home-town {
+  .border-top-clear {
+    border-top: 0 !important;
+  }
+
+  .list-ios > .item-block:first-child {
+    border-top: 0.55px solid #eee;
+  }
+
+  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0 !important;
+  }
+}

@@ -1,0 +1,345 @@
+﻿@model Apps.Models.App.App_CustomerModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<style>
+    .saveBtn {
+        position: absolute;
+        height: 28px;
+        background-color: rgb(250, 250, 250);
+        padding-top: 4px;
+        padding-left: 5px;
+        border-bottom: 1px solid;
+        width: 577px;
+        z-index: 9999;
+    }
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                    type: "Post",
+                    data: $("form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            frameReturnByClose();
+                        }
+                        else {
+                            $.messageBox5s('@Resource.Tip', data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+             frameReturnByClose();
+        });
+        $("#btnReturnTree").click(function () {
+            $("#positiontree").window('close');
+        });
+        $("#btnSaveTree").click(function () {
+            var nodes = $('#tt').tree('getChecked');	// get checked nodes
+            var ids = '';
+            var texts = '';
+            nodes.forEach(function (value, index, array) {
+                ids += ',' + value.id;
+                texts += ',' + value.text;
+            })
+            if (ids != '') {
+                ids = ids.substring(1);
+                texts = texts.substring(1);
+            }
+            $("#JobIntension").val(ids);
+            $("#positiontreeinput").val(texts);
+            $("#positiontree").window('close');
+        });
+        $("#positiontreeinput").click(function () {
+            globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
+                var tree = data;
+                $('#tt').tree({
+                    data: tree,
+                    animate: true,
+                    checkbox: true,
+                    onlyLeafCheck: true,
+                    onLoadSuccess: function (node, data) {
+                        var ids = $("#JobIntension").val();
+                        if (ids != '') {
+                            var idArr = ids.split(",");
+                            for (var i = 0; i < idArr.length; i++) {
+                                // find a node and then select it
+                                var node = $('#tt').tree('find', idArr[i]);
+                                $('#tt').tree('check', node.target);
+                            }
+                        }
+                    }
+                });
+                $("#positiontree").window({
+                    title: '职位',
+                    width: 600,
+                    height: 400,
+                    top: 350,
+                    iconCls: 'fa fa-pencil'
+                }).window('open');
+            }, "post");
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        window.parent.closeTab("新增简历", "简历管理", "app/CustomerResume", "fa fa-child");
+    }
+</script>
+
+<div id="positiontree" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false" style="overflow-y:scroll">
+    <div class="saveBtn">
+        @Html.ToolButton("btnSaveTree", "fa fa-save", Resource.Save, true)
+        @Html.ToolButton("btnReturnTree", "fa fa-reply", Resource.Reply, false)
+    </div>
+    <div style="position:relative;top:40px;"><ul id="tt" class="easyui-tree"></ul></div>
+</div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.JobIntension)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2017-12-31" />
+    <input id="ModificationTime" type="hidden" name="ModificationTime" value="2017-12-31" />
+    <table class="formtable">
+        <tbody>
+            @if (Session["IdFlag"].ToString() == "1" || Session["ohadmin"].ToString() == "1")
+            {
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.SwitchBtnRecommend)：
+                    </th>
+                    <td>
+                        @Html.SwitchButtonByEdit("SwitchBtnRecommend", false)
+                    </td>
+                    <td>@Html.ValidationMessageFor(model => model.SwitchBtnRecommend)</td>
+                </tr>
+            }
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CustomerName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.CustomerName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.CustomerName)</td>
+                <th>
+                    @Html.LabelFor(model => model.Password)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Password)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Password)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Sex)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.Sex, ViewBag.Sex as SelectList)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Sex)</td>
+                <th>
+                    @Html.LabelFor(model => model.Phone)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Phone)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Phone)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Age)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Age)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Age)</td>
+                <th>
+                    @Html.LabelFor(model => model.Height)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Height) CM
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Height)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Weight)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Weight) KG
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Weight)</td>
+                <th>
+                    @Html.LabelFor(model => model.JobIntension)：
+                </th>
+                <td>
+                    <input type="text" id="positiontreeinput" readonly="readonly" />
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.JobIntension)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Introduction)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Introduction)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Introduction)</td>
+                <th>
+                    @Html.LabelFor(model => model.CustomerPhoto)：
+                </th>
+                <td>
+                    @Html.HiddenFor(model => model.CustomerPhoto)
+                    <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
+                    <a onclick="$('#FileUpload_CustomerPhoto').trigger('click')" class="files">@Resource.Browse</a>
+                    <a onclick="ClearImg('CustomerPhoto');" class="files">删除</a>
+                    <input type="file" class="displaynone" id="FileUpload_CustomerPhoto" name="FileUpload_CustomerPhoto" onchange="Upload('SingleFile', 'CustomerPhoto', 'FileUpload_CustomerPhoto','1','1');" />
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.CustomerPhoto)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.BirthDay)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.BirthDay)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.BirthDay)</td>
+                <th>
+                    @Html.LabelFor(model => model.BirthPlace)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.BirthPlace)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.BirthPlace)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CurrentPlace)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.CurrentPlace)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.CurrentPlace)</td>
+                <th>
+                    @Html.LabelFor(model => model.WeChatNumber)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.WeChatNumber)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.WeChatNumber)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Cultural)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Cultural)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Cultural)</td>
+                <th>
+                    @Html.LabelFor(model => model.EnumCustomerType)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.EnumCustomerType, ViewBag.EnumCustomerType as SelectList, "---请选择---")
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.EnumCustomerType)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.EnumForeignLangGrade)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.EnumForeignLangGrade, ViewBag.EnumForeignLangGrade as SelectList, "---请选择---")
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.EnumForeignLangGrade)</td>
+                <th>
+                    @Html.LabelFor(model => model.SwitchBtnPassport)：
+                </th>
+                <td>
+                    @Html.SwitchButtonByEdit("SwitchBtnPassport", false)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.SwitchBtnPassport)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AbroadExp)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.AbroadExp, ViewBag.AbroadExp as SelectList, "---请选择---")
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AbroadExp)</td>
+                <th>
+                    @Html.LabelFor(model => model.EnumDriverLicence)：
+                </th>
+                <td>
+                    @Html.DropDownListFor(model => model.EnumDriverLicence, ViewBag.EnumDriverLicence as SelectList, "---请选择---")
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.EnumDriverLicence)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.VideoPath)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.VideoPath)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.VideoPath)</td>
+                <th>
+                    @Html.LabelFor(model => model.WordPath)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.WordPath)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.WordPath)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.WordName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.WordName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.WordName)</td>
+                <th>
+                    @Html.LabelFor(model => model.WordExt)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.WordExt)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.WordExt)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Nation)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Nation)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Nation)</td>
+            </tr>
+        </tbody>
+    </table>
+}

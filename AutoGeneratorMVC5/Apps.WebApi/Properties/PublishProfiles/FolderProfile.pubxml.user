@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+此文件由 Web 项目的发布/打包过程使用。可以通过编辑此 MSBuild 文件
+自定义此过程的行为。为了解与此相关的更多内容，请访问 https://go.microsoft.com/fwlink/?LinkID=208121。 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>C:\Rex\SVN\OverseasHire\trunk\AutoGeneratorMVC5\Apps.WebApi\bin\Release\Publish</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="Apps.WebApi.XML">
+      <publishTime>12/18/2018 14:11:15</publishTime>
+    </File>
+    <File Include="bin/aliyun-net-sdk-core.dll">
+      <publishTime>11/07/2018 23:32:01</publishTime>
+    </File>
+    <File Include="bin/aliyun-net-sdk-dysmsapi.dll">
+      <publishTime>11/07/2018 23:32:01</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>02/22/2013 08:43:40</publishTime>
+    </File>
+    <File Include="bin/Antlr3.Runtime.pdb">
+      <publishTime>02/22/2013 08:43:40</publishTime>
+    </File>
+    <File Include="bin/AopSdk.dll">
+      <publishTime>11/07/2018 23:32:28</publishTime>
+    </File>
+    <File Include="bin/Apps.BLL.dll">
+      <publishTime>12/18/2018 14:11:13</publishTime>
+    </File>
+    <File Include="bin/Apps.BLL.dll.config">
+      <publishTime>11/07/2018 23:31:53</publishTime>
+    </File>
+    <File Include="bin/Apps.BLL.pdb">
+      <publishTime>12/18/2018 14:11:13</publishTime>
+    </File>
+    <File Include="bin/Apps.Common.dll">
+      <publishTime>12/14/2018 15:32:50</publishTime>
+    </File>
+    <File Include="bin/Apps.Common.pdb">
+      <publishTime>12/14/2018 15:32:50</publishTime>
+    </File>
+    <File Include="bin/Apps.Core.dll">
+      <publishTime>12/18/2018 14:11:14</publishTime>
+    </File>
+    <File Include="bin/Apps.Core.dll.config">
+      <publishTime>11/07/2018 23:31:59</publishTime>
+    </File>
+    <File Include="bin/Apps.Core.pdb">
+      <publishTime>12/18/2018 14:11:14</publishTime>
+    </File>
+    <File Include="bin/Apps.DAL.dll">
+      <publishTime>12/18/2018 14:11:12</publishTime>
+    </File>
+    <File Include="bin/Apps.DAL.dll.config">
+      <publishTime>11/07/2018 23:31:59</publishTime>
+    </File>
+    <File Include="bin/Apps.DAL.pdb">
+      <publishTime>12/18/2018 14:11:12</publishTime>
+    </File>
+    <File Include="bin/Apps.IBLL.dll">
+      <publishTime>12/18/2018 14:11:12</publishTime>
+    </File>
+    <File Include="bin/Apps.IBLL.pdb">
+      <publishTime>12/18/2018 14:11:12</publishTime>
+    </File>
+    <File Include="bin/Apps.IDAL.dll">
+      <publishTime>12/18/2018 14:11:11</publishTime>
+    </File>
+    <File Include="bin/Apps.IDAL.dll.config">
+      <publishTime>11/07/2018 23:32:00</publishTime>
+    </File>
+    <File Include="bin/Apps.IDAL.pdb">
+      <publishTime>12/18/2018 14:11:11</publishTime>
+    </File>
+    <File Include="bin/Apps.Locale.dll">
+      <publishTime>12/14/2018 15:32:50</publishTime>
+    </File>
+    <File Include="bin/Apps.Locale.pdb">
+      <publishTime>12/14/2018 15:32:50</publishTime>
+    </File>
+    <File Include="bin/Apps.Models.dll">
+      <publishTime>12/18/2018 14:11:11</publishTime>
+    </File>
+    <File Include="bin/Apps.Models.dll.config">
+      <publishTime>12/16/2018 21:48:42</publishTime>
+    </File>
+    <File Include="bin/Apps.Models.pdb">
+      <publishTime>12/18/2018 14:11:11</publishTime>
+    </File>
+    <File Include="bin/Apps.WebApi.dll">
+      <publishTime>12/18/2018 14:11:15</publishTime>
+    </File>
+    <File Include="bin/Apps.WebApi.pdb">
+      <publishTime>12/18/2018 14:11:15</publishTime>
+    </File>
+    <File Include="bin/Apps.WebApi.XML">
+      <publishTime>12/18/2018 14:11:15</publishTime>
+    </File>
+    <File Include="bin/App_global.asax.compiled">
+      <publishTime>12/18/2018 14:11:21</publishTime>
+    </File>
+    <File Include="bin/App_global.asax.dll">
+      <publishTime>12/18/2018 14:11:21</publishTime>
+    </File>
+    <File Include="bin/en-US/Apps.Locale.resources.dll">
+      <publishTime>12/14/2018 15:32:51</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>03/02/2015 09:32:26</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>03/02/2015 09:32:26</publishTime>
+    </File>
+    <File Include="bin/LinqToExcel.dll">
+      <publishTime>08/21/2014 09:07:22</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.ServiceLocation.dll">
+      <publishTime>05/05/2014 11:25:44</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.ServiceLocation.pdb">
+      <publishTime>05/05/2014 11:25:44</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.Unity.Configuration.dll">
+      <publishTime>10/05/2015 09:37:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.Unity.dll">
+      <publishTime>10/05/2015 09:37:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Practices.Unity.RegistrationByConvention.dll">
+      <publishTime>10/05/2015 09:37:20</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>07/25/2012 11:48:56</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>01/11/2015 19:54:54</publishTime>
+    </File>
+    <File Include="bin/Remotion.Data.Linq.dll">
+      <publishTime>08/21/2014 09:07:24</publishTime>
+    </File>
+    <File Include="bin/Senparc.Weixin.dll">
+      <publishTime>11/07/2018 23:32:01</publishTime>
+    </File>
+    <File Include="bin/Senparc.Weixin.MP.dll">
+      <publishTime>11/07/2018 23:32:01</publishTime>
+    </File>
+    <File Include="bin/Swashbuckle.Core.dll">
+      <publishTime>11/07/2018 23:32:01</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>01/28/2015 04:02:42</publishTime>
+    </File>
+    <File Include="bin/System.Web.Cors.dll">
+      <publishTime>01/28/2015 04:01:46</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>10/01/2013 20:54:26</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.Cors.dll">
+      <publishTime>01/28/2015 04:03:04</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>01/28/2015 04:02:54</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>10/01/2013 20:54:26</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>10/01/2013 20:54:22</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>09/04/2013 02:27:04</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>10/01/2013 20:54:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>10/01/2013 20:54:26</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>10/01/2013 20:54:26</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>10/01/2013 20:54:26</publishTime>
+    </File>
+    <File Include="bin/ThoughtWorks.QRCode.dll">
+      <publishTime>11/07/2018 23:32:01</publishTime>
+    </File>
+    <File Include="bin/Unity.WebApi.dll">
+      <publishTime>10/29/2015 01:52:30</publishTime>
+    </File>
+    <File Include="bin/WebActivatorEx.dll">
+      <publishTime>02/08/2013 16:42:28</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>07/17/2013 17:03:52</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Net.Http.Formatting.resources.dll">
+      <publishTime>01/28/2015 04:02:44</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Helpers.resources.dll">
+      <publishTime>10/01/2013 20:55:12</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Http.resources.dll">
+      <publishTime>01/28/2015 04:02:56</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Http.WebHost.resources.dll">
+      <publishTime>10/01/2013 20:55:10</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Mvc.resources.dll">
+      <publishTime>10/01/2013 20:55:08</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Optimization.resources.dll">
+      <publishTime>09/04/2013 02:30:02</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.Razor.resources.dll">
+      <publishTime>10/01/2013 20:55:08</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.Deployment.resources.dll">
+      <publishTime>10/01/2013 20:55:12</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.Razor.resources.dll">
+      <publishTime>10/01/2013 20:55:12</publishTime>
+    </File>
+    <File Include="bin/zh-Hans/System.Web.WebPages.resources.dll">
+      <publishTime>10/01/2013 20:55:12</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Core/site.config">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="favicon.ico">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.eot">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.svg">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.woff">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="PrecompiledApp.config">
+      <publishTime>12/18/2018 14:11:16</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.min.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.min.map">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.6.2.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/respond.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/respond.min.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Scripts/_references.js">
+      <publishTime>11/07/2018 23:31:58</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>12/05/2018 16:23:22</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

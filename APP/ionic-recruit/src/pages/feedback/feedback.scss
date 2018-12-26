@@ -1,0 +1,26 @@
+page-feedback {
+  .btn-footer {
+    height: 45px !important;
+  }
+
+  .text-container {
+    margin: 10px;
+  }
+
+  textarea {
+    padding-left: 16px !important;
+  }
+
+  .add-image {
+    height: 74px;
+  }
+
+  .remove-img {
+    top: 0;
+    right: 0;
+    margin-top: -10px;
+    margin-right: -5px;
+    z-index: 99;
+    height: 24px;
+  }
+}

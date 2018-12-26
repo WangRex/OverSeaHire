@@ -1,0 +1,59 @@
+﻿.mvctool {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+form {
+    margin-top: 45px;
+}
+
+.pd3 {
+    position: absolute;
+    top: 40px;
+}
+/*工具按钮不指定*/
+.mvctoolno {
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.input-border-bottom {
+    border-left-width: 0px !important;
+    border-top-width: 0px !important;
+    border-right-width: 0px !important;
+    border-bottom-color: black !important;
+    border-radius: 0px !important;
+}
+
+.input-border-none {
+    border: 0px !important;
+}
+
+.input-width-50 {
+    width: 50px !important;
+}
+
+.input-width-150 {
+    width: 150px !important;
+}
+
+.input-width-200 {
+    width: 200px !important;
+}
+
+.input-width-250 {
+    width: 250px !important;
+}
+
+.input-width-300 {
+    width: 300px !important;
+}
+
+.input-width-800 {
+    width: 800px !important;
+}

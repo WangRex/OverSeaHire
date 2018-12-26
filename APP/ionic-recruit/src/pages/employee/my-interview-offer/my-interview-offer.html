@@ -1,0 +1,121 @@
+<ion-header class="search-header">
+  <ion-navbar color="white">
+    <ion-title>雇主面试申请</ion-title>
+  </ion-navbar>
+  <ion-toolbar [ngClass]="{'aq-none': data.length  == 0}" no-padding color="white" class="bar-border-bottom color-gray">
+    <ion-row class="aq-text-size-small color-primary">
+      <ion-col tappable (click)="toggleWorkType()" class="aq-vertical-center"><span>选择工种<!--{{convertFilterText('国家国家国家')}}--></span><ion-icon class="aq-margin-left-4" name="md-arrow-dropdown"></ion-icon></ion-col>
+      <ion-col tappable (click)="toggleLocations()" class="aq-vertical-center"><span>工作地点<!--{{convertFilterText('国家国家国家')}}--></span><ion-icon class="aq-margin-left-4" name="md-arrow-dropdown"></ion-icon></ion-col>
+      <ion-col tappable (click)="toggleSalaries()" class="aq-vertical-center"><span>收入范围<!--{{convertFilterText('国家国家国家')}}--></span><ion-icon class="aq-margin-left-4" name="md-arrow-dropdown"></ion-icon></ion-col>
+      <ion-col tappable (click)="toggleProvinces()" class="aq-vertical-center"><span>办理省份<!--{{convertFilterText('国家国家国家')}}--></span><ion-icon class="aq-margin-left-4" name="md-arrow-dropdown"></ion-icon></ion-col>
+      <ion-col tappable (click)="toggleSort()" class="aq-vertical-center sort-col">
+        <img src="assets/icon/sort.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="aq-relative" [ngClass]="{'bg-gray': searched && data.length}">
+  <!--没搜到数据的时候-->
+  <ion-no-record-found *ngIf="data.length == 0"></ion-no-record-found>
+  <!--搜索到职位列表-->
+  <div *ngIf="data.length > 0">
+    <div tappable (click)="goOfferDetailPage(item.Id)" [ngClass]="{'aq-margin-top-4': i != 0}" class="aq-bg-color-white-core" *ngFor="let item of data;let i = index;">
+      <ion-offer-item [img]="item.CountryImg" [date]="item.PublishDate" [description]="item.CompanyName" [answerCount]="item.ApplyCount" [title]="item.Title" [location]="item.CountryName" [lowSalary]="item.SalaryLow" [highSalary]="item.SalaryHigh" [tags]="item.Tag"></ion-offer-item>
+    </div>
+  </div>
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<!--选择工种-->
+<div *ngIf="showFixedContent && showWorkType" class="fixed-condition color-gray" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <div class="items-container">
+    <ion-row tappable (click)="setSelectedOption(option, 'types')" *ngFor="let option of types">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">{{option.text}}</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="option.selected" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col padding-left padding-right padding-top>
+      <button (click)="confirmSelectedTypes()" ion-button round block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</div>
+<!--选择地点-->
+<div *ngIf="showFixedContent && showLocations" class="fixed-condition color-gray" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <div class="items-container">
+    <ion-row *ngFor="let option of locations" tappable (click)="setSelectedOption(option, 'locations')">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">{{option.text}}</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="option.selected" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col padding-left padding-right padding-top>
+      <button (click)="confirmSelectedLocation()" ion-button round block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</div>
+<!--选择薪资-->
+<div *ngIf="showFixedContent && showSalaries" class="fixed-condition color-gray" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <div class="items-container">
+    <ion-row *ngFor="let option of salaries" tappable (click)="setSelectedOption(option, 'salaries')">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">{{option.text}}</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="option.selected" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col padding-left padding-right padding-top>
+      <button (click)="confirmSelectedSalary()" ion-button round block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</div>
+<!--选择省份-->
+<div *ngIf="showFixedContent && showProvinces" class="fixed-condition color-gray" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <div class="items-container">
+    <ion-row *ngFor="let option of provinces" tappable (click)="setSelectedOption(option, 'provinces')">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">{{option.text}}</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="option.selected" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col padding-left padding-right padding-top>
+      <button (click)="confirmSelectedProvince()" ion-button round block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</div>
+<!--选择排序-->
+<div *ngIf="showFixedContent && showSort" class="fixed-condition color-gray" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <div class="items-container">
+    <ion-row *ngFor="let option of sorts" tappable (click)="setSelectedOption(option, 'sort')">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">{{option.text}}</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="option.selected" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col padding-left padding-right padding-top>
+      <button (click)="confirmSelectedSort()" ion-button round block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</div>
+<div *ngIf="showFixedContent && (showWorkType || showLocations || showSalaries || showProvinces || showSort)" class="aq-overlay-backdrop"></div>

@@ -1,0 +1,57 @@
+page-order-detail {
+  .col-img {
+    width: 110px;
+    max-width: 110px;
+
+    //img {
+    //  height: 75px;
+    //  width: 100px;
+    //}
+  }
+
+  .read {
+    bottom: 5px;
+  }
+
+  .col-nav {
+    max-width: 80px;
+    width: 80px;
+  }
+
+  .button-ios {
+    height: 30px !important;
+    padding: 0 16px;
+  }
+
+  .step-num-col {
+    max-width: 50px;
+    width: 50px;
+  }
+
+  .step-num {
+    min-width: 20px;
+    min-height: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+
+  .step-img-col {
+    padding: 0 !important;
+    max-width: 90px;
+    width: 90px;
+  }
+
+  .step-img {
+    height: 35px;
+  }
+
+  .map-container {
+    width: 100px;
+    height: 75px;
+  }
+
+  .btn-footer {
+    height: 45px !important;
+  }
+}

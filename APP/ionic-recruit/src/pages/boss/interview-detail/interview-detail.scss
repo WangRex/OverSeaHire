@@ -1,0 +1,41 @@
+page-interview-detail {
+  .inactive .step-num {
+    background-color: #BDBDBD !important;
+  }
+
+  .inactive .step-img-col {
+    color: #BDBDBD !important;
+  }
+
+  .step-num-col {
+    max-width: 50px;
+    width: 50px;
+  }
+
+  .step-num {
+    min-width: 20px;
+    min-height: 20px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #3CA541;
+  }
+
+  .step-img-col {
+    padding: 0 !important;
+    max-width: 90px;
+    width: 90px;
+  }
+
+  .step-img {
+    height: 35px;
+  }
+
+  .action-button {
+    height: 27px !important;
+  }
+
+  .color-gray {
+    color: #757575 !important;
+  }
+}

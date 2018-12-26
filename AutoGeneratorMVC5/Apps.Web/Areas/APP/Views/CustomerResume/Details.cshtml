@@ -1,0 +1,155 @@
+﻿@model Apps.Models.App.App_CustomerModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    /**/
+
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <table class="formtable">
+        <tbody>
+            @if (Session["IdFlag"].ToString() == "1")
+            {
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Id)：
+                    </th>
+                    <td>
+                        @Model.Id
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CustomerName)：
+                </th>
+                <td>
+                    @Model.CustomerName
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Password)：
+                </th>
+                <td>
+                    @Model.Password
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Sex)：
+                </th>
+                <td>
+                    @Model.Sex
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Phone)：
+                </th>
+                <td>
+                    @Model.Phone
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Age)：
+                </th>
+                <td>
+                    @Model.Age
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Height)：
+                </th>
+                <td>
+                    @Model.Height
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Weight)：
+                </th>
+                <td>
+                    @Model.Weight
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Nation)：
+                </th>
+                <td>
+                    @Model.Nation
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.EnumForeignLangGrade)：
+                </th>
+                <td>
+                    @Model.EnumForeignLangGrade
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.SwitchBtnPassport)：
+                </th>
+                <td>
+                    @Model.SwitchBtnPassport
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AbroadExp)：
+                </th>
+                <td>
+                    @Model.AbroadExp
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.EnumDriverLicence)：
+                </th>
+                <td>
+                    @Model.EnumDriverLicence
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.SwitchBtnRecommend)：
+                </th>
+                <td>
+                    @Model.SwitchBtnRecommend
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.JobIntension)：
+                </th>
+                <td>
+                    @Model.JobIntension
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

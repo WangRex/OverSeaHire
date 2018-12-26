@@ -1,0 +1,52 @@
+<ion-content class="bg-gray">
+  <div class="banner-container">
+    <img src="assets/imgs/employee/banner.png" class="banner" />
+    <div tappable (click)="goSearchOfferPage()" class="search-container" text-center>
+      <div class="search aq-vertical-center">
+        <ion-icon name="search"></ion-icon>
+        搜索职位
+      </div>
+    </div>
+  </div>
+  <!-- 跳转链接 -->
+  <ion-row class="aq-bg-color-white-core aq-text-size-normal filter-container">
+    <ion-col col-4>
+      <div class="aq-vertical-center divider">
+        <img src="assets/icon/attention.png" />
+        关注事项
+      </div>
+    </ion-col>
+    <ion-col col-4>
+      <div class="aq-vertical-center divider">
+        <img src="assets/icon/cost.png" />
+        办理费用
+      </div>
+    </ion-col>
+    <ion-col col-4>
+      <div class="aq-vertical-center">
+        <img src="assets/icon/position.png" />
+        选岗应聘
+      </div>
+    </ion-col>
+  </ion-row>
+  <!-- 筛选条件 -->
+  <ion-row class="aq-bg-color-white-core condition-container aq-margin-top-4">
+    <ion-col col-4 text-center>
+      <span [ngClass]="{'active': recommend == '1'}" tappable (click)="switchRequirementList('recommend')">推荐</span>
+    </ion-col>
+    <ion-col col-4 text-center>
+      <span [ngClass]="{'active': latest == '1'}" tappable (click)="switchRequirementList('latest')">最新</span>
+    </ion-col>
+    <ion-col col-4 text-center>
+      <span [ngClass]="{'active': highSalary == '1'}" tappable (click)="switchRequirementList('highSalary')">高薪</span>
+    </ion-col>
+  </ion-row>
+
+  <!--职位列表-->
+  <div (click)="goOfferDetailPage(item.Id)" tappable [ngClass]="{'aq-margin-top-4': i != 0}" class="aq-bg-color-white-core" *ngFor="let item of data;let i = index;">
+    <ion-offer-item [img]="item.CountryImg" [date]="item.PublishDate" [description]="item.CompanyName" [answerCount]="item.ApplyCount" [title]="item.Title" [location]="item.CountryName" [lowSalary]="item.SalaryLow" [highSalary]="item.SalaryHigh" [tags]="item.Tag"></ion-offer-item>
+  </div>
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

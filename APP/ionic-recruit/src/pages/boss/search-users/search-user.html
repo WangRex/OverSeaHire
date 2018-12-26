@@ -1,0 +1,121 @@
+<ion-header class="search-header">
+  <ion-navbar color="white">
+    <form class="form" *ngIf="showFixedContent">
+      <ion-row>
+        <ion-col col-12>
+          <ion-item class="search-item">
+            <ion-icon class="search-icon" name="ios-search" item-start></ion-icon>
+            <ion-input name="keyword" class="aq-text-size-normal color-dark" [(ngModel)]="keyword" type="search" placeholder="搜索工种关键字" clearInput></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <button (click)="getUserList()" ion-button class="aq-none" >搜索</button>
+    </form>
+    <ion-buttons end>
+      <button class="aq-text-size-normal" ion-button (click)="getUserList()" clear color="secondary">
+        搜索
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <ion-toolbar [ngClass]="{'aq-none': searched == false }" no-padding color="white" class="bar-border-bottom color-gray">
+    <ion-row class="aq-text-size-small color-primary">
+      <ion-col tappable (click)="goChooseWorkTypePage()" class="aq-vertical-center"><span>工种</span><ion-icon class="aq-margin-left-4" name="md-arrow-dropdown"></ion-icon></ion-col>
+      <ion-col tappable (click)="toggleRecommendSearch()" class="aq-vertical-center"><span>推荐</span><ion-icon class="aq-margin-left-4" name="md-arrow-dropdown"></ion-icon></ion-col>
+      <ion-col tappable (click)="toggleSort()" class="aq-vertical-center sort-col">
+        <img src="assets/icon/sort.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="aq-relative" [ngClass]="{'bg-gray': searched && data.length}">
+  <!--没搜到数据的时候-->
+  <ion-no-record-found *ngIf="keyword != '' && data.length == 0 && searched"></ion-no-record-found>
+  <!--搜索到职位列表-->
+  <div *ngIf="searched && data.length > 0">
+    <div (click)="goUserDetail(item.CustomerId)" tappable [ngClass]="{'aq-margin-top-4': i != 0}" class="aq-bg-color-white-core aq-padding-top-8 aq-padding-bottom-8 aq-padding-right-8" *ngFor="let item of data;let i = index;">
+      <ion-user-info [img]="item.Photo" [name]="item.CustomerName" [description]="item.description"></ion-user-info>
+    </div>
+  </div>
+  <!--热门搜索和历史搜索-->
+  <div *ngIf="searched == false || (searched && data.length == 0 && keyword == '')">
+   <!--<ion-row>-->
+     <!--<ion-col col-12 class="col-padding">-->
+       <!--<span class="color-dark">热门搜索</span>-->
+     <!--</ion-col>-->
+   <!--</ion-row>-->
+   <!--<ion-row class="reduce-margin">-->
+     <!--<ion-col col-12 class="col-padding">-->
+       <!--<span (click)="selectHotSearch(item)" tappable class="ngx-tag aq-margin-top-12" *ngFor="let item of hotSearch">{{item}}</span>-->
+     <!--</ion-col>-->
+   <!--</ion-row>-->
+
+   <ion-row *ngIf="searchHistory.length > 0">
+     <ion-col col-6 class="col-padding">
+       <span class="color-dark">历史搜索</span>
+     </ion-col>
+     <ion-col col-6 text-right class="col-padding aq-vertical-middle flex-end">
+       <ion-icon name="ios-trash-outline" class="aq-margin-right-4 color-gray"></ion-icon> <span class="color-gray" tappable (click)="clearSearchHistory()">清除历史记录</span>
+     </ion-col>
+   </ion-row>
+   <ion-row tappable (click)="selectHotSearch(option)" *ngFor="let option of searchHistory" class="aq-border-bottom aq-border-color-grey-30">
+     <ion-col col-12 class="col-padding aq-vertical-middle color-gray">
+       {{option}}
+     </ion-col>
+   </ion-row>
+ </div>
+
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+<!--选择推荐-->
+<div *ngIf="showFixedContent && showRecommend" class="fixed-condition color-gray" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <div class="items-container">
+    <ion-row tappable (click)="selectRecommendOption('isRecommend')">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">系统推荐</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="isRecommend == '1'" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+    <ion-row tappable (click)="selectRecommendOption('isLatest')">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">最新简历</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="isLatest == '1'" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+    <ion-row tappable (click)="selectRecommendOption('isHaveVideo')">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">有工作视频</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="isHaveVideo == '1'" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col padding-left padding-right padding-top>
+      <button (click)="confirmRecommendSearch()" ion-button round block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</div>
+<!--选择排序-->
+<div *ngIf="showFixedContent && showSort" class="fixed-condition color-gray" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <div class="items-container">
+    <ion-row *ngFor="let option of sorts" tappable (click)="setSelectedSortOption(option)">
+      <ion-col col-9 padding-left class="aq-padding-top-8 aq-padding-bottom-8 aq-border-bottom aq-border-color-grey-30 aq-vertical-middle">{{option.text}}</ion-col>
+      <ion-col col-3 padding-right class="aq-border-bottom aq-border-color-grey-30 aq-vertical-middle flex-end">
+        <img *ngIf="intelligenceSort == option.value" src="assets/icon/checked-outline.png" class="icon-img-small" />
+      </ion-col>
+    </ion-row>
+  </div>
+  <ion-row>
+    <ion-col padding-left padding-right padding-top>
+      <button (click)="confirmSelectedSort()" ion-button round block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</div>
+<div *ngIf="showFixedContent && (showSort || showRecommend)" class="aq-overlay-backdrop"></div>

@@ -1,0 +1,25 @@
+﻿@using Apps.Web.Core;
+@using Apps.Locale;
+@using Apps.Models.Enum;
+@{
+    ViewBag.Title = "我的桌面";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/echarts.min.js")"></script>
+<script src="@Url.Content("~/Scripts/echarts.theme.shine.js")"></script>
+<script src="@Url.Content("~/Scripts/template.js")"></script>
+<script src="@Url.Content("~/Scripts/Constants.js")?V=1.0"></script>
+<script src="@Url.Content("~/Scripts/GlobalUtils.js")?V=1.0"></script>
+<style>
+    body{overflow:hidden;margin:0;padding:0;color:#000;word-wrap:break-word;font-size:14px}.cc{overflow-y:scroll;overflow-x:hidden;display:none;}.row{display:-webkit-box;display:-webkit-flex;display:-moz-box;display:-moz-flex;display:-ms-flexbox;display:flex;padding:5px;width:100%}.row-wrap{-webkit-flex-wrap:wrap;-moz-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap}.row+.row{margin-top:-5px;padding-top:0}.col-offset-10{margin-left:10%}.col-offset-20{margin-left:20%}.col-offset-25{margin-left:25%}.col-offset-50{margin-left:50%}.col-offset-75{margin-left:75%}.col-offset-80{margin-left:80%}.col-offset-90{margin-left:90%}.col-10{-webkit-box-flex:0;-webkit-flex:0 0 10%;-moz-box-flex:0;-moz-flex:0 0 10%;-ms-flex:0 0 10%;flex:0 0 10%;max-width:10%}.col-15{-webkit-box-flex:0;-webkit-flex:0 0 15%;-moz-box-flex:0;-moz-flex:0 0 15%;-ms-flex:0 0 15%;flex:0 0 15%;max-width:15%}.col-20{-webkit-box-flex:0;-webkit-flex:0 0 20%;-moz-box-flex:0;-moz-flex:0 0 20%;-ms-flex:0 0 20%;flex:0 0 20%;max-width:20%}.col-25{-webkit-box-flex:0;-webkit-flex:0 0 25%;-moz-box-flex:0;-moz-flex:0 0 25%;-ms-flex:0 0 25%;flex:0 0 25%;max-width:25%}.col-30{-webkit-box-flex:0;-webkit-flex:0 0 30%;-moz-box-flex:0;-moz-flex:0 0 30%;-ms-flex:0 0 30%;flex:0 0 30%;max-width:30%}.col-35{-webkit-box-flex:0;-webkit-flex:0 0 35%;-moz-box-flex:0;-moz-flex:0 0 35%;-ms-flex:0 0 35%;flex:0 0 35%;max-width:35%}.col-40{-webkit-box-flex:0;-webkit-flex:0 0 40%;-moz-box-flex:0;-moz-flex:0 0 40%;-ms-flex:0 0 40%;flex:0 0 40%;max-width:40%}.col-50{-webkit-box-flex:0;-webkit-flex:0 0 50%;-moz-box-flex:0;-moz-flex:0 0 50%;-ms-flex:0 0 50%;flex:0 0 50%;max-width:50%}.col-60{-webkit-box-flex:0;-webkit-flex:0 0 60%;-moz-box-flex:0;-moz-flex:0 0 60%;-ms-flex:0 0 60%;flex:0 0 60%;max-width:60%}.col-70{-webkit-box-flex:0;-webkit-flex:0 0 70%;-moz-box-flex:0;-moz-flex:0 0 70%;-ms-flex:0 0 70%;flex:0 0 70%;max-width:70%}.col-100{-webkit-box-flex:0;-webkit-flex:0 0 100%;-moz-box-flex:0;-moz-flex:0 0 100%;-ms-flex:0 0 100%;flex:0 0 100%;max-width:100%}
+</style>
+<script type="text/javascript">
+    //修改，筛选，保存
+    $(function () {
+    });
+</script>
+<div id="modalwindowArticle" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div style="padding:0px 23px;clear:both">
+    <div class="cc">
+    </div>
+</div>

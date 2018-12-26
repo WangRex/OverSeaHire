@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>职位详情</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-left (click)="goAttentionsPage()">
+        <img src="assets/icon/info.png" class="icon-img" />
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-offer-detail [img]="offerDetail?.CountryImg" [totalNum]="offerDetail?.TotalHire" [passedNum]="offerDetail?.ApplyCount" [fee]="offerDetail?.TotalServiceMoney" [title]="offerDetail?.Title" [lowSalary]="offerDetail?.SalaryLow" [highSalary]="offerDetail?.SalaryHigh" [location]="offerDetail?.CountryName" [date]="offerDetail?.PublishDate" [request]="offerDetail?.requireDetail"></ion-offer-detail>
+
+  <ion-title-divider title="职位描述"></ion-title-divider>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding">
+      <span *ngFor="let item of offerDetail?.Tag" class="ngx-tag">{{item}}</span>
+    </ion-col>
+  </ion-row>
+
+  <!--渲染html，因为职位描述都是后台配置的(带格式)-->
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      <div [innerHTML]="assembleHTML(offerDetail?.Description)"></div>
+    </ion-col>
+  </ion-row>
+  <!--费用说明信息-->
+  <ion-title-divider title="费用说明"></ion-title-divider>
+  <ion-row class="reduce-margin">
+    <ion-col col-12 class="col-padding color-gray">
+      保证金:&nbsp; <span class="color-money">{{ offerDetail?.PromiseMoney }}</span> &nbsp;元
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="reduce-margin color-gray">
+    <ion-col col-2 class="aq-vertical-middle favorite">
+      <img src="assets/icon/favourite.png"  class="icon-img-small"/>
+    </ion-col>
+    <ion-col class="aq-vertical-middle">保证金是支付给招聘方的服务费保证金。面试不通过 可退还</ion-col>
+  </ion-row>
+
+  <ion-row class="reduce-margin">
+    <ion-col col-12 class="col-padding color-gray">
+      服务费:&nbsp; <span class="color-money">{{ offerDetail?.serviceMoneyTotal }}</span> &nbsp;元
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="reduce-margin color-gray">
+    <ion-col col-2 class="aq-vertical-middle favorite">
+      <img src="assets/icon/favourite.png" class="icon-img-small"/>
+    </ion-col>
+    <ion-col class="aq-vertical-middle">服务费用分为两笔，第一笔在面试通过后进行支付， 第二笔在签约后支付</ion-col>
+  </ion-row>
+  <!--发布人信息-->
+  <ion-title-divider title="发布人"></ion-title-divider>
+  <ion-user-info [img]="offerDetail?.PublishUserPhoto" [name]="offerDetail?.PublishUserName" [description]="offerDetail?.PublishUserCompany"></ion-user-info>
+  <ion-row>
+    <ion-col></ion-col>
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="white">
+    <ion-row>
+      <ion-col col-6 class="aq-vertical-middle" no-padding>
+        <span (click)="toggleCollectReqiurement()" padding-left padding-right class="aq-vertical-middle">
+          <img *ngIf="offerDetail?.RequirementCollId == ''" src="assets/icon/favourite-green.png" class="icon-img"/>
+          <img *ngIf="offerDetail?.RequirementCollId != ''" src="assets/icon/favourite-checked.png" class="icon-img"/>
+          <span class="aq-padding-left-8">收藏</span>
+        </span>
+        <span tappable (click)="share()" padding-left class="aq-vertical-middle aq-border-left aq-border-color-grey-30"><img src="assets/icon/exit.png" class="icon-img"/> <span class="aq-padding-left-8">分享</span></span>
+      </ion-col>
+      <ion-col col-6 class="aq-vertical-middle" no-padding>
+        <button (click)="goApplyOfferPage()" ion-button color="secondary" block no-margin>申请应聘</button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

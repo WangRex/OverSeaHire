@@ -1,0 +1,215 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "APP_Customer";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+
+<style>
+    .saveBtn {
+        position: absolute;
+        height: 28px;
+        background-color: rgb(250, 250, 250);
+        padding-top: 4px;
+        padding-left: 5px;
+        border-bottom: 1px solid;
+        width: 577px;
+        z-index: 9999;
+    }
+</style>
+<div class="mvctool">
+    <div style="float:left;">
+        <input type="hidden" id="JobIntension" />
+        姓 名:<input id="CustomerName" type="text" style="width:120px;" />
+        工种:<input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
+        性 别: <input id="Sex" type="text" style="width:40px;" />
+        手机号: <input id="CustomerPhone" type="text" style="width:120px;" />
+        年龄: <input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
+    </div>
+    <div style="float:left;">
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+        @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+        @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+        @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
+        @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+        @Html.ToolButton("btnCustomerWorkExp", "fa fa-list", "工作经历", ref perm, "Create", true)
+        @Html.ToolButton("btnCustomerApply", "fa fa-list", "参与订单", ref perm, "Create", true)
+    </div>
+</div>
+<table id="List"></table>
+<div id="positiontree" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false" style="overflow-y:scroll">
+    <div class="saveBtn">
+        @Html.ToolButton("btnSaveTree", "fa fa-save", Resource.Save, true)
+        @Html.ToolButton("btnReturnTree", "fa fa-reply", Resource.Reply, false)
+    </div>
+    <div style="position:relative;top:40px;"><ul id="tt" class="easyui-tree"></ul></div>
+</div>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    var treeData = {};
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetList")',
+            width:SetGridWidthSub(10),
+            method: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '主键', width: 80,hidden:true },
+                { field: 'OwnerName', title: '拥有人姓名', width: 80,sortable:true },
+                { field: 'CustomerName', title: '工友姓名', width: 80,sortable:true },
+                { field: 'Sex', title: '性别', width: 80,sortable:true },
+                { field: 'Phone', title: '电话', width: 80,sortable:true },
+                { field: 'Age', title: '年龄', width: 80,sortable:true },
+                {
+                    field: 'CustomerPhoto', title: '照片', width: 80, sortable: true, formatter: function (value) {
+                        if (value) {
+                            return '<img width="80px;" src="' + value + '" />';
+                        } else {
+                            return "暂无图片";
+                        }
+                    }},
+                { field: 'BirthDay', title: '生日', width: 80, sortable: true },
+                { field: 'EnumCustomerType', title: '用户身份', width: 80, sortable: true }
+            ]]
+        });
+        $("#btnReturnTree").click(function () {
+            $("#positiontree").window('close');
+        });
+        $("#btnSaveTree").click(function () {
+            var nodes = $('#tt').tree('getChecked');	// get checked nodes
+            var ids = '';
+            var texts = '';
+            nodes.forEach(function (value, index, array) {
+                ids += ',' + value.id;
+                texts += ',' + value.text;
+            })
+            if (ids != '') {
+                ids = ids.substring(1);
+                texts = texts.substring(1);
+            }
+            $("#JobIntension").val(ids);
+            $("#positiontreeinput").val(texts);
+            $("#positiontree").window('close');
+        });
+        $("#positiontreeinput").click(function () {
+            if (treeData.length) {
+                initPosTree(treeData);
+            } else {
+                globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
+                    treeData = data;
+                    initPosTree(treeData);
+                }, "post");
+            }
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    function initPosTree(treeData) {
+        $('#tt').tree({
+            data: treeData,
+            animate: true,
+            checkbox: true,
+            onlyLeafCheck: true,
+            onLoadSuccess: function (node, data) {
+                var ids = $("#JobIntension").val();
+                if (ids != '') {
+                    var idArr = ids.split(",");
+                    for (var i = 0; i < idArr.length; i++) {
+                        // find a node and then select it
+                        var node = $('#tt').tree('find', idArr[i]);
+                        $('#tt').tree('check', node.target);
+                    }
+                }
+            }
+        });
+        $("#positiontree").window({
+            title: '职位',
+            width: 600,
+            height: 400,
+            top: 350,
+            iconCls: 'fa fa-pencil'
+        }).window('open');
+    }
+    $(function () {
+        $("#btnCreate").click(function () {
+            window.parent.addTab("新增简历", "@Url.Action("Create")", "fa fa-plus");
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                window.parent.addTab("修改简历", "@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-pencil");
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'fa fa-list' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+         });
+        $("#btnQuery").click(function () {
+            var CustomerName = $("#CustomerName").val();
+            var Sex = $("#Sex").val();
+            var CustomerPhone = $("#CustomerPhone").val();
+            var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
+            var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
+            var JobIntension = $("#JobIntension").val();
+            $("#List").datagrid("load", { CustomerName: CustomerName, Sex: Sex, CustomerPhone: CustomerPhone, WorkLimitAgeLow: WorkLimitAgeLow, WorkLimitAgeHigh: WorkLimitAgeHigh, JobIntension: JobIntension  });
+
+        });
+        $("#btnDelete").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                     if (r) {
+                         $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                             if (data.type == 1)
+                                 $("#List").datagrid('load');
+                             $.messageBox5s('@Resource.Tip', data.message);
+                         }, "json");
+
+                     }
+                 });
+             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+         });
+        $("#btnCustomerWorkExp").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/App/CustomerWorkExp?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '@Resource.Edit', width: 1000, height: 700, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnCustomerApply").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                window.parent.addTab("查看订单", "@Url.Action("ViewOrder")?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+</script>

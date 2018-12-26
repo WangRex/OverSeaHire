@@ -1,0 +1,137 @@
+<ion-row margin-top>
+  <ion-col *ngIf="showIndex" class="aq-vertical-center step-num-col">
+    <span class="step-num aq-text-color-white-core aq-vertical-center">{{ index }}</span>
+  </ion-col>
+  <ion-col class="aq-vertical-center step-img-col">
+    <div>
+      <div text-center><img class="step-img" [src]="fileUrl + icon" /></div>
+      <div text-center class="aq-margin-top-4"><strong>{{ title }}</strong></div>
+    </div>
+  </ion-col>
+  <ion-col class="aq-vertical-middle color-gray aq-text-size-small">
+    {{ description }}
+  </ion-col>
+  <ion-col class="aq-vertical-center step-num-col" *ngIf="showIndex == false">
+    <ion-icon name="ios-arrow-forward-outline" class="color-primary"></ion-icon>
+  </ion-col>
+</ion-row>
+
+<!--<ion-row margin-top>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">2</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step2.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>缴纳保税金</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--在线缴纳保证金，与工作人员联系沟通 签订劳动合同-->
+  <!--</ion-col>-->
+<!--</ion-row>-->
+
+<!--<ion-row margin-top>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">3</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step3.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>面试</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--在线或者电话进行面试沟通，面试考试 通过后进行出国手续办理-->
+  <!--</ion-col>-->
+<!--</ion-row>-->
+
+<!--<ion-row margin-top>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">4</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step4.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>考试</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--办理国内和国外手续，国内手续包括 护照，签处境证明、培训证等等-->
+  <!--</ion-col>-->
+<!--</ion-row>-->
+
+<!--<ion-row margin-top>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">5</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step5.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>支付服务费</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--雇主面试及考试通过后交纳平台服务 费用-->
+  <!--</ion-col>-->
+<!--</ion-row>-->
+
+<!--<ion-row margin-top>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">6</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step6.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>审核材料</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--交纳服务费用后平台方会替用户办理 出国移民手续，需要用户提供相关 个人资料及信息-->
+  <!--</ion-col>-->
+<!--</ion-row>-->
+
+<!--<ion-row margin-top>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">7</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step7.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>签约</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--出国手续办理齐全后，平台方会协助 用户签约劳工合同，这也是出国的最后 一步了是对出国工作的合同保障-->
+  <!--</ion-col>-->
+<!--</ion-row>-->
+
+<!--<ion-row margin-top>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">8</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step8.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>支付尾款</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--支付尾款，出国手续及劳工合同办理完成 后用户需要支付最后一笔服务费用的尾款-->
+  <!--</ion-col>-->
+<!--</ion-row>-->
+
+<!--<ion-row margin-top margin-bottom>-->
+  <!--<ion-col class="aq-vertical-center step-num-col">-->
+    <!--<span class="step-num bg-primary aq-text-color-white-core aq-vertical-center">9</span>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-center step-img-col">-->
+    <!--<div>-->
+      <!--<div text-center><img class="step-img" src="assets/imgs/employee/step9.png" /></div>-->
+      <!--<div text-center class="aq-margin-top-4"><strong>出国务工</strong></div>-->
+    <!--</div>-->
+  <!--</ion-col>-->
+  <!--<ion-col class="aq-vertical-middle color-gray aq-text-size-small">-->
+    <!--一切准备就绪，祝国外务工一切顺利-->
+  <!--</ion-col>-->
+<!--</ion-row>-->

@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>职位详情</ion-title>
+    <ion-buttons end>
+      <button (click)="deleteRequirement()" ion-button icon-start clear color="white" class="color-gray">
+        <ion-icon name="ios-close"></ion-icon>
+        删除岗位
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <ion-toolbar no-padding color="secondary">
+    <ion-row>
+      <ion-col col-6 no-padding class="aq-vertical-middle">
+        <span padding-left class="aq-text-color-white-core aq-text-size-medium">职位开放中</span>
+      </ion-col>
+      <ion-col col-6 no-padding text-right class="aq-vertical-middle flex-end">
+        <button class="aq-text-size-normal aq-margin-right-8 action-button color-primary" padding-left padding-right ion-button color="white" round>{{ offerDetail?.ApplyingCount }}人申请</button>
+        <button (click)="goInterviewWorkerPage()" padding-left padding-right ion-button color="white" round class="color-primary aq-text-size-normal aq-margin-right-8 action-button">{{ offerDetail?.InterviewCount }}人面试中</button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding-bottom>
+  <ion-offer-detail [img]="offerDetail?.CountryImg" [totalNum]="offerDetail?.TotalHire" [passedNum]="offerDetail?.ApplyCount" [fee]="offerDetail?.TotalServiceMoney" [title]="offerDetail?.Title" [lowSalary]="offerDetail?.SalaryLow" [highSalary]="offerDetail?.SalaryHigh" [location]="offerDetail?.CountryName" [date]="offerDetail?.PublishDate" [request]="offerDetail?.requireDetail"></ion-offer-detail>
+
+  <ion-title-divider title="职位描述"></ion-title-divider>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding">
+      <span *ngFor="let item of offerDetail?.Tag" class="ngx-tag">{{item}}</span>
+    </ion-col>
+  </ion-row>
+
+  <!--渲染html，因为职位描述都是后台配置的(带格式)-->
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      <div [innerHTML]="assembleHTML(offerDetail?.Description)"></div>
+    </ion-col>
+  </ion-row>
+
+  <!--推荐简历-->
+  <ion-title-divider title="推荐简历"></ion-title-divider>
+  <div class="reduce-margin">
+    <ion-card *ngFor="let option of offerDetail?.RecommendUsers">
+      <ion-card-content (click)="goUserDetail(option.CustomerId)" tappable>
+        <ion-user-info [img]="option.Photo" [name]="option.CustomerName" [description]="option.description"></ion-user-info>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer no-padding class="zIndex-fixed">
+  <ion-row no-padding>
+    <ion-col col-6 no-padding>
+      <button (click)="closeRequirement()" class="color-gray btn-footer aq-border-top aq-border-color-grey-30" ion-button no-margin block color="white" full>
+        关闭岗位
+      </button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button (click)="goPublishOfferPage()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        编辑岗位信息
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

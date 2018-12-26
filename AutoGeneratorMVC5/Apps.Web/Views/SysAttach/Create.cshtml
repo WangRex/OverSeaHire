@@ -1,0 +1,114 @@
+﻿@model Apps.Models.Sys.SysAttachModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Create")",
+                    type: "Post",
+                    data: $("form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            window.parent.frameReturnByMes(data.message);
+                            window.parent.frameReturnByReload(true);
+                            window.parent.frameReturnByClose()
+                        }
+                        else {
+                            window.parent.frameReturnByMes(data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+
+    function AttachUpload() {
+        var url = Constants.globalHomeUrl + Constants.Attach.ImageUpload;
+        var formData = new FormData($("form")[0]);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data.Code == 0) {
+                    $("#txtFilePath").val(data.Data.path);
+                    $("#AttachPath").val(data.Data.path);
+                    $("#FileName").val(data.Data.FileName);
+                    $("#ExtName").val(data.Data.FileExt);
+                } else {
+                    $.messageBox5s('@Resource.Tip', data.Message);
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save, true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.BusinessID)
+    @Html.HiddenFor(model => model.AttachPath)
+    <input id="CreateTime" type="hidden" name="CreateTime" value="2000-1-1" />
+    <input id="ModificationTime" type="hidden" name="ModificationTime" value="2000-1-1" />
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.AttachPath)：
+                </th>
+                <td>
+                    <input name="FilePath" type="text" maxlength="255" id="txtFilePath" readonly="readonly" class="txtInput normal left">
+                    <a href="javascript:$('#FileUpload').trigger('click').void(0);" class="files">@Resource.Browse</a>
+                    <input class="displaynone" type="file" id="FileUpload" name="FileUpload" onchange="AttachUpload();">
+                    <span class="uploading">@Resource.Uploading</span>
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.AttachPath)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.FileName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.FileName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.FileName)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ExtName)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.ExtName)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.ExtName)</td>
+            </tr>
+        </tbody>
+    </table>
+}
+

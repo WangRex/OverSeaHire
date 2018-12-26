@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>登陆/注册</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col col-12 text-center>
+      <img src="assets/imgs/logo.png"  class="logo" />
+    </ion-col>
+  </ion-row>
+  <div padding>
+    <ion-row>
+      <ion-col no-padding><span padding-left>手机号码</span></ion-col>
+    </ion-row>
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item class="border-top-clear" no-padding>
+        <ion-select no-margin item-start class="aq-text-size-normal" interface="popover">
+          <ion-option selected value="+86">+86</ion-option>
+        </ion-select>
+        <ion-input [(ngModel)]="phone" (input)="checkPhoneValidation()" no-margin text-right type="tel" placeholder="请输入您的手机号码" class="aq-text-size-normal"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-row margin-top>
+      <ion-col no-padding><span padding-left>验证码</span></ion-col>
+    </ion-row>
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item class="border-top-clear" no-padding>
+        <ion-input [(ngModel)]="verifyNum" no-margin item-start text-left type="tel" placeholder="请输入验证码" class="aq-text-size-normal verify-code"></ion-input>
+        <button (click)="sendValidationCode()" [ngClass]="{'color-gray': validation == false || verifyCode.disable == true, 'color-primary': validation}" no-padding no-margin item-end ion-button clear class="verify-button">
+          {{ verifyCode.verifyCodeTips }}
+        </button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-row>
+    <ion-col padding>
+      <button (click)="login()" [ngClass]="{'btn-disabled': validation == false || verifyNum.length < 4}" ion-button round block color="secondary" full>
+        进入海外直聘
+      </button>
+    </ion-col>
+  </ion-row>
+
+  <div padding margin-top>
+    <div class="strike">
+      <span class="color-gray">微信登录</span>
+    </div>
+    <ion-row>
+      <ion-col text-center>
+        <img src="assets/imgs/wechat.png" margin-top class="wechat-logo" />
+      </ion-col>
+    </ion-row>
+    <ion-row margin-top>
+      <ion-col class="aq-vertical-center color-gray aq-text-size-small">
+        <img src="assets/icon/checked-outline.png" class="icon-img-small aq-margin-right-8" />
+        我已同意并阅读软件许可及服务协议
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

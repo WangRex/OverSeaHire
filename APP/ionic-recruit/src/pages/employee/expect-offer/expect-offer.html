@@ -1,0 +1,173 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>求职意向</ion-title>
+    <ion-buttons end>
+      <button (click)="save()" ion-button clear color="secondary">
+        保存
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray">
+
+  <ion-list [ngClass]="{'mandatory': submitted && types.length == 0}" class="aq-margin-bottom-0 aq-margin-top-4">
+    <ion-item detail-push tappable (click)="goChooseWorkType()">
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>期望职位</ion-label>
+      <span *ngIf="types.length > 0" item-end class="color-gray aq-text-size-normal">
+        <span *ngFor="let option of types">&nbsp;{{ option.name }}</span>
+      </span>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedSalary.ItemValue == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>期望月薪</ion-label>
+      <ion-select [(ngModel)]="selectedSalary" class="aq-text-size-normal" interface="popover" placeholder="请选择期望月薪">
+        <ion-option *ngFor="let option of salaries" [value]="option">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && cities.length == 0}">
+    <ion-item detail-push tappable (click)="goChooseWorkCity()">
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>期望国家</ion-label>
+      <span *ngIf="cities.length > 0" item-end class="color-gray aq-text-size-normal">已选择({{cities.length}})</span>
+    </ion-item>
+  </ion-list>
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal">掌握技能</ion-label>-->
+      <!--<ion-select class="aq-text-size-normal" interface="popover" placeholder="请选择掌握技能">-->
+        <!--<ion-option *ngFor="let option of skills" [value]="option.itemValue">{{option.ItemName}}</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal">出国意向</ion-label>-->
+      <!--<ion-select class="aq-text-size-normal" interface="popover" placeholder="请选择出国意向">-->
+        <!--<ion-option value="0">不着急，看看再说</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal">求职方式</ion-label>-->
+      <!--<ion-select class="aq-text-size-normal" interface="popover" placeholder="请选择求职方式">-->
+        <!--<ion-option value="0">工作签证</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal">现居地</ion-label>-->
+      <!--<ion-input text-right type="number" placeholder="请输入现居地" class="aq-text-size-normal"></ion-input>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedLan.ItemValue == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>外语等级</ion-label>
+      <ion-select [(ngModel)]="selectedLan" class="aq-text-size-normal" interface="popover" placeholder="请选择外语等级">
+        <ion-option *ngFor="let option of languages" [value]="option">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedExp.ItemValue == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>出国经历</ion-label>
+      <ion-select [(ngModel)]="selectedExp" class="aq-text-size-normal" interface="popover" placeholder="请选择出国经历">
+        <ion-option *ngFor="let option of exps" [value]="option" [selected]="selectedExp.ItemValue == option.ItemValue">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+
+  <div class="aq-margin-top-4 aq-bg-color-white-core aq-text-size-normal color-gray" padding-bottom margin-bottom>
+    <ion-row>
+      <ion-col padding class="aq-vertical-middle">
+        所获证书
+      </ion-col>
+      <ion-col class="aq-vertical-middle flex-end" padding>
+        <img src="assets/icon/add.png" class="icon-img-small" />
+        <span class="color-primary aq-margin-left-8" tappable (click)="addCertificate()">添加证书</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="cers.length == 0">
+      <ion-col class="aq-vertical-middle color-gray" padding-left padding-right>
+        尚未添加任何证书
+      </ion-col>
+    </ion-row>
+    <div *ngIf="cers.length != 0">
+      <ion-row *ngFor="let option of cers">
+        <ion-col class="aq-vertical-middle" padding-left padding-right>
+          <img src="assets/icon/write.png" class="icon-img-small" />
+          <span class="aq-margin-left-8">{{formatDateDisplay(option.startDate)}} - {{formatDateDisplay(option.endDate)}}</span>
+          <span class="aq-margin-left-8">{{option.certificate}}</span>
+          <span class="aq-margin-left-8">{{option.company}}</span>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+  <!--<div class="aq-margin-top-4 aq-bg-color-white-core aq-text-size-normal color-gray" padding-bottom margin-bottom>-->
+    <!--<ion-row>-->
+      <!--<ion-col padding class="aq-vertical-middle">-->
+        <!--所获证书-->
+      <!--</ion-col>-->
+      <!--<ion-col class="aq-vertical-middle flex-end" padding>-->
+        <!--<img src="assets/icon/add.png" class="icon-img-small" />-->
+        <!--<span class="color-primary aq-margin-left-8">添加证书</span>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row>-->
+      <!--<ion-col class="aq-vertical-middle" padding-left padding-right>-->
+        <!--<img src="assets/icon/write.png" class="icon-img-small" />-->
+        <!--<span class="aq-margin-left-8">2017年5月 - 2018年6月</span>-->
+        <!--<span class="aq-margin-left-8">最佳员工奖</span>-->
+        <!--<span class="aq-margin-left-8">大连贸易公司</span>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+  <!--</div>-->
+</ion-content>
+
+<!--添加奖励-->
+<div class="fixed-condition color-gray" *ngIf="showAddCertificateContent">
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && startDate == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">起始日期</ion-label>
+      <ion-datetime [(ngModel)]="startDate" class="color-gray aq-text-size-normal" displayFormat="YYYY年MM月" pickerFormat="YYYY-MM" placeholder="YYYY年MM月"></ion-datetime>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && endDate == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">结束日期</ion-label>
+      <ion-datetime [(ngModel)]="endDate" class="color-gray aq-text-size-normal" displayFormat="YYYY年MM月" pickerFormat="YYYY-MM" placeholder="YYYY年MM月"></ion-datetime>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && company.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">颁发单位</ion-label>
+      <ion-input [(ngModel)]="company" text-right type="text" placeholder="请输入颁发单位" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && certificate.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">证书</ion-label>
+      <ion-input [(ngModel)]="certificate" text-right type="text" placeholder="请输入证书" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0">
+    <ion-item>
+      <button (click)="saveCertificate()" ion-button round block color="secondary" full>
+        添加
+      </button>
+    </ion-item>
+  </ion-list>
+</div>
+<div class="aq-overlay-backdrop" *ngIf="showFixedContent && (showAddCertificateContent)"></div>

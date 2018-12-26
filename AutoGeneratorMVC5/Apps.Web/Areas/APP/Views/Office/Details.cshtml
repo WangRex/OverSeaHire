@@ -1,0 +1,113 @@
+﻿@model Apps.Models.App.App_OfficeModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <table class="formtable">
+        <tbody>
+            @if (Session["IdFlag"].ToString() == "1")
+            {
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Id)：
+                    </th>
+                    <td>
+                        @Model.Id
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Tel)：
+                </th>
+                <td>
+                    @Model.Tel
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficeName)：
+                </th>
+                <td>
+                    @Model.OfficeName
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Longitude)：
+                </th>
+                <td>
+                    @Model.Longitude
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Latitude)：
+                </th>
+                <td>
+                    @Model.Latitude
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactName)：
+                </th>
+                <td>
+                    @Model.ContactName
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactPhone)：
+                </th>
+                <td>
+                    @Model.ContactPhone
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactWeChat)：
+                </th>
+                <td>
+                    @Model.ContactWeChat
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.ContactMail)：
+                </th>
+                <td>
+                    @Model.ContactMail
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OfficeAddress)：
+                </th>
+                <td>
+                    @Model.OfficeAddress
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

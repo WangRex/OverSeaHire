@@ -1,0 +1,115 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "APP_Customer";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+}
+<div class="mvctool">
+    <div style="float:left;">
+        <label>姓 名: </label><input id="CustomerName" type="text" style="width:120px;" />
+        性 别: <input id="Sex" type="text" style="width:40px;" />
+        手机号: <input id="CustomerPhone" type="text" style="width:120px;" />
+        年龄: <input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
+    </div>
+    <div style="float:left;">
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, true)
+        @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, true)
+        @Html.ToolButton("btnSave", "fa fa-save", "确认送人", true)
+    </div>
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    var ReqId = "@ViewBag.ReqId";
+    $(function () {
+        $("#Sex").val("@ViewBag.Sex");
+        $("#WorkLimitAgeLow").val("@ViewBag.WorkLimitAgeLow");
+        $("#WorkLimitAgeHigh").val("@ViewBag.WorkLimitAgeHigh");
+        var initQueryParam = { Sex: $("#Sex").val(), WorkLimitAgeLow: $("#WorkLimitAgeLow").val(), WorkLimitAgeHigh: $("#WorkLimitAgeHigh").val()};
+        $('#List').datagrid({
+            url: '@Url.Action("GetCustomerResumeList")?RequirementId='+ ReqId,
+            width: SetGridWidthSub(10),
+            queryParams: initQueryParam,
+            method: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            selectOnCheck: true,//点击行选中
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '主键', width: 80, checkbox: true },
+                { field: 'OwnerName', title: '拥有人姓名', width: 80, sortable: true },
+                { field: 'CustomerName', title: '工友姓名', width: 80, sortable: true },
+                { field: 'Sex', title: '性别', width: 80, sortable: true },
+                { field: 'Phone', title: '电话', width: 80, sortable: true },
+                { field: 'Age', title: '年龄', width: 80, sortable: true },
+                {
+                    field: 'CustomerPhoto', title: '照片', width: 80, sortable: true, formatter: function (value) {
+                        if (value) {
+                            return '<img width="80px;" src="' + value + '" />';
+                        } else {
+                            return "暂无图片";
+                        }
+                    }
+                },
+                { field: 'BirthDay', title: '生日', width: 80, sortable: true },
+                { field: 'EnumCustomerType', title: '用户身份', width: 80, sortable: true }
+            ]]
+        });
+        $("#btnQuery").click(function () {
+            queryList();
+        });
+        $("#btnCustomerApply").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                window.parent.addTab("查看订单", "@Url.Action("ViewOrder")?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnSave").click(function () {
+            var rows = $('#List').datagrid('getSelections');
+            if (rows.length == 0) {
+                $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords');
+            } else {
+                var arrCustomerId = new Array();
+                $.each(rows, function (idx, value) {
+                    arrCustomerId.push(value.Id);
+                });
+                 globalUtils.globalAjax("@Url.Action("CreateApplyJobs")", { RequirementId: ReqId, CustomerId: arrCustomerId.toString() }, function (result) {
+                    $.messageBox5s('@Resource.Tip', result.Message);
+                }, "post");
+            }
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    function queryList(){
+        var CustomerName = $("#CustomerName").val();
+        var Sex = $("#Sex").val();
+        var CustomerPhone = $("#CustomerPhone").val();
+        var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
+        var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
+        $("#List").datagrid("load", { CustomerName: CustomerName, Sex: Sex, CustomerPhone: CustomerPhone, WorkLimitAgeLow: WorkLimitAgeLow, WorkLimitAgeHigh: WorkLimitAgeHigh,});
+    }
+</script>

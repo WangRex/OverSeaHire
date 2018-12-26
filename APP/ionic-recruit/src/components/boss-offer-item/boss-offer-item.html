@@ -1,0 +1,28 @@
+<ion-row no-padding>
+  <ion-col no-padding>
+    <ion-row>
+      <ion-col col-12 class="col-padding aq-vertical-middle">
+        <span class="offer-title">{{ title }}</span>
+        <span class="aq-margin-left-8 aq-padding-left-8 aq-border-left aq-border-color-grey-30 location-img"><img [src]="fileUrl + img" class="location-img aq-margin-right-8" /></span>
+        <span class="color-gray aq-text-size-small">{{ location }}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row class="reduce-margin">
+      <ion-col col-12 class="col-padding aq-vertical-middle">
+        <span *ngFor="let tag of tags" class="ngx-tag">{{tag}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row class="reduce-margin">
+      <ion-col col-12 class="col-padding aq-vertical-middle color-gray aq-text-size-small">
+        <span margin-right>查看<span class="aq-margin-left-4">{{ viewCount }}</span></span>
+        <span margin-right>应聘<span class="aq-margin-left-4">{{ applyCount }}</span></span>
+        <span margin-right>面试<span class="aq-margin-left-4">{{ interviewCount }}</span></span>
+        <span margin-right>办理<span class="aq-margin-left-4">{{ passedCount }}</span></span>
+      </ion-col>
+    </ion-row>
+  </ion-col>
+  <ion-col class="aq-vertical-middle flex-end col-custom">
+    <span class="aq-margin-right-8 color-gray">{{ status }}</span>
+    <ion-icon name="ios-arrow-forward-outline" class="color-gray aq-margin-right-8"></ion-icon>
+  </ion-col>
+</ion-row>

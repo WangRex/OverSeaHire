@@ -1,0 +1,1244 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Apps.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:Apps.WebApi.Controllers.AccountController">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.AccountController.accountBLL">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.AccountController.customerBLL">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.AccountController.sysFeedbackBLL">
+            <summary>
+            系统反馈
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.CustomerLoginRegister(Apps.Models.App.CustomerLoginRegister)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="customerLoginRegister">identity(0:工人;1:雇主)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.SendCode(System.String)">
+            <summary>
+            发送手机验证码
+            </summary>
+            <param name="mobile">手机号</param>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.VerifyCode(System.String,System.String)">
+            <summary>
+            验证手机验证码
+            </summary>
+            <param name="mobile">手机号</param>
+            <param name="code">验证码</param>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.GetCustomerInfo(System.String)">
+            <summary>
+            获取用户资料
+            </summary>
+            <param name="customerId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.UpdateCustomerInfo(Apps.Models.App.CustomerPost)">
+            <summary>
+            更新用户资料
+            </summary>
+            <param name="customerPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.UpdateCustomerJobInt(Apps.Models.App.JobIntensionPost)">
+            <summary>
+            更新用户工作意向
+            </summary>
+            <param name="jobIntensionPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.GetCustomerWorkmates(System.String,System.Int32,System.Int32)">
+            <summary>
+            我的工友列表
+            </summary>
+            <param name="customerId"></param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.CreateEditCustomerWorkmate(Apps.Models.App.CustomerWorkmatePost)">
+            <summary>
+            添加编辑用户工友
+            </summary>
+            <param name="customerWorkmatePost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.GetCustomerIntension(System.String)">
+            <summary>
+            获取用户工作意向
+            </summary>
+            <param name="customerId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.GetCustomerWorkmate(System.String,System.String)">
+            <summary>
+            获取用户工友详情
+            </summary>
+            <param name="customerId"></param>
+            <param name="WorkmateId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.CreateSysFeedback(Apps.Models.Sys.SysFeedbackPost)">
+            <summary>
+            创建反馈
+            </summary>
+            <param name="sysFeedbackPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.CollectCustomer(System.String,System.String)">
+            <summary>
+            用户收藏
+            </summary>
+            <param name="UserId"></param>
+            <param name="WorkerId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.GetCollectCustomers(System.String,System.Int32,System.Int32)">
+            <summary>
+            用户收藏简历列表
+            </summary>
+            <param name="UserId"></param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.UnCollectCustomer(System.String,System.String)">
+            <summary>
+            用户取消收藏
+            </summary>
+            <param name="UserId"></param>
+            <param name="CustomerCollectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.UpdateCompany(Apps.Models.App.CompanyPost)">
+            <summary>
+            企业认证
+            </summary>
+            <param name="companyPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.GetCompany(System.String)">
+            <summary>
+            获取企业认证
+            </summary>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.AddressListController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AddressListController.GetAddress(System.String)">
+            <summary>
+            获取省市区
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.ApplyJobController">
+            <summary>
+            应聘申请
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.ApplyJobController._SysUserBLL">
+            <summary>
+            系统用户
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.ApplyJobController.app_RequirementBLL">
+            <summary>
+            需求
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.ApplyJobController.app_ApplyJobBLL">
+            <summary>
+            应聘申请
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.ApplyJobController.applyJobStepBLL">
+            <summary>
+            应聘申请步骤
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.CreateApplyJob(Apps.Models.App.ApplyJobPost)">
+            <summary>
+            提交应聘申请
+            </summary>
+            <param name="applyJobPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.EditApplyJob(Apps.Models.App.EditApplyJobPost)">
+            <summary>
+            修改应聘申请
+            </summary>
+            <param name="editApplyJobPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.GetApplyJobs(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获取应聘申请
+            </summary>
+            <param name="UserId"></param>
+            <param name="CustomerId"></param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.GetApplyStep(System.String)">
+            <summary>
+            获取应聘申请流程
+            </summary>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.GetApplyJob(System.String,System.String,System.String,System.String)">
+            <summary>
+            获取应聘申请详情
+            </summary>
+            <param name="UserId">登录人信息</param>
+            <param name="ApplyJobId">应聘申请主键</param>
+            <param name="Longitude">当前位置经度</param>
+            <param name="Latitude">当前位置纬度</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.GetApplyJobRecords(System.String,System.String)">
+            <summary>
+            获取应聘申请步骤操作记录列表
+            </summary>
+            <param name="UserId"></param>
+            <param name="ApplyJobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.IgnoreApplyJob(Apps.Models.App.ApplyJobPost)">
+            <summary>
+            忽略职位
+            </summary>
+            <param name="applyJobPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.GetApplyMyJobs(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            个人中心--我的面试--应聘申请
+            </summary>
+            <param name="UserId">登录人主键</param>
+            <param name="EmployerId">雇主主键</param>
+            <param name="Flag">0:应聘申请, 1:面试中的</param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.ArticleController">
+            <summary>
+            文章管理
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.ArticleController._SysUserBLL">
+            <summary>
+            系统用户
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.ArticleController._MIS_ArticleBLL">
+            <summary>
+            文章
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.ArticleController._MIS_Article_CategoryBLL">
+            <summary>
+            文章栏目
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ArticleController.GetArticleList(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获取文章列表
+            </summary>
+            <param name="UserID">用户ID</param>
+            <param name="CategoryID">栏目ID(轮播图:001001,帮助信息:001002)</param>
+            <param name="IsType">类型(轮播图:0,帮助信息:[注意事项:1,办理费用:2,办理流程:3,准备材料:4,签订合同:5])</param>
+            <param name="PageNum">页数</param>
+            <param name="RecordNum">条数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ArticleController.GetCategory(System.String,System.String)">
+            <summary>
+            获取文章栏目
+            </summary>
+            <param name="UserID">用户ID</param>
+            <param name="CategoryID">栏目ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ArticleController.GetArticle(System.String,System.String)">
+            <summary>
+            获取文章
+            </summary>
+            <param name="UserID">用户ID</param>
+            <param name="ArticleID">文章ID</param>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.AttachController">
+            <summary>
+            附件
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.AttachController._SysAttachBLL">
+            <summary>
+            附件
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AttachController.CreateAttach(Apps.Models.Sys.SysAttachViewModel)">
+            <summary>
+            创建/编辑附件
+            EnumType:2身份证正面,3身份证反面
+            </summary>
+            <param name="_SysAttachViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AttachController.DeleteAttach(System.String)">
+            <summary>
+            删除附件
+            </summary>
+            <param name="AttachId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AttachController.GetAttachListGrid(System.String,Apps.Common.GridPager,System.String)">
+            <summary>
+            获取附件列表
+            </summary>
+            <param name="BusinessID"></param>
+            <param name="_GridPager"></param>
+            <param name="queryStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AttachController.GetAttachList(System.String,Apps.Common.GridPager)">
+            <summary>
+            获取附件列表
+            </summary>
+            <param name="BusinessID"></param>
+            <param name="_GridPager"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.AttachController.GetAttach(System.String)">
+            <summary>
+            获取附件
+            </summary>
+            <param name="AttachId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.EnumDictionaryController">
+            <summary>
+            字典
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.EnumDictionaryController._EnumDictionaryBLL">
+            <summary>
+            数字字典
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.EnumDictionaryController.GetDics(System.String,System.String)">
+            <summary>
+            获取字典列表
+            </summary>
+            <param name="CustomerID">用户ID</param>
+            <param name="TableName">表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ApiRegisterController.InitCurrentApiInterface">
+            <summary>
+            将当前所有API接口添加到数据
+            </summary>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.ImageUploadController">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ImageUploadController.PostFile">
+            <summary>
+            通过multipart/form-data方式上传文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ImageUploadController.SingleFile">
+            <summary>
+            单文件上传
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ImageUploadController.UploadBase64(System.Object)">
+            <summary>
+            base64编码的图片文件上传{file: base64}
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ImageUploadController.Base64ToImg(System.String)">
+            <summary>
+            解析base64编码获取图片
+            </summary>
+            <param name="base64Code"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.ImageUploadController.GetTimeStamp">
+            <summary>
+            获取当前时间段额时间戳
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.RequirementController">
+            <summary>
+            需求
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.RequirementController._SysUserBLL">
+            <summary>
+            系统用户
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.RequirementController.app_RequirementBLL">
+            <summary>
+            需求
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetRequirementList(Apps.Models.App.RequireSearchForm)">
+            <summary>
+            获取需求列表
+            </summary>
+            <param name="requireSearchForm"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetRequirement(System.String,System.String)">
+            <summary>
+            获取需求详情
+            </summary>
+            <param name="UserId"></param>
+            <param name="RequirementId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetHotSearches(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取热搜列表
+            </summary>
+            <param name="UserId"></param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetCountries(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取国家列表
+            </summary>
+            <param name="UserId"></param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.CollectRequirement(System.String,System.String)">
+            <summary>
+            收藏需求
+            </summary>
+            <param name="UserId"></param>
+            <param name="RequirementId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.UnCollectRequirement(System.String,System.String)">
+            <summary>
+            取消收藏需求
+            </summary>
+            <param name="UserId"></param>
+            <param name="RequirementCollectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetRequirementCollections(Apps.Models.App.RequireSearchForm)">
+            <summary>
+            收藏需求
+            </summary>
+            <param name="requireSearchForm"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetRequirementApplieds(Apps.Models.App.RequireSearchForm)">
+            <summary>
+            应聘过的需求
+            </summary>
+            <param name="requireSearchForm"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.CreateRequirement(Apps.Models.App.RequirementPost)">
+            <summary>
+            发布需求
+            </summary>
+            <param name="requirementPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.EditRequirementInit(System.String,System.String)">
+            <summary>
+            编辑初始化需求
+            </summary>
+            <param name="UserId"></param>
+            <param name="RequirementId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.EditRequirement(Apps.Models.App.RequirementPost)">
+            <summary>
+            修改发布需求
+            </summary>
+            <param name="requirementPost"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.DeleteRequirement(System.String,System.String)">
+            <summary>
+            删除需求
+            </summary>
+            <param name="UserId"></param>
+            <param name="RequirementId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetPositionTree(System.String)">
+            <summary>
+            获取职位树
+            </summary>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetRecommendUserList(Apps.Models.App.RecommendUserSearchForm)">
+            <summary>
+            雇主端推荐人列表
+            </summary>
+            <param name="recommendUserSearchForm"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.InviteWorker(System.String,System.String,System.String)">
+            <summary>
+            雇主邀请工人
+            </summary>
+            <param name="CustomerId"></param>
+            <param name="RequirementId"></param>
+            <param name="WorkerId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetInterviewUsers(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获取面试中的工友列表
+            </summary>
+            <param name="UserId"></param>
+            <param name="RequirementId"></param>
+            <param name="Flag">申请: Apply,面试中:Interview</param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.RequirementController.GetPosHotSearches(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取简历热搜列表
+            </summary>
+            <param name="UserId"></param>
+            <param name="PageNum"></param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.SysConfigurationController">
+            <summary>
+            系统配置
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.SysConfigurationController.sysConfigurationBLL">
+            <summary>
+            系统用户
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.SysConfigurationController.GetSysConfiguration(System.String)">
+            <summary>
+            获取配置信息
+            </summary>
+            <param name="UserId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.SysMessageController">
+            <summary>
+            系统消息
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Controllers.SysMessageController.sysMessageBLL">
+            <summary>
+            系统用户
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.SysMessageController.GetSysMessages(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            获取消息列表
+            </summary>
+            <param name="UserId">登录人</param>
+            <param name="EnumMessageType">消息类型</param>
+            <param name="SwitchBtnRead">是否已读</param>
+            <param name="PageNum">0不分页</param>
+            <param name="RecordNum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.SysMessageController.GetSysMessage(System.String,System.String)">
+            <summary>
+            获取消息详情
+            </summary>
+            <param name="UserId">登录人</param>
+            <param name="SysMessageId">消息主键</param>
+            <returns></returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.WebPayController">
+            <summary>
+            H5支付宝支付 页面端调用例子参考：AlipaySample.cshtml
+            AOPSDK.dll为自己封装，请勿使用阿里官网SDK替换,主要区别为阿里提供的返回表单，我给换成了返回JSON
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayController.Alipay(Apps.WebApi.Models.PayModel)">
+            <summary>
+            支付宝支付地址生成
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayController.AlipayPayResult(System.String)">
+            <summary>
+            支付成功后返回页面（仅供支付宝服务器调用）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayController.NotifyUrl">
+            <summary>
+            服务器异步通知页面（仅供支付宝服务器调用）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayController.GetRequestGet">
+            <summary>
+            获取支付宝GET过来通知消息，并以“参数名=参数值”的形式组成数组
+            </summary>
+            <returns>request回来的信息组成的数组</returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayController.AlipayForm(Apps.WebApi.Models.PayModel)">
+            <summary>
+             H5支付
+            </summary>
+            <param name="payInfo"></param>
+            <returns>提交支付宝的订单</returns>
+        </member>
+        <member name="T:Apps.WebApi.Controllers.WebPayWeChatController">
+            <summary>
+            支付接口
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.payApp(System.String,System.String)">
+            <summary>
+            统一下单（App）
+            </summary> 	
+            <param name="OrderId">订单id</param>
+            <param name="price">支付金额</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.payH5(System.String,System.String)">
+            <summary>
+            统一下单（H5）
+            </summary> 	
+            <param name="OrderId">订单id</param>
+            <param name="price">支付金额</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.payWechat(System.String,System.Decimal,System.String)">
+            <summary>
+            统一下单（微信）
+            </summary> 	
+            <param name="OrderId">订单id</param>
+            <param name="price">支付金额</param>
+            <param name="openid">openid</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.PayToUser(System.String,System.String,System.Decimal,System.String,System.String)">
+            <summary>
+            企业向用户付款到零钱
+            </summary>
+            <param name="Bill_No">订单Id</param>
+            <param name="toOpenid">openid</param>
+            <param name="Charge_Amt">支付金额（必须是数字）</param>
+            <param name="userName">姓名（收款人姓名）</param>
+            <param name="title">备注（如果没有的话，默认传：员工提现到零钱）</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.payback(System.String,System.Decimal,System.Decimal)">
+            <summary>
+            申请退款
+            </summary>
+            <param name="Bill_No">订单Id</param>
+            <param name="Charge_Amt">原订单金额</param>
+            <param name="Total">退款金额(小于等于金额)</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.paybackCheck(System.String)">
+            <summary>
+            退款查询
+            </summary>
+            <param name="Bill_No">订单号</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.getOpenid(System.String)">
+            <summary>
+            微信授权登录app
+            </summary>
+            <param name="Code">Code</param>
+            <returns></returns>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.WebPayWeChatController.RequestUrl(System.String,System.String)">
+            <summary>
+            请求Url，不发送数据
+            </summary>
+        </member>
+        <member name="M:Apps.WebApi.Controllers.LogHandler.WriteServiceLog(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            写入日志
+            </summary>
+            <param name="oper">操作人</param>
+            <param name="mes">操作信息</param>
+            <param name="result">结果</param>
+            <param name="type">类型</param>
+            <param name="module">操作模块</param>
+        </member>
+        <member name="P:Apps.WebApi.Models.PayModel.PayOrderNo">
+            <summary>
+            支付订单号
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Models.PayModel.PayAmount">
+            <summary>
+            支付金额
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Models.PayModel.Body">
+            <summary>
+            商品描述
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Models.PayModel.OrderName">
+            <summary>
+            订单名称
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Models.PayModel.ExtraCommonParam">
+            <summary>
+            公用回传参数 ( 如果用户请求时传递了该参数，则返回给商户时会回传该参数 )
+            </summary>
+        </member>
+        <member name="P:Apps.WebApi.Models.PayModel.Address">
+            <summary>
+            当前网站域名，用于拼接支付宝回调地址
+            </summary>
+        </member>
+        <member name="T:tenpay.AccessTokenModel">
+            <summary>
+            微信订单明细实体对象
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.access_token">
+            <summary>
+            接口调用凭证
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.expires_in">
+            <summary>
+            access_token接口调用凭证超时时间，单位（秒）
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.refresh_token">
+            <summary>
+            用户刷新access_token
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.openid">
+            <summary>
+            授权用户唯一标识
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.scope">
+            <summary>
+            用户授权的作用域，使用逗号（,）分隔
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.unionid">
+            <summary>
+            当且仅当该移动应用已获得该用户的userinfo授权时，才会出现该字段
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.errcode">
+            <summary>
+            错误代码
+            </summary>
+        </member>
+        <member name="F:tenpay.AccessTokenModel.err_code_des">
+            <summary>
+            错误代码描述
+            </summary>
+        </member>
+        <member name="T:tenpay.OrderDetail">
+            <summary>
+            微信订单明细实体对象
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.return_code">
+            <summary>
+            返回状态码，SUCCESS/FAIL 此字段是通信标识，非交易标识，交易是否成功需要查看trade_state来判断
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.return_msg">
+            <summary>
+            返回信息返回信息，如非空，为错误原因 签名失败 参数格式校验错误
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.appid">
+            <summary>
+            公共号ID(微信分配的公众账号 ID)
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.mch_id">
+            <summary>
+            商户号(微信支付分配的商户号)
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.nonce_str">
+            <summary>
+            随机字符串，不长于32位
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.sign">
+            <summary>
+            签名
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.result_code">
+            <summary>
+            业务结果,SUCCESS/FAIL
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.err_code">
+            <summary>
+            错误代码
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.err_code_des">
+            <summary>
+            错误代码描述
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.trade_state">
+             <summary>
+             交易状态
+            SUCCESS—支付成功
+            REFUND—转入退款
+            NOTPAY—未支付
+            CLOSED—已关闭
+            REVOKED—已撤销
+            USERPAYING--用户支付中
+            NOPAY--未支付(输入密码或确认支付超时) PAYERROR--支付失败(其他原因，如银行返回失败)
+             </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.device_info">
+            <summary>
+            微信支付分配的终端设备号
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.openid">
+            <summary>
+            用户在商户appid下的唯一标识
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.is_subscribe">
+            <summary>
+            用户是否关注公众账号，Y-关注，N-未关注，仅在公众账号类型支付有效
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.trade_type">
+            <summary>
+            交易类型,JSAPI、NATIVE、MICROPAY、APP
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.bank_type">
+            <summary>
+            银行类型，采用字符串类型的银行标识
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.total_fee">
+            <summary>
+            订单总金额，单位为分
+            </summary>
+        </member>
+        <!-- 对于成员“F:tenpay.OrderDetail.coupon_fee”忽略有格式错误的 XML 注释 -->
+        <member name="F:tenpay.OrderDetail.fee_type">
+            <summary>
+            货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.transaction_id">
+            <summary>
+            微信支付订单号
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.out_trade_no">
+            <summary>
+            商户系统的订单号，与请求一致。
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.attach">
+            <summary>
+            商家数据包，原样返回
+            </summary>
+        </member>
+        <member name="F:tenpay.OrderDetail.time_end">
+            <summary>
+            支付完成时间，格式为yyyyMMddhhmmss，如2009年12月27日9点10分10秒表示为20091227091010。
+            时区为GMT+8 beijing。该时间取自微信支付服务器
+            </summary>
+        </member>
+        <member name="T:tenpay.QueryOrder">
+            <summary>
+            微信订单查询接口请求实体对象
+            </summary>
+        </member>
+        <member name="F:tenpay.QueryOrder.appid">
+            <summary>
+            公共号ID(微信分配的公众账号 ID)
+            </summary>
+        </member>
+        <member name="F:tenpay.QueryOrder.mch_id">
+            <summary>
+            商户号(微信支付分配的商户号)
+            </summary>
+        </member>
+        <member name="F:tenpay.QueryOrder.transaction_id">
+            <summary>
+            微信订单号，优先使用
+            </summary>
+        </member>
+        <member name="F:tenpay.QueryOrder.out_trade_no">
+            <summary>
+            商户系统内部订单号
+            </summary>
+        </member>
+        <member name="F:tenpay.QueryOrder.nonce_str">
+            <summary>
+            随机字符串，不长于 32 位
+            </summary>
+        </member>
+        <member name="F:tenpay.QueryOrder.sign">
+            <summary>
+            签名，参与签名参数：appid，mch_id，transaction_id，out_trade_no，nonce_str，key
+            </summary>
+        </member>
+        <member name="T:tenpay.UnifiedOrder">
+            <summary>
+            微信统一接口请求实体对象
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.appid">
+            <summary>
+            公共号ID(微信分配的公众账号 ID)
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.mch_id">
+            <summary>
+            商户号(微信支付分配的商户号)
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.device_info">
+            <summary>
+            微信支付分配的终端设备号
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.nonce_str">
+            <summary>
+            随机字符串，不长于 32 位
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.sign">
+            <summary>
+            签名
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.body">
+            <summary>
+            商品描述
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.attach">
+            <summary>
+            附加数据，原样返回
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.out_trade_no">
+            <summary>
+            商户系统内部的订单号,32个字符内、可包含字母,确保在商户系统唯一,详细说明
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.total_fee">
+            <summary>
+            订单总金额，单位为分，不能带小数点
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.spbill_create_ip">
+            <summary>
+            终端IP
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.time_start">
+            <summary>
+            订 单 生 成 时 间 ， 格 式 为yyyyMMddHHmmss，如 2009 年12 月 25 日 9 点 10 分 10 秒表示为 20091225091010。时区为 GMT+8 beijing。该时间取自商户服务器
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.time_expire">
+            <summary>
+            交易结束时间
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.goods_tag">
+            <summary>
+            商品标记 商品标记，该字段不能随便填，不使用请填空，使用说明详见第 5 节
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.notify_url">
+            <summary>
+            接收微信支付成功通知
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.trade_type">
+            <summary>
+            JSAPI、NATIVE、APP
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.openid">
+            <summary>
+            用户标识 trade_type 为 JSAPI时，此参数必传
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.product_id">
+            <summary>
+            只在 trade_type 为 NATIVE时需要填写。
+            </summary>
+        </member>
+        <member name="F:tenpay.UnifiedOrder.scene_info">
+            <summary>
+            场景信息
+            </summary>
+        </member>
+        <member name="T:tenpay.WeChatSystem">
+            <summary>
+            微信订单明细实体对象(114)
+            </summary>
+        </member>
+        <member name="F:tenpay.WeChatSystem.appid">
+            <summary>
+            公共号ID(微信分配的公众账号 ID)
+            </summary>
+        </member>
+        <member name="F:tenpay.WeChatSystem.appsercret">
+            <summary>
+            公共号秘钥
+            </summary>
+        </member>
+        <member name="F:tenpay.WeChatSystem.mch_id">
+            <summary>
+            商户号(微信支付分配的商户号)
+            </summary>
+        </member>
+        <member name="F:tenpay.WeChatSystem.api_key">
+            <summary>
+            支付接口秘钥key
+            </summary>
+        </member>
+        <member name="F:tenpay.WeChatSystem.path">
+            <summary>
+            证书路径
+            </summary>
+        </member>
+        <member name="F:tenpay.WeChatSystem.ip">
+            <summary>
+            服务器公网ip（在调用企业向用户付款的接口时，需要检查微信商户的api安全选项中是否添加服务ip为白名单）
+            </summary>
+        </member>
+        <member name="F:tenpay.HttpUtil.TENPAY">
+            <summary>
+            httpUtil网络请求工具类
+            </summary>
+        </member>
+        <member name="M:tenpay.HttpUtil.FilterPara(System.Collections.Generic.SortedDictionary{System.String,System.String})">
+            <summary>
+            除去数组中的空值和签名参数并以字母a到z的顺序排序
+            </summary>
+            <param name="dicArrayPre">过滤前的参数组</param>
+            <returns>过滤后的参数组</returns>
+        </member>
+        <member name="M:tenpay.HttpUtil.HttpPost(System.String,System.String,System.Text.Encoding)">
+            <summary>
+            HttpPost请求
+            </summary>
+            <param name="postUrl">请求路径</param>
+            <param name="paramData">xml参数</param>
+            <param name="dataEncode">数据编码</param>
+            <returns></returns>
+        </member>
+        <member name="M:tenpay.HttpUtil.HttpPost(System.String,System.String,System.Boolean,System.Int32)">
+            <summary>
+            post提交支付
+            </summary>
+            <param name="xml">xml参数格式</param>
+            <param name="url">请求url</param>
+            <param name="isUseCert">是否使用证书</param>
+            <param name="timeout">超时timeout</param>
+            <returns></returns>
+        </member>
+        <member name="M:tenpay.HttpUtil.Get(System.String)">
+            <summary>
+            处理http GET请求，返回数据
+            </summary>
+            <param name="url">请求的url地址</param>
+            <returns>http GET成功后返回的数据，失败抛WebException异常</returns>
+        </member>
+        <!-- 对于成员“M:tenpay.HttpUtil.GetInfoFromXml(System.String)”忽略有格式错误的 XML 注释 -->
+        <member name="M:tenpay.JsonHelper.GetJsonValue(System.String,System.String)">
+            <summary>
+            获取Json字符串某节点的值
+            </summary>
+        </member>
+        <member name="M:tenpay.MD5Util.GetMD5(System.String,System.String)">
+            获取大写的MD5签名结果 
+        </member>
+        <member name="F:tenpay.TenpaybackUtil.TENPAY">
+            <summary>
+            企业退款
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpaybackUtil.Payback(System.String,System.Decimal,System.Decimal)">
+            <summary>
+            退款
+            </summary>       
+            <returns></returns>
+        </member>
+        <member name="M:tenpay.TenpaybackUtil.PaybackCheck(System.String)">
+            <summary>
+            退款订单查询
+            </summary>
+            <param name="Bill_No">订单号(创建订单时的订单号)</param>
+            <returns></returns>
+        </member>
+        <member name="F:tenpay.TenpayToUserUtil.TENPAY">
+            <summary>
+            企业付款给个人，直接入帐到微信钱包中
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayToUserUtil.EnterprisePay(System.String,System.String,System.Decimal,System.String,System.String)">
+            <summary>
+            企业付款给个人
+            </summary>       
+            <returns></returns>
+        </member>
+        <member name="F:tenpay.TenpayUtil.UnifiedPayUrl">
+            <summary>
+            统一支付接口
+            </summary>
+        </member>
+        <member name="F:tenpay.TenpayUtil.access_tokenUrl">
+            <summary>
+            网页授权接口
+            </summary>
+        </member>
+        <member name="F:tenpay.TenpayUtil.access_tokenUrlapp">
+            <summary>
+            app获取openid、accesstoken
+            </summary>
+        </member>
+        <member name="F:tenpay.TenpayUtil.OrderQueryUrl">
+            <summary>
+            微信订单查询接口
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getNoncestr">
+            <summary>
+            随机串
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getTimestamp">
+            <summary>
+            时间截，自1970年以来的秒数
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getAccess_tokenUrl">
+            <summary>
+            网页授权接口
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getsign(System.Collections.Generic.SortedDictionary{System.String,System.String},System.String)">
+            <summary>
+            获取微信签名
+            </summary>
+            <param name="sParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:tenpay.TenpayUtil.PostXmlToUrl(System.String,System.String)">
+            <summary>
+            post数据到指定接口并返回数据
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getPrepay_id(tenpay.UnifiedOrder,System.String)">
+            <summary>
+            获取prepay_id
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getMweb_url(tenpay.UnifiedOrder,System.String)">
+            <summary>
+            获取prepay_id
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getOrderDetail(tenpay.QueryOrder,System.String)">
+            <summary>
+            获取微信订单明细
+            </summary>
+        </member>
+        <member name="M:tenpay.TenpayUtil.GetHostAddress">
+            <summary>
+            获取客户端ip地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:tenpay.TenpayUtil.IsIP(System.String)">
+            <summary>
+            检查IP地址格式
+            </summary>
+            <param name="ip"></param>
+            <returns></returns>
+        </member>
+        <!-- 对于成员“M:tenpay.TenpayUtil.GetInfoFromXml(System.String)”忽略有格式错误的 XML 注释 -->
+        <member name="M:tenpay.TenpayUtil.getUnifiedOrderXml(tenpay.UnifiedOrder,System.String)">
+            <summary>
+            微信统一下单接口xml参数整理
+            </summary>
+            <param name="order">微信支付参数实例</param>
+            <param name="key">密钥</param>
+            <returns></returns>
+        </member>
+        <member name="M:tenpay.TenpayUtil.getQueryOrderXml(tenpay.QueryOrder,System.String)">
+            <summary>
+            微信订单查询接口XML参数整理
+            </summary>
+            <param name="queryorder">微信订单查询参数实例</param>
+            <param name="key">密钥</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

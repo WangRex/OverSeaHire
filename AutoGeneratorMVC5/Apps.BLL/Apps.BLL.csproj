@@ -1,0 +1,820 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E4E6F8B0-636A-44E7-BEDB-1AC222CE47F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Apps.BLL</RootNamespace>
+    <AssemblyName>Apps.BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Apps.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Apps.Common\bin\Debug\Apps.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="LinqToExcel, Version=1.10.1.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=x86">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\LinqToExcel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Data.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.10.1\lib\Remotion.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.5.3\lib\net40\Swashbuckle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountBLL.cs" />
+    <Compile Include="APP\App_ApplyJobBLL.cs" />
+    <Compile Include="APP\App_ApplyJobRecordBLL.cs" />
+    <Compile Include="APP\App_ApplyJobStepBLL.cs" />
+    <Compile Include="APP\App_CompanyBLL.cs" />
+    <Compile Include="APP\App_CountryBLL.cs" />
+    <Compile Include="APP\App_CustomerBLL.cs" />
+    <Compile Include="APP\App_CustomerCertificateBLL.cs" />
+    <Compile Include="APP\App_CustomerCollectBLL.cs" />
+    <Compile Include="APP\App_CustomerEduExpBLL.cs" />
+    <Compile Include="APP\App_CustomerFamilyBLL.cs" />
+    <Compile Include="APP\App_CustomerJobIntensionBLL.cs" />
+    <Compile Include="APP\App_CustomerPosSearchBLL.cs" />
+    <Compile Include="APP\App_CustomerWorkExpBLL.cs" />
+    <Compile Include="APP\App_OfficeBLL.cs" />
+    <Compile Include="APP\App_PositionBLL.cs" />
+    <Compile Include="APP\App_RequirementBLL.cs" />
+    <Compile Include="APP\App_RequirementCollectBLL.cs" />
+    <Compile Include="APP\App_RequirementSearchBLL.cs" />
+    <Compile Include="AutoGenerated\App_ApplyJobBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_ApplyJobRecordBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_ApplyJobStepBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CompanyBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CountryBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerCertificateBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerCollectBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerEduExpBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerFamilyBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerJobIntensionBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerPosSearchBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_CustomerWorkExpBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_OfficeBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_PositionBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_RequirementBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_RequirementCollectBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\App_RequirementSearchBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\CommonBLL.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_CaseTypeBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_DefectBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestCaseBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestCaseRelationBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestCaseStepsBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestJobsBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestJobsDetailBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestJobsDetailItemBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestJobsDetailRelationBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\DEF_TestJobsDetailStepsBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\EnumDictionaryBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_FormAttrBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_FormBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_FormContentBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_FormContentStepCheckBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_FormContentStepCheckStateBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_SealBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_StepBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_StepRuleBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Flow_TypeBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\JOB_TASKJOBSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\JOB_TASKJOBS_LOGBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_ArticleBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_Article_AlbumsBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_Article_CategoryBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_Article_CommentBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_WebIM_CommonTalkBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_WebIM_MessageBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_WebIM_Message_RecBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\MIS_WebIM_RecentContactBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_BLOB_TRIGGERSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_CALENDARSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_CRON_TRIGGERSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_FIRED_TRIGGERSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_JOB_DETAILSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_LOCKSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_PAUSED_TRIGGER_GRPSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_SCHEDULER_STATEBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_SIMPLE_TRIGGERSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_SIMPROP_TRIGGERSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\QRTZ_TRIGGERSBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Spl_PersonBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Spl_ProductBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Spl_ProductCategoryBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysAreasBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysAttachBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysConfigurationBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\sysdiagramsBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysExceptionBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysFeedbackBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysLogBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysMessageBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysModuleBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysModuleOperateBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysPersonBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysPositionBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysProductBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysRightBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysRightOperateBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysRoleBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysSampleBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysSettingsBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysStructBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysUserBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\SysUserConfigBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\VirtualBLL.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_ApplyJobBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_ApplyJobRecordBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_ApplyJobStepBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CompanyBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CountryBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerCertificateBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerCollectBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerEduExpBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerFamilyBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerJobIntensionBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerPosSearchBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_CustomerWorkExpBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_OfficeBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_PositionBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_RequirementBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_RequirementCollectBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_App_RequirementSearchBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_CaseTypeBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_DefectBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestCaseBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestCaseRelationBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestCaseStepsBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestJobsBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestJobsDetailBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestJobsDetailItemBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestJobsDetailRelationBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_DEF_TestJobsDetailStepsBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_EnumDictionaryBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormAttrBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormContentBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormContentStepCheckBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_FormContentStepCheckStateBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_SealBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_StepBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_StepRuleBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Flow_TypeBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_JOB_TASKJOBSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_JOB_TASKJOBS_LOGBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_ArticleBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_Article_AlbumsBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_Article_CategoryBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_Article_CommentBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_CommonTalkBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_MessageBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_Message_RecBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_MIS_WebIM_RecentContactBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_BLOB_TRIGGERSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_CALENDARSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_CRON_TRIGGERSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_FIRED_TRIGGERSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_JOB_DETAILSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_LOCKSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_PAUSED_TRIGGER_GRPSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_SCHEDULER_STATEBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_SIMPLE_TRIGGERSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_SIMPROP_TRIGGERSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_QRTZ_TRIGGERSBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_PersonBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_ProductBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_Spl_ProductCategoryBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysAreasBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysAttachBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysConfigurationBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_sysdiagramsBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysExceptionBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysFeedbackBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysLogBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysMessageBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysModuleBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysModuleOperateBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysPersonBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysPositionBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysProductBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysRightBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysRightOperateBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysRoleBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysSampleBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysSettingsBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysStructBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysUserBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_SysUserConfigBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_GroupBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_MessageResponseBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_OfficalAccountsBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_ResponseLogBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\Virtual_WC_UserBLL.cs">
+      <DependentUpon>VirtualBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\WC_GroupBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\WC_MessageResponseBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\WC_OfficalAccountsBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\WC_ResponseLogBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AutoGenerated\WC_UserBLL.cs">
+      <DependentUpon>CommonBLL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\BaseBLL.cs" />
+    <Compile Include="Core\ExceptionHandler.cs" />
+    <Compile Include="DEF\DEF_CaseTypeBLL.cs" />
+    <Compile Include="DEF\DEF_DefectBLL.cs" />
+    <Compile Include="DEF\DEF_TestCaseBLL.cs" />
+    <Compile Include="DEF\DEF_TestCaseRelationBLL.cs" />
+    <Compile Include="DEF\DEF_TestCaseStepsBLL.cs" />
+    <Compile Include="DEF\DEF_TestJobsBLL.cs" />
+    <Compile Include="DEF\DEF_TestJobsDetailBLL.cs" />
+    <Compile Include="DEF\DEF_TestJobsDetailItemBLL.cs" />
+    <Compile Include="DEF\DEF_TestJobsDetailRelationBLL.cs" />
+    <Compile Include="DEF\DEF_TestJobsDetailStepsBLL.cs" />
+    <Compile Include="Flow\FlowHelper.cs" />
+    <Compile Include="Flow\Flow_FormAttrBLL.cs" />
+    <Compile Include="Flow\Flow_FormBLL.cs" />
+    <Compile Include="Flow\Flow_FormContentBLL.cs" />
+    <Compile Include="Flow\Flow_FormContentStepCheckBLL.cs" />
+    <Compile Include="Flow\Flow_FormContentStepCheckStateBLL.cs" />
+    <Compile Include="Flow\Flow_StepBLL.cs" />
+    <Compile Include="Flow\Flow_StepRuleBLL.cs" />
+    <Compile Include="Flow\Flow_TypeBLL.cs" />
+    <Compile Include="HomeBLL.cs" />
+    <Compile Include="Sys\SysFeedbackBLL.cs" />
+    <Compile Include="Sys\SysMessageBLL.cs" />
+    <Compile Include="Sys\EnumDictionaryBLL.cs" />
+    <Compile Include="Sys\JOB_TASKJOBSBLL.cs" />
+    <Compile Include="Sys\JOB_TASKJOBS_LOGBLL.cs" />
+    <Compile Include="MIS\MIS_ArticleBLL.cs" />
+    <Compile Include="MIS\MIS_Article_AlbumsBLL.cs" />
+    <Compile Include="MIS\MIS_Article_CategoryBLL.cs" />
+    <Compile Include="MIS\MIS_Article_CommentBLL.cs" />
+    <Compile Include="MIS\MIS_WebIM_CommonTalkBLL.cs" />
+    <Compile Include="MIS\MIS_WebIM_MessageBLL.cs" />
+    <Compile Include="MIS\MIS_WebIM_RecentContactBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Spl\Spl_PersonBLL.cs" />
+    <Compile Include="Spl\Spl_ProductBLL.cs" />
+    <Compile Include="Sys\SysAreasBLL.cs" />
+    <Compile Include="Sys\SysAttachBLL.cs" />
+    <Compile Include="Sys\SysConfigBLL.cs" />
+    <Compile Include="Sys\SysConfigurationBLL.cs" />
+    <Compile Include="Sys\SysExceptionBLL.cs" />
+    <Compile Include="Sys\SysLogBLL.cs" />
+    <Compile Include="Sys\SysModuleBLL.cs" />
+    <Compile Include="Sys\SysModuleOperateBLL.cs" />
+    <Compile Include="Sys\SysPositionBLL.cs" />
+    <Compile Include="Sys\SysRightBLL.cs" />
+    <Compile Include="Sys\SysRightGetModuleRightBLL.cs" />
+    <Compile Include="Sys\SysRightGetRoleRightBLL.cs" />
+    <Compile Include="Sys\SysRightGetUserRightBLL.cs" />
+    <Compile Include="Sys\SysRightOperateBLL.cs" />
+    <Compile Include="Sys\SysRoleBLL.cs" />
+    <Compile Include="Sys\SysSampleBLL.cs" />
+    <Compile Include="Sys\SysSettingsBLL.cs" />
+    <Compile Include="Sys\SysStructBLL.cs" />
+    <Compile Include="Sys\SysUserBLL.cs" />
+    <Compile Include="Sys\SysUserConfigBLL.cs" />
+    <Compile Include="WC\WC_GroupBLL.cs" />
+    <Compile Include="WC\WC_MessageResponseBLL.cs" />
+    <Compile Include="WC\WC_OfficalAccountsBLL.cs" />
+    <Compile Include="WC\WC_UserBLL.cs" />
+    <Compile Include="WebpartBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Apps.DAL\Apps.DAL.csproj">
+      <Project>{920cf227-4a18-44d2-a54a-38c88646d070}</Project>
+      <Name>Apps.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.IBLL\Apps.IBLL.csproj">
+      <Project>{d6c8a784-ec1d-4191-b7df-ef0f46cadfc2}</Project>
+      <Name>Apps.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.IDAL\Apps.IDAL.csproj">
+      <Project>{c713a4e3-bcc9-4c72-ba67-8323632d8aa1}</Project>
+      <Name>Apps.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.Locale\Apps.Locale.csproj">
+      <Project>{a670269b-b46c-4c77-be86-4be2d26cd126}</Project>
+      <Name>Apps.Locale</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Apps.Models\Apps.Models.csproj">
+      <Project>{54f6cd9e-178f-4240-8a67-33e79cb5f2c9}</Project>
+      <Name>Apps.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="AutoGenerated\CommonBLL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CommonBLL.cs</LastGenOutput>
+    </None>
+    <None Include="AutoGenerated\VirtualBLL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VirtualBLL.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

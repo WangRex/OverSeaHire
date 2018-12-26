@@ -1,0 +1,23 @@
+page-personal-video {
+  .url-container {
+    margin: 10px;
+  }
+
+  .video-container {
+    padding: 10px 16px;
+  }
+
+  .text-container {
+    padding: 10px 16px;
+    height: 210px;
+
+    .border-container {
+      height: 190px;
+      border: 1px dashed #44BA49;
+    }
+  }
+
+  textarea {
+    padding-left: 16px !important;
+  }
+}

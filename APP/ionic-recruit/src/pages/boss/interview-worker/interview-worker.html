@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>面试中的工友</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="下拉刷新" refreshingSpinner="circles" refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card *ngFor="let option of data">
+    <ion-card-content tappable (click)="goInterviewDetail(option)">
+      <ion-user-info [img]="option.Photo" [name]="option.CustomerName" [description]="option.description"></ion-user-info>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
+

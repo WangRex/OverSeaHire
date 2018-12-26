@@ -1,0 +1,14 @@
+<ion-row>
+  <ion-col class="head-img aq-vertical-center" text-center>
+    <img src="{{img == '' || img == null ? defaultImg : fileUrl + img}}" />
+  </ion-col>
+  <ion-col>
+    <div class="aq-text-size-medium aq-padding-top-8 color-dark">{{ name }}</div>
+    <div class="color-gray aq-padding-top-12">{{ description }}</div>
+    <div *ngIf="userPhone != ''" class="color-gray aq-padding-top-12">{{ userPhone }}</div>
+  </ion-col>
+  <ion-col class="contact-col" *ngIf="showContact">
+    <div class="aq-text-size-small color-gray aq-padding-top-8 aq-vertical-center"><img class="icon-img aq-margin-right-4" src="assets/icon/call.png" /><span><a class="color-gray" href="tel: {{contactPhone}}">电话咨询</a></span></div>
+    <div (click)="copyWechat()" class="aq-text-size-small color-gray aq-padding-top-12 aq-vertical-center"><img class="icon-img aq-margin-right-4" src="assets/icon/comments.png" /><span>微信联系</span></div>
+  </ion-col>
+</ion-row>

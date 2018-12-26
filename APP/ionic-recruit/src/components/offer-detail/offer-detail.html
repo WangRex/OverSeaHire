@@ -1,0 +1,50 @@
+<ion-card>
+  <ion-card-content no-padding>
+    <ion-row *ngIf="showUserInfo" class="aq-margin-left-8 aq-margin-top-8 aq-margin-right-8">
+      <ion-col no-padding class="head-img" text-center>
+        <img *ngIf="userImg == '' || userImg == null" src="assets/imgs/default-head.png" />
+        <img *ngIf="userImg != '' && userImg !== null" src="{{fileUrl + userImg}}" />
+      </ion-col>
+      <ion-col no-padding>
+        <div class="aq-text-size-medium aq-padding-top-8"><strong>{{ userName }}</strong></div>
+        <div class="color-gray aq-padding-top-4">{{ userDes }}</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-8 class="col-padding aq-vertical-middle">
+        <span class="offer-title">{{title}}</span>
+      </ion-col>
+      <ion-col col-4 text-right class="col-padding aq-vertical-middle flex-end">
+        <span class="color-money"><strong>{{lowSalary}}-{{highSalary}}</strong></span><span class="aq-text-size-small color-year">/{{unit}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row class="reduce-margin">
+      <ion-col col-8 class="col-padding aq-vertical-middle color-gray">
+        <span padding-right>工作地点:</span>
+        <img [src]="fileUrl + img" class="location-img aq-margin-right-8" />
+        <span>{{location}}</span>
+      </ion-col>
+      <ion-col col-4 text-right class="col-padding aq-vertical-middle flex-end color-gray">
+        {{date}}
+      </ion-col>
+    </ion-row>
+    <ion-row class="reduce-margin">
+      <ion-col col-12 class="col-padding aq-vertical-middle color-gray">
+        <span padding-right>工作要求:</span> {{request}}
+      </ion-col>
+    </ion-row>
+    <ion-row class="reduce-margin">
+      <ion-col col-12 class="col-padding aq-vertical-middle color-gray">
+        <span padding-right>总服务费:</span> {{fee}} &nbsp;元
+      </ion-col>
+    </ion-row>
+    <ion-row class="reduce-margin">
+      <ion-col col-6 class="col-padding aq-vertical-middle color-gray">
+        <span padding-right>招聘人数:</span> {{totalNum}} &nbsp;人
+      </ion-col>
+      <ion-col col-6 text-right class="col-padding aq-vertical-middle flex-end color-gray">
+        已应聘<span class="color-primary">&nbsp;{{passedNum}}&nbsp;</span>人
+      </ion-col>
+    </ion-row>
+  </ion-card-content>
+</ion-card>

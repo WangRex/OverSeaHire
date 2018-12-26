@@ -1,0 +1,74 @@
+﻿@model Apps.Models.App.App_CustomerFamilyModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+ <table class="formtable">
+    <tbody>
+        @if (Session["IdFlag"].ToString() == "1")
+        {
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Id)：
+                </th>
+                <td>
+                    @Model.Id
+                </td>
+            </tr>
+        }
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PK_App_Customer_CustomerName)：
+            </th>
+            <td>
+                @Model.PK_App_Customer_CustomerName
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Name)：
+            </th>
+            <td>
+                @Model.Name
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Age)：
+            </th>
+            <td>
+                @Model.Age
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Relation)：
+            </th>
+            <td>
+                @Model.Relation
+            </td>
+        </tr>
+    </tbody>
+</table>
+}
+

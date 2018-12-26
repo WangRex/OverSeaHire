@@ -1,0 +1,135 @@
+﻿@model Apps.Models.App.App_ApplyJobRecordModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+$("#PK_App_ApplyJob_Id").val('@Model.PK_App_ApplyJob_Id');
+$("#PK_App_Customer_CustomerName").val('@Model.PK_App_Customer_CustomerName');
+$("#EnumApplyStatus").val('@Model.EnumApplyStatus');
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+             @Html.HiddenFor(model => model.ModificationTime)
+             @Html.HiddenFor(model => model.CreateUserName)
+             @Html.HiddenFor(model => model.ModificationUserName)
+             @Html.HiddenFor(model => model.SortCode)
+             @Html.HiddenFor(model => model.ParentId)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PK_App_ApplyJob_Id)：
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.PK_App_ApplyJob_Id,ViewBag.PK_App_ApplyJob_Id as SelectList,"---请选择---")
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PK_App_ApplyJob_Id)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PK_App_Customer_CustomerName)：
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.PK_App_Customer_CustomerName,ViewBag.PK_App_Customer_CustomerName as SelectList,"---请选择---")
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PK_App_Customer_CustomerName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Step)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Step)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Step)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Result)：
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.Result, ViewBag.Result as SelectList)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Result)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Content)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Content)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Content)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.HappenDate)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.HappenDate)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.HappenDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfigDate)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ConfigDate)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfigDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ConfigPlace)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.ConfigPlace)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ConfigPlace)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

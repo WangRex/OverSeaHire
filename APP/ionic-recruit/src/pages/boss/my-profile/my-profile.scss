@@ -1,0 +1,31 @@
+page-my-profile-boss {
+  .white-container {
+    padding: 20px 28px;
+  }
+
+  .item-container {
+    padding: 12px 28px;
+  }
+
+  .user-name {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+  }
+
+  .user-info {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+  }
+
+  .head-img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+  }
+
+  .width30 {
+    width: 30px;
+  }
+}

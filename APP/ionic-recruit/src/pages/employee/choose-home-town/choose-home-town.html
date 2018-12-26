@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>籍贯</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray">
+  <div class="provinces" *ngIf="!selectedProvince">
+    <ion-list class="aq-margin-bottom-0" *ngFor="let option of provinces">
+      <ion-item tappable (click)="setSelectedProvince(option)" detail-push>
+        <ion-label class="color-gray aq-text-size-normal">{{option.text}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div class="cities">
+    <ion-list class="aq-margin-bottom-0" *ngFor="let option of cities">
+      <ion-item tappable (click)="setSelectedCity(option)" detail-push>
+        <ion-label class="color-gray aq-text-size-normal">{{option.text}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

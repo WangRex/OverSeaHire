@@ -1,0 +1,66 @@
+page-login {
+  .logo {
+    height: 130px;
+  }
+
+  .border-top-clear {
+      border-top: 0 !important;
+    }
+
+  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0.55px solid #eee;
+  }
+
+  .verify-code input {
+    padding-left: 16px;
+  }
+
+  ion-select, ion-input {
+    margin: 0 !important;
+  }
+
+  .verify-button {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  // HR with text in the middle effect
+  .strike {
+    margin-top: 10px !important;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .strike>span {
+    position: relative;
+    display: inline-block;
+    //font-weight: bold;
+  }
+
+  .strike>span:before,
+  .strike>span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: #eee;
+  }
+  .strike>span:before {
+    right: 100%;
+    margin-right: 15px;
+  }
+  .strike>span:after {
+    left: 100%;
+    margin-left: 15px;
+  }
+
+  .wechat-logo {
+    height: 40px;
+  }
+
+  .btn-disabled {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}

@@ -1,0 +1,137 @@
+﻿@model Apps.Models.App.App_CustomerModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+</div>
+@using (Html.BeginForm())
+{
+    <table class="formtable">
+        <tbody>
+            @if (Session["IdFlag"].ToString() == "1")
+            {
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.Id)：
+                    </th>
+                    <td>
+                        @Model.Id
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Record)：
+                </th>
+                <td>
+                    @Model.Record
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Info)：
+                </th>
+                <td>
+                    @Model.Info
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.EnumCustomerLevel)：
+                </th>
+                <td>
+                    @Model.EnumCustomerLevel
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CustomerName)：
+                </th>
+                <td>
+                    @Model.CustomerName
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Password)：
+                </th>
+                <td>
+                    @Model.Password
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Sex)：
+                </th>
+                <td>
+                    @Model.Sex
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Phone)：
+                </th>
+                <td>
+                    @Model.Phone
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.NickName)：
+                </th>
+                <td>
+                    @Model.NickName
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CustomerPhoto)：
+                </th>
+                <td>
+                    @Model.CustomerPhoto
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.OpenID)：
+                </th>
+                <td>
+                    @Model.OpenID
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.BirthDay)：
+                </th>
+                <td>
+                    @Model.BirthDay
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.EnumCustomerType)：
+                </th>
+                <td>
+                    @Model.EnumCustomerType
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

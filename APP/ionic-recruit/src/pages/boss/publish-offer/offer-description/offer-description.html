@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>职位描述</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray">
+
+  <div class="aq-relative aq-bg-color-white-core text-container">
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item class="border-clear">
+        <!--<ion-label class="color-gray aq-text-size-normal">标签名</ion-label>-->
+        <ion-input type="text" [(ngModel)]="tagName" placeholder="标签名" class="aq-text-size-normal"></ion-input>
+        <span item-end class="margin-clear">
+          <button ion-button color="secondary" class="add-btn" (click)="addTag()">添加</button>
+        </span>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="tags.length > 0" class="aq-relative aq-bg-color-white-core text-container col-padding">
+    <span tappable (click)="removeTag(i)" *ngFor="let option of tags; let i = index" class="ngx-tag aq-margin-top-4">{{option}} &nbsp;&nbsp;x</span>
+  </div>
+
+  <div class="aq-relative aq-bg-color-white-core text-container">
+    <ion-row>
+      <ion-col col-12 no-padding>
+        <!--maxlength="500"-->
+        <ion-textarea [(ngModel)]="description" placeholder="请输入职位描述" class="aq-text-size-normal color-gray" rows="20"></ion-textarea>
+      </ion-col>
+    </ion-row>
+    <!--<ion-row>-->
+      <!--<ion-col text-right padding-right class="color-gray">{{description.length}}/500 字</ion-col>-->
+    <!--</ion-row>-->
+  </div>
+
+</ion-content>
+
+<ion-footer no-padding>
+  <ion-row no-padding>
+    <ion-col col-12 no-padding>
+      <button (click)="saveOfferDescription()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        保存
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

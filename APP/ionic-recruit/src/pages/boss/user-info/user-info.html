@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>详情</ion-title>
+    <ion-buttons end>
+      <button *ngIf="workerDetail?.CustomerCollectId == ''" (click)="collectUser()" ion-button icon-start clear color="white" class="collect-button aq-vertical-middle">
+        <img src="assets/icon/favourite-green.png" class="aq-margin-right-8"/>
+        收藏
+      </button>
+      <button *ngIf="workerDetail?.CustomerCollectId != ''" (click)="unCollectUser()" ion-button icon-start clear color="white" class="collect-button aq-vertical-middle">
+        <img src="assets/icon/favourite-checked.png" class="aq-margin-right-8"/>
+        取消收藏
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding-bottom>
+  <ion-card>
+    <ion-card-content>
+      <ion-user-info [name]="workerDetail?.Name" [description]="workerDetail?.description"></ion-user-info>
+    </ion-card-content>
+  </ion-card>
+
+  <!--个人信息-->
+  <ion-title-divider title="个人信息"></ion-title-divider>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      个人籍贯：{{ workerDetail?.BirthPlace }}
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      文化水平：{{ workerDetail?.Cultural }}
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      外语水平：{{ workerDetail?.ForeignLangGrade }}
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      有无护照：{{ workerDetail?.DriverLicenceName }}
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      出国经历：{{ workerDetail?.AbroadExpName }}
+    </ion-col>
+  </ion-row>
+
+  <!--个人简介-->
+  <ion-title-divider *ngIf="workerDetail?.Introduction || videos.length > 0" title="个人简介"></ion-title-divider>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      {{ workerDetail?.Introduction }}
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray" col-12 *ngFor="let option of videos">
+      <span tappable (click)="previewVideo(option)" class="aq-text-color-lblue-90 underline">{{ option }}</span>
+      <!--<video controls="true" controlslist="nodownload" id="personalVideo" width="100%" preload="auto">-->
+        <!--Your browser does not support HTML5 video.-->
+      <!--</video>-->
+    </ion-col>
+  </ion-row>
+
+  <!--求职意向-->
+  <ion-title-divider title="求职意向"></ion-title-divider>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      期望职位：{{ workerDetail?.JobIntensionNames ? workerDetail?.JobIntensionNames : workerDetail?.customerJobIntension.PositionNames }}
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      期望月薪：{{ workerDetail?.customerJobIntension.ExpectSalary }}
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin">
+    <ion-col class="col-padding color-gray">
+      期望国家：{{ workerDetail?.customerJobIntension.ExpectCountry }}
+    </ion-col>
+  </ion-row>
+  <!--<ion-row class="reduce-margin">-->
+    <!--<ion-col class="col-padding color-gray">-->
+      <!--掌握技能：{{ workerDetail?.customerJobIntension.Skills }}-->
+    <!--</ion-col>-->
+  <!--</ion-row>-->
+  <!--<ion-row class="reduce-margin">-->
+    <!--<ion-col class="col-padding color-gray">-->
+      <!--出国意向：{{ workerDetail?.customerJobIntension.Intention }}-->
+    <!--</ion-col>-->
+  <!--</ion-row>-->
+</ion-content>
+
+<ion-footer no-padding class="zIndex-fixed">
+  <ion-row no-padding>
+    <ion-col col-6 no-padding>
+      <button (click)="toggleContactDetail()" class="color-primary btn-footer aq-border-top aq-border-color-grey-30" ion-button no-margin block color="white" full>
+        咨询沟通
+      </button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button (click)="goOfferListPage()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        面试邀请
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+
+<div class="overlay-content" *ngIf="showContactDetail">
+  <ion-row>
+    <ion-col col-8 class="col-padding color-primary aq-vertical-middle">
+      <span class="aq-text-size-medium">公司联系信息</span>
+    </ion-col>
+    <ion-col col-4 class="aq-vertical-middle flex-end color-gray">
+      <ion-icon name="close"></ion-icon> <span padding-left padding-right (click)="toggleContactDetail()">取消</span>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="col-padding">
+      <strong>联系电话</strong>: &nbsp;&nbsp;<a href="tel: {{configDetail.ContactPhone}}"><span class="mobile aq-text-color-lblue-60">{{ configDetail.ContactPhone }}</span></a>
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin" margin-bottom>
+    <ion-col class="col-padding">
+      <strong>微信</strong>: &nbsp;&nbsp;<span>{{ configDetail.ContactWeChat }}</span> <span (click)="copyWechat()" tappable margin-left class="ngx-tag color-primary aq-text-size-small">复制微信号</span>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="aq-overlay-backdrop" *ngIf="showContactDetail"></div>

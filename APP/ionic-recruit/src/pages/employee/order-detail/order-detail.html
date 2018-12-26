@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>应聘详情</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding-bottom>
+  <ion-info-primary *ngIf="paymentLabel != ''" [label]="paymentLabel"></ion-info-primary>
+  <!--线下支付信息-->
+  <div *ngIf="(orderDetail?.CurrentStep == '2' && orderDetail?.EnumPromisePayWay == '2') || (orderDetail?.CurrentStep == '5' && orderDetail?.EnumServicePayWay == '2') || (orderDetail?.CurrentStep == '8' && orderDetail?.EnumTailPayWay == '2')" class="aq-padding-top-12 aq-padding-left-12">
+    <ion-row no-padding>
+      <ion-col class="col-img" no-padding>
+        <div class="map-container">
+          <img src="assets/imgs/employee/map.png" />
+          <!--<ngx-amap [markers]="markers" [showInfo]="showInfo"></ngx-amap>-->
+        </div>
+      </ion-col>
+      <ion-col class="aq-relative" no-padding>
+        <div class="color-dark">线下支付地址:</div>
+        <div class="color-gray aq-absolute read">
+          {{ orderDetail?.officeVm.OfficeAddress }}
+        </div>
+      </ion-col>
+      <ion-col class="aq-vertical-middle flex-end col-nav">
+        <button class="aq-text-size-normal" ion-button color="secondary" round (click)="goNavigationPage()">导航</button>
+      </ion-col>
+    </ion-row>
+  </div>
+  <!-- 订单详情 -->
+  <ion-offer-detail [userDes]="orderDetail?.userDes" [userImg]="orderDetail?.applyJobUserVm.Photo" [userName]="orderDetail?.applyJobUserVm.CustomerName" [img]="orderDetail?.requirementDetailVm.CountryImg" [request]="orderDetail?.requireDetail" showUserInfo="true" [totalNum]="orderDetail?.requirementDetailVm.TotalHire" [passedNum]="orderDetail?.requirementDetailVm.ApplyCount" [fee]="orderDetail?.requirementDetailVm.TotalServiceMoney" [title]="orderDetail?.requirementDetailVm.Title" [lowSalary]="orderDetail?.requirementDetailVm.SalaryLow" [highSalary]="orderDetail?.requirementDetailVm.SalaryHigh" [location]="orderDetail?.requirementDetailVm.CountryName" [date]="orderDetail?.requirementDetailVm.PublishDate"></ion-offer-detail>
+  <!--应聘进度-->
+  <ion-title-divider title="应聘进度"></ion-title-divider>
+  <div class="aq-padding-left-8">
+    <ion-row tappable (click)="goStepDes()">
+      <ion-col class="aq-vertical-center step-img-col">
+        <div>
+          <div text-center><img class="step-img" [src]="fileUrl + steps[currentStep]?.Icon" /></div>
+          <div text-center class="aq-margin-top-4"><strong>{{ steps[currentStep]?.Name }}</strong></div>
+        </div>
+      </ion-col>
+      <ion-col class="aq-vertical-middle color-dark">
+        <div>
+          <div *ngIf="orderDetail?.applyJobRecordVm.ConfigPlace != ''">{{ orderDetail?.applyJobRecordVm.ConfigPlace }}</div>
+          <div *ngIf="orderDetail?.applyJobRecordVm.ConfigDate != ''">{{ orderDetail?.applyJobRecordVm.ConfigDate }}</div>
+          <div>{{ orderDetail?.applyJobRecordVm.Content == '' ? steps[currentStep]?.Description : orderDetail?.applyJobRecordVm.Content }}</div>
+        </div>
+      </ion-col>
+      <ion-col class="aq-vertical-center step-num-col">
+        <ion-icon name="ios-arrow-forward-outline" class="color-primary"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </div>
+  <!--支付明细-->
+  <ion-title-divider *ngIf="orderDetail?.applyJobPayVms.length > 0" title="支付明细"></ion-title-divider>
+  <div class="aq-padding-left-8" *ngFor="let item of orderDetail?.applyJobPayVms">
+    <ion-row no-padding>
+      <ion-col class="color-dark">{{ item.Name }}：<span class="color-money">{{ item.Money }}</span>元</ion-col>
+      <ion-col text-right class="color-money"><span class="aq-margin-right-8">{{ item.Status }}</span></ion-col>
+    </ion-row>
+    <ion-row no-padding *ngIf="item.PayTime != ''">
+      <ion-col class="color-dark">{{ item.PayTime }}</ion-col>
+    </ion-row>
+  </div>
+  <!-- 发布人信息 -->
+  <div margin-top>
+    <ion-user-info [weChat]="orderDetail?.requirementDetailVm.PublisherWeChatNumber" [contactPhone]="orderDetail?.requirementDetailVm.PublisherPhone" showContact="true" [img]="orderDetail?.requirementDetailVm.PublishUserPhoto" [name]="orderDetail?.requirementDetailVm.PublishUserName" [description]="orderDetail?.requirementDetailVm.PublishUserCompany"></ion-user-info>
+  </div>
+</ion-content>
+
+<ion-footer no-padding *ngIf="(orderDetail?.CurrentStep == '2' || orderDetail?.CurrentStep == '3') || (orderDetail?.CurrentStep == '5' && orderDetail?.EnumServicePayWay != '2') || (orderDetail?.CurrentStep == '8' && orderDetail?.EnumTailPayWay != '2')">
+  <ion-row no-padding>
+    <ion-col no-padding *ngIf="orderDetail?.CurrentStep == '2' || orderDetail?.CurrentStep == '3'">
+      <button (click)="editApplyJob()" class="color-primary btn-footer aq-border-top aq-border-color-grey-30" ion-button no-margin block color="white" full>
+        取消应聘申请
+      </button>
+    </ion-col>
+    <ion-col no-padding *ngIf="(orderDetail?.CurrentStep == '2' && orderDetail?.EnumPromisePayWay != '2') || (orderDetail?.CurrentStep == '5' && orderDetail?.EnumServicePayWay != '2') || (orderDetail?.CurrentStep == '8' && orderDetail?.EnumTailPayWay != '2')">
+      <button (click)="payment()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        <span *ngIf="orderDetail?.CurrentStep == '2'">支付保证金</span>
+        <span *ngIf="orderDetail?.CurrentStep == '5'">支付服务费</span>
+        <span *ngIf="orderDetail?.CurrentStep == '8'">支付尾款</span>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,216 @@
+﻿@model Apps.Models.Sys.TeamModelModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.teamLogo)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.teamLogo)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.teamLogo)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.teamName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.teamName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.teamName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.contactName)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.contactName)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.contactName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.contactPhone)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.contactPhone)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.contactPhone)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.contactEMail)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.contactEMail)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.contactEMail)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.teamCreateDate)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.teamCreateDate)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.teamCreateDate)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.poloShirtColor)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.poloShirtColor)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.poloShirtColor)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.teamBrief)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.teamBrief)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.teamBrief)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.win)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.win)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.win)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.lose)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.lose)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.lose)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.draw)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.draw)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.draw)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.gameCount)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.gameCount)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.gameCount)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.rank)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.rank)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.rank)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.yellow)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.yellow)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.yellow)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.red)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.red)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.red)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.averageHeight)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.averageHeight)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.averageHeight)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.averageWeight)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.averageWeight)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.averageWeight)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.averageAge)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.averageAge)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.averageAge)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

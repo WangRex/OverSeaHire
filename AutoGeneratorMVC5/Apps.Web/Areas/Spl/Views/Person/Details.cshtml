@@ -1,0 +1,149 @@
+﻿@model Apps.Models.Spl.Spl_PersonModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Spl;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnAttach").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/SysAttach/Index?BusinessID=@ViewBag.PersonID&Ieguid=" + GetGuid() + "'></iframe>");
+            $("#modalwindow").window({ title: '附件列表', width: 1000, height: 500, iconCls: 'icon-list' }).window('open');
+        });
+        $("#btnSave").click(function () {
+            if ($("form").valid()) {
+                $.ajax({
+                    url: "@Url.Action("Edit")",
+                    type: "Post",
+                    data: $("form").serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.type == 1) {
+                            window.parent.frameReturnByMes(data.message);
+                            window.parent.frameReturnByReload(true);
+                            window.parent.frameReturnByClose()
+                        }
+                        else {
+                            window.parent.frameReturnByMes(data.message);
+                        }
+                    }
+                });
+            }
+            return false;
+        });
+        $("#btnReturn").click(function () {
+            window.parent.frameReturnByClose();
+        });
+    });
+</script>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, true)
+    @Html.ToolButton("btnAttach", "fa fa-arrow-circle-o-up", "附件管理", false)
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.CreateTime)
+    <table class="formtable">
+        <tbody>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Name)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Sex)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Sex)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Sex)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Age)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Age)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Age)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.IDCard)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.IDCard)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.IDCard)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Phone)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Phone)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Phone)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Email)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Email)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Email)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Address)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Address)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Address)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.CreateTime)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.CreateTime)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.CreateTime)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Region)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Region)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Region)</td>
+            </tr>
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Category)：
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Category)
+                </td>
+                <td>@Html.ValidationMessageFor(model => model.Category)</td>
+            </tr>
+        </tbody>
+    </table>
+}

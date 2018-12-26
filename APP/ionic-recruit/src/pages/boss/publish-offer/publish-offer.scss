@@ -1,0 +1,21 @@
+page-publish-offer {
+  .border-top-clear {
+    border-top: 0 !important;
+  }
+
+  .list-ios > .item-block:first-child {
+    border-top: 0.55px solid #eee;
+  }
+
+  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0 !important;
+  }
+
+  .mandatory {
+    border-left: 3px solid #EF5350;
+  }
+
+  .content-padding {
+    padding-bottom: 32px !important;
+  }
+}

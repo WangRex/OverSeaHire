@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>代理点</ion-title>
+    <ion-buttons end>
+      <button (click)="navigateToShop()" ion-button clear color="secondary">
+        导航
+      </button>
+      <button (click)="navigateToHome()" ion-button clear color="secondary">
+        首页
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div id="mapContainerCoopHome" class="aq-none"></div>
+  <ngx-amap [markers]="markers"></ngx-amap>
+</ion-content>

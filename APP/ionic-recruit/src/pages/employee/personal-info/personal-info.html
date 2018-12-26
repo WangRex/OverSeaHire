@@ -1,0 +1,304 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>个人资料</ion-title>
+    <ion-buttons end>
+      <button (click)="saveCustomerInfo()" ion-button clear color="secondary">
+        保存
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray" padding-bottom margin-bottom>
+
+  <ion-list class="aq-margin-bottom-0 aq-margin-top-4">
+    <ion-item detail-push class="border-top-clear">
+      <ion-row no-padding tappable (click)="uploadHeadImg()">
+        <ion-col no-padding col-6 class="color-gray aq-text-size-normal aq-vertical-middle">
+          头像
+        </ion-col>
+        <ion-col no-padding col-6 text-right class="aq-vertical-middle flex-end">
+          <img *ngIf="headImg == ''" src="assets/imgs/default-head.png" class="head-img" />
+          <img *ngIf="headImg != ''" [src]="fileUrl + headImg" class="head-img" />
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && customerName == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>姓名</ion-label>
+      <ion-input text-right type="text" [(ngModel)]="customerName" placeholder="请输入姓名" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && customerTel == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>电话</ion-label>
+      <ion-input text-right type="number" [(ngModel)]="customerTel" placeholder="请输入电话" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && customerSex == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>性别</ion-label>
+      <ion-select [(ngModel)]="customerSex" class="aq-text-size-normal" interface="popover" placeholder="请选择性别">
+        <ion-option value="男">男</ion-option>
+        <ion-option value="女">女</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0"  [ngClass]="{'mandatory': submitted && customerAge == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>年龄</ion-label>
+      <ion-input [(ngModel)]="customerAge" text-right type="number" placeholder="请输入年龄" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && customerHeight == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>身高</ion-label>
+      <ion-input [(ngModel)]="customerHeight" text-right type="number" placeholder="请输入身高" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && hometown.value == ''}">
+    <ion-item tappable (click)="goHomeTown()" detail-push>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>籍贯</ion-label>
+      <span item-end class="color-gray aq-text-size-normal">{{ hometown.displayName }}</span>
+    </ion-item>
+  </ion-list>
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal">体重</ion-label>-->
+      <!--<ion-input text-right type="number" placeholder="请输入体重" class="aq-text-size-normal"></ion-input>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal">民族</ion-label>-->
+      <!--<ion-input text-right type="text" placeholder="请输入民族" class="aq-text-size-normal"></ion-input>-->
+      <!--&lt;!&ndash;<ion-select class="aq-text-size-normal" interface="popover" placeholder="请选择民族">&ndash;&gt;-->
+        <!--&lt;!&ndash;<ion-option value="0">汉族</ion-option>&ndash;&gt;-->
+        <!--&lt;!&ndash;<ion-option value="1">其他</ion-option>&ndash;&gt;-->
+      <!--&lt;!&ndash;</ion-select>&ndash;&gt;-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item detail-push tappable (click)="goPersonalIntroPage()">-->
+      <!--<ion-label class="color-gray aq-text-size-normal">个人简介</ion-label>-->
+      <!--<span *ngIf="personalIntro != ''" item-end class="color-gray aq-text-size-normal">已填写</span>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <ion-list class="aq-margin-bottom-0">
+    <ion-item tappable (click)="goPersonalVideoPage()" detail-push>
+      <ion-label class="color-gray aq-text-size-normal">工作视频</ion-label>
+      <span *ngIf="videoData.path != ''" item-end class="color-gray aq-text-size-normal">已上传</span>
+    </ion-item>
+  </ion-list>
+
+  <div class="aq-margin-top-4 aq-bg-color-white-core aq-text-size-normal color-gray" padding-bottom>
+    <ion-row>
+      <ion-col padding class="aq-vertical-middle">
+        工作经历
+      </ion-col>
+      <ion-col class="aq-vertical-middle flex-end" padding>
+        <img src="assets/icon/add.png" class="icon-img-small" />
+        <span class="color-primary aq-margin-left-8" tappable (click)="addWork()">添加经历</span>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="works.length == 0">
+      <ion-col class="aq-vertical-middle color-gray" padding-left padding-right>
+        尚未添加任何工作经历
+      </ion-col>
+    </ion-row>
+    <div *ngIf="works.length != 0">
+      <ion-row *ngFor="let option of works">
+        <ion-col class="aq-vertical-middle" padding-left padding-right>
+          <img src="assets/icon/write.png" class="icon-img-small" />
+          <span class="aq-margin-left-8">{{formatDateDisplay(option.startDate)}} - {{formatDateDisplay(option.endDate)}}</span>
+          <span class="aq-margin-left-8">{{option.companyName}}</span>
+          <span class="aq-margin-left-8">{{option.position}}</span>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+  <!--<div class="aq-margin-top-4 aq-bg-color-white-core aq-text-size-normal color-gray" padding-bottom>-->
+    <!--<ion-row>-->
+      <!--<ion-col padding class="aq-vertical-middle">-->
+        <!--教育经历-->
+      <!--</ion-col>-->
+      <!--<ion-col class="aq-vertical-middle flex-end" padding>-->
+        <!--<img src="assets/icon/add.png" class="icon-img-small" />-->
+        <!--<span class="color-primary aq-margin-left-8" tappable (click)="addEducationWork()">添加经历</span>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row *ngIf="eductionWorks.length == 0">-->
+      <!--<ion-col class="aq-vertical-middle color-gray" padding-left padding-right>-->
+        <!--尚未添加任何教育经历-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<div *ngIf="eductionWorks.length != 0">-->
+      <!--<ion-row *ngFor="let option of eductionWorks">-->
+        <!--<ion-col class="aq-vertical-middle" padding-left padding-right>-->
+          <!--<img src="assets/icon/write.png" class="icon-img-small" />-->
+          <!--<span class="aq-margin-left-8">{{formatDateDisplay(option.startDate)}} - {{formatDateDisplay(option.endDate)}}</span>-->
+          <!--<span class="aq-margin-left-8">{{option.school}}</span>-->
+          <!--<span class="aq-margin-left-8">{{option.degree}}</span>-->
+        <!--</ion-col>-->
+      <!--</ion-row>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <!--<div class="aq-margin-top-4 aq-bg-color-white-core aq-text-size-normal color-gray" padding-bottom>-->
+    <!--<ion-row>-->
+      <!--<ion-col padding class="aq-vertical-middle">-->
+        <!--家庭成员-->
+      <!--</ion-col>-->
+      <!--<ion-col class="aq-vertical-middle flex-end" padding>-->
+        <!--<img src="assets/icon/add.png" class="icon-img-small" />-->
+        <!--<span class="color-primary aq-margin-left-8" tappable (click)="addUser()">添加成员</span>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row *ngIf="users.length == 0">-->
+      <!--<ion-col class="aq-vertical-middle color-gray" padding-left padding-right>-->
+        <!--尚未添加任何家庭成员-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<div *ngIf="users.length != 0">-->
+      <!--<ion-row *ngFor="let option of users">-->
+        <!--<ion-col class="aq-vertical-middle" padding-left padding-right>-->
+          <!--<img src="assets/icon/write.png" class="icon-img-small" />-->
+          <!--<span class="aq-margin-left-8">{{ option.userName }}</span>-->
+          <!--<span class="aq-margin-left-8">{{option.userAge}}</span>-->
+          <!--<span class="aq-margin-left-8">{{option.userRelative}}</span>-->
+        <!--</ion-col>-->
+      <!--</ion-row>-->
+    <!--</div>-->
+  <!--</div>-->
+
+  <div *ngIf="wordFile.path != ''" class="aq-margin-top-4 aq-text-size-normal color-gray">
+    <ion-row class="aq-bg-color-white-core aq-bg-color-white-core">
+      <ion-col padding class="aq-vertical-middle">
+        {{wordFile.FileName + wordFile.FileExt}}
+      </ion-col>
+      <!--<ion-col col-2 class="aq-vertical-middle icon-delete flex-end" padding-right>-->
+        <!--<ion-icon name="md-close-circle"></ion-icon>-->
+      <!--</ion-col>-->
+    </ion-row>
+  </div>
+
+</ion-content>
+
+<ion-footer no-padding>
+  <ion-row no-padding>
+    <ion-col col-12 no-padding>
+      <input type="file" #myfiles style="display:none" (change)="onSelectChanged($event)">
+      <button class="btn-footer" (click)="myfiles.click()" ion-button no-margin block color="secondary" full>
+        上传word版简历
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+
+<!--添加经历-->
+<div class="fixed-condition color-gray" *ngIf="showAddWorkContent">
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && startDate == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">起始日期</ion-label>
+      <ion-datetime [(ngModel)]="startDate" class="color-gray aq-text-size-normal" displayFormat="YYYY年MM月" pickerFormat="YYYY-MM" placeholder="YYYY年MM月"></ion-datetime>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && endDate == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">结束日期</ion-label>
+      <ion-datetime [(ngModel)]="endDate" class="color-gray aq-text-size-normal" displayFormat="YYYY年MM月" pickerFormat="YYYY-MM" placeholder="YYYY年MM月"></ion-datetime>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && companyName.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">公司</ion-label>
+      <ion-input [(ngModel)]="companyName" text-right type="text" placeholder="请输入公司" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && position.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">职位</ion-label>
+      <ion-input [(ngModel)]="position" text-right type="text" placeholder="请输入职位" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0">
+    <ion-item>
+      <button (click)="saveWork()" ion-button round block color="secondary" full>
+        添加
+      </button>
+    </ion-item>
+  </ion-list>
+</div>
+<!--添加教育经历-->
+<div class="fixed-condition color-gray" *ngIf="showAddEducationContent">
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && startDate == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">起始日期</ion-label>
+      <ion-datetime [(ngModel)]="startDate" class="color-gray aq-text-size-normal" displayFormat="YYYY年MM月" pickerFormat="YYYY-MM" placeholder="YYYY年MM月"></ion-datetime>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && endDate == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">结束日期</ion-label>
+      <ion-datetime [(ngModel)]="endDate" class="color-gray aq-text-size-normal" displayFormat="YYYY年MM月" pickerFormat="YYYY-MM" placeholder="YYYY年MM月"></ion-datetime>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && school.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">学校</ion-label>
+      <ion-input [(ngModel)]="school" text-right type="text" placeholder="请输入学校" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && degree.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">学位</ion-label>
+      <ion-input [(ngModel)]="degree" text-right type="text" placeholder="请输入学位" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0">
+    <ion-item>
+      <button (click)="saveEducationWork()" ion-button round block color="secondary" full>
+        添加
+      </button>
+    </ion-item>
+  </ion-list>
+</div>
+<!--添加家庭成员-->
+<div class="fixed-condition color-gray" *ngIf="showAddUserContent">
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && school.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">姓名</ion-label>
+      <ion-input [(ngModel)]="userName" text-right type="text" placeholder="请输入姓名" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && school.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">年龄</ion-label>
+      <ion-input [(ngModel)]="userAge" text-right type="number" placeholder="请输入年龄" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submittedPlus && degree.trim() == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal">关系</ion-label>
+      <ion-input [(ngModel)]="userRelative" text-right type="text" placeholder="请输入关系" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0">
+    <ion-item>
+      <button (click)="saveUser()" ion-button round block color="secondary" full>
+        添加
+      </button>
+    </ion-item>
+  </ion-list>
+</div>
+<div class="aq-overlay-backdrop" *ngIf="showFixedContent && (showAddWorkContent || showAddEducationContent || showAddUserContent)"></div>

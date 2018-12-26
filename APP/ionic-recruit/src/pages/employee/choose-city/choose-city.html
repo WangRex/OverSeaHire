@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>期望国家</ion-title>
+    <ion-buttons end>
+      <button class="aq-text-size-normal" ion-button (click)="save()" clear color="secondary">
+        保存
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray">
+  <div>
+    <ion-list class="aq-margin-bottom-0" *ngFor="let option of types">
+      <ion-item tappable (click)="setSelectedType(option)">
+        <ion-label class="color-gray aq-text-size-normal">{{option.Name}}</ion-label>
+        <span item-end><img *ngIf="option.selected" src="assets/icon/checked-outline.png" class="icon-img-small" /></span>
+      </ion-item>
+    </ion-list>
+  </div>
+
+</ion-content>

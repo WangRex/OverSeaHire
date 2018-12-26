@@ -1,0 +1,8 @@
+<ion-list class="aq-margin-bottom-0">
+  <ion-item class="aq-text-size-normal aq-padding-top-4 aq-padding-bottom-4" [ngClass]="{'active-item': selected}">
+    <img class="img-max-height" src="{{imageSrc}}" item-start>
+    <span class="aq-text-color-grey-70">{{label}}</span>
+    <span *ngIf="showRadio && !selected" item-end><img class="aq-icon-24" src="assets/images/icon/false.png" alt=""></span>
+    <span *ngIf="showRadio && selected" item-end><img class="aq-icon-24" src="assets/images/icon/true.png" alt=""></span>
+  </ion-item>
+</ion-list>

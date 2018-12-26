@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>职位管理</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray" padding-bottom>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="下拉刷新" refreshingSpinner="circles" refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-no-record-found *ngIf="searched && data?.length == 0"></ion-no-record-found>
+
+  <div (click)="chooseOffer(item.Id)" *ngFor="let item of data" class="aq-bg-color-white-core offer-container">
+    <ion-boss-offer-item [img]="item.CountryImg" [title]="item.Title" [location]="item.CountryName" [tags]="item.Tag" [status]="item.status" viewCount="200" applyCount="200" interviewCount="200" passedCount="200"></ion-boss-offer-item>
+  </div>
+
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

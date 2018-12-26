@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>期望职位</ion-title>
+    <!--<ion-buttons end>-->
+      <!--<button class="aq-text-size-normal" ion-button (click)="save()" clear color="secondary">-->
+        <!--保存-->
+      <!--</button>-->
+    <!--</ion-buttons>-->
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray">
+  <div class="aq-bg-color-white-core aq-margin-bottom-4" *ngIf="selectedThirdTypes.length > 0">
+    <ion-row>
+      <ion-col class="color-dark col-padding">已选择工种（最多可选{{maxCount}}个）</ion-col>
+    </ion-row>
+    <ion-row class="reduce-margin">
+      <ion-col col-12 class="aq-vertical-middle flex-wrap col-padding reduce-margin">
+        <span *ngFor="let tag of selectedThirdTypes" class="ngx-tag aq-margin-top-4">{{tag.name}}</span>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div>
+    <ion-list class="aq-margin-bottom-0 aq-margin-top-0" *ngFor="let option of types">
+      <ion-item tappable (click)="setSelectedFirstType(option)">
+        <ion-label class="color-gray aq-text-size-normal" [ngClass]="{ 'color-gray': selectedFirstTypes.indexOf(option.Name) == -1, 'color-primary': selectedFirstTypes.indexOf(option.Name) != -1 }">{{option.Name}}</ion-label>
+        <span item-end><img *ngIf="selectedFirstTypes.indexOf(option.Name) != -1" src="assets/icon/checked-outline.png" class="icon-img-small" /></span>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<ion-footer no-padding class="zIndex-fixed">
+  <ion-row no-padding>
+    <ion-col col-6 no-padding>
+      <button (click)="clearTypes()" class="color-primary btn-footer aq-border-top aq-border-color-grey-30" ion-button no-margin block color="white" full>
+        清空
+      </button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button (click)="save()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        确定
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+
+<div *ngIf="showFixedContent && showSecondDetail" class="fixed-condition" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <ion-row class="height-100">
+    <ion-col no-padding>
+      <div>
+        <ion-list class="aq-margin-bottom-0 aq-margin-top-0" *ngFor="let option of secondTypes">
+          <ion-item [ngClass]="{ 'selected-second-item': selectedSecondTypes.indexOf(option.Name) != -1 }" tappable (click)="setSelectedSecondType(option)">
+            <ion-label class="color-gray aq-text-size-normal">{{option.Name}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-col>
+    <ion-col col-6 no-padding class="height-100 overflow-y bg-third-types" *ngIf="thirdTypes.length > 0">
+      <div>
+        <ion-list class="aq-margin-bottom-0 aq-margin-top-0" *ngFor="let option of thirdTypes">
+          <ion-item class="bg-third-types" tappable (click)="setSelectedThirdType(option)">
+            <ion-label [ngClass]="{ 'color-gray': !checkSelectedWorkType(option), 'color-primary': checkSelectedWorkType(option) }" class="aq-text-size-normal">{{option.Name}}</ion-label>
+            <span item-end><img *ngIf="checkSelectedWorkType(option)" src="assets/icon/checked-outline.png" class="icon-img-small" /></span>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="aq-overlay-backdrop" *ngIf="showFixedContent && showSecondDetail" (click)="closeSecondDetail()"></div>

@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>发布职位</ion-title>
+    <ion-buttons end>
+      <button (click)="save()" ion-button clear color="secondary">
+        发布
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray" padding-bottom>
+
+  <ion-list [ngClass]="{'mandatory': submitted && types.length == 0}" class="aq-margin-bottom-0 aq-margin-top-4">
+    <ion-item detail-push tappable (click)="goChooseWorkType()">
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>职位类型</ion-label>
+      <span *ngIf="types.length > 0" item-end class="color-gray aq-text-size-normal">
+        <span *ngFor="let option of types">&nbsp;{{ option.name }}</span>
+      </span>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && offerTitle == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>职位名称</ion-label>
+      <ion-input text-right type="text" [(ngModel)]="offerTitle" placeholder="请输入职位名称" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedCity == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>工作地点</ion-label>
+      <ion-select [(ngModel)]="selectedCity" class="aq-text-size-normal" interface="popover" placeholder="请选择工作地点">
+        <ion-option *ngFor="let option of cities" [value]="option.Id">{{option.Name}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && hourSalary == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>税前时薪</ion-label>
+      <ion-input text-right type="number" [(ngModel)]="hourSalary" placeholder="请输入税前时薪" class="aq-text-size-normal"></ion-input>
+      <span item-end class="color-gray aq-text-size-normal">/每小时</span>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && weekWorkHours == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>每周工时</ion-label>
+      <ion-input text-right type="number" [(ngModel)]="weekWorkHours" placeholder="请输入每周工时" class="aq-text-size-normal"></ion-input>
+      <span item-end class="color-gray aq-text-size-normal">小时</span>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && limitSex == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>工作要求性别</ion-label>
+      <ion-select [(ngModel)]="limitSex" class="aq-text-size-normal" interface="popover" placeholder="请选择性别">
+        <ion-option value="男">男</ion-option>
+        <ion-option value="女">女</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && limitLowAge == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>工作要求最小年龄</ion-label>
+      <ion-input text-right type="number" [(ngModel)]="limitLowAge" placeholder="请输入最小年龄" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && limitHighAge == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>工作要求最大年龄</ion-label>
+      <ion-input text-right type="number" [(ngModel)]="limitHighAge" placeholder="请输入最大年龄" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedDegree == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>工作要求学历</ion-label>
+      <ion-select [(ngModel)]="selectedDegree" class="aq-text-size-normal" interface="popover" placeholder="请选择学历">
+        <ion-option *ngFor="let option of degrees" [value]="option.ItemValue">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && requestCount == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>招聘人数</ion-label>
+      <ion-input text-right type="number" [(ngModel)]="requestCount" placeholder="请输入招聘人数" class="aq-text-size-normal"></ion-input>
+      <span item-end class="color-gray aq-text-size-normal">人</span>
+    </ion-item>
+  </ion-list>
+
+  <ion-list tappable (click)="goOfferDescription()" [ngClass]="{'mandatory': submitted && !offerDetail}" class="aq-margin-bottom-0">
+    <ion-item detail-push tappable>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>职位描述</ion-label>
+      <span *ngIf="offerDetail" item-end class="color-gray aq-text-size-normal">已填写</span>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedWorkYear == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>工签</ion-label>
+      <ion-select [(ngModel)]="selectedWorkYear" class="aq-text-size-normal" interface="popover" placeholder="请选择工签">
+        <ion-option *ngFor="let option of workYears" [value]="option.ItemValue">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <!--<ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && fee == null}">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>费用说明</ion-label>-->
+      <!--<ion-input text-right type="text" [(ngModel)]="fee" placeholder="请输入费用说明" class="aq-text-size-normal"></ion-input>-->
+      <!--<span item-end class="color-gray aq-text-size-normal">RMB/人</span>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+</ion-content>

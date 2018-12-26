@@ -1,0 +1,36 @@
+page-personal-info {
+  .border-top-clear {
+    border-top: 0 !important;
+  }
+
+  .list-ios > .item-block:first-child {
+    border-top: 0.55px solid #eee;
+  }
+
+  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border-bottom: 0 !important;
+  }
+
+  .head-img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+
+  .icon-delete {
+    font-size: 20px;
+  }
+
+  .fixed-condition {
+    position: fixed;
+    left: 0;
+    z-index: 999;
+    bottom: 0;
+    right: 0;
+    background-color: #fff;
+  }
+
+  .mandatory {
+    border-left: 3px solid #EF5350;
+  }
+}

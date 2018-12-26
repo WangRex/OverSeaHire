@@ -1,0 +1,88 @@
+﻿@model Apps.Models.Sys.SysFeedbackModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "创建";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Create")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             <input id="CreateTime" type="hidden" name="CreateTime" value="2017-12-31" />
+             <input id="ModificationTime" type="hidden" name="ModificationTime" value="2017-12-31" />
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PK_App_Customer_CustomerName)：
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.PK_App_Customer_CustomerName,ViewBag.PK_App_Customer_CustomerName as SelectList,"---请选择---")
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PK_App_Customer_CustomerName)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ImgList)：
+            </th>
+            <td>
+             @Html.HiddenFor(model => model.ImgList)
+             <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
+             <a onclick="$('#FileUpload_ImgList').trigger('click')" class="files">@Resource.Browse</a>
+             <a onclick="ClearImg('ImgList');" class="files">删除</a>
+             <input type="file" class="displaynone" id="FileUpload_ImgList" name="FileUpload_ImgList" onchange="Upload('SingleFile', 'ImgList', 'FileUpload_ImgList','1','1');" />
+             <span class="uploading">@Resource.Uploading</span>
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.ImgList)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Content)：
+            </th>
+            <td>
+                @Html.EditorFor(model => model.Content)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Content)</td>
+        </tr>
+    </tbody>
+</table>
+}
+

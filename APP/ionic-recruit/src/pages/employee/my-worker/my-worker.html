@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>我的工友</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="下拉刷新" refreshingSpinner="circles" refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-row *ngIf="previousPage != 'myProfile'">
+    <ion-col text-center class="color-gray">
+      选中工友简历即可帮他报名
+    </ion-col>
+  </ion-row>
+  <ion-card *ngFor="let option of data">
+    <ion-card-content tappable (click)="chooseWorker(option)">
+      <ion-user-info [img]="option.Photo" [name]="option.Name" [description]="option.description"></ion-user-info>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="white">
+    <ion-row>
+      <ion-col text-center class="color-gray">
+        <button (click)="goAddWorkerPage()" icon-start class="aq-text-size-normal aq-color-grey-60" ion-button block color="light" round>
+          <img src="assets/icon/add.png" class="add-btn" />
+          <span>添加工友简历</span>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-footer>

@@ -1,0 +1,653 @@
+.aq-common-overlay {
+  width: 85%;
+  background: #fff;
+  border: 0;
+  display: block;
+  opacity: 1;
+  position: fixed;
+  text-align: left;
+  -webkit-transition: opacity .1s ease-in-out .1s;
+  -moz-transition: opacity .1s ease-in-out .1s;
+  -o-transition: opacity .1s ease-in-out .1s;
+  -ms-transition: opacity .1s ease-in-out .1s;
+  transition: opacity .1s ease-in-out .1s;
+  z-index: 905;
+  left: 50%;
+  top: 50%;
+  max-width: 500px;
+  min-width: 200px;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
+  overflow: auto;
+}
+
+.aq-overlay-backdrop {
+  background: rgba(33,33,33,0.6) none repeat scroll 0 0;
+  display: block !important;
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 800;
+}
+// left-menu
+.menu-banner {
+  background: url('../assets/images/side-menu/banner.png');
+  background-size: 100% 100%
+}
+
+.menu-icon-mission {
+  width: 16px;
+  height: 13px
+}
+
+.menu-icon-manufacture {
+  width: 18px;
+  height: 14px
+}
+
+.menu-height-36 {
+  height: 36px
+}
+
+.menu-top-r25 {
+  top: 25%;
+}
+
+.menu-top-r50 {
+  top: 50%;
+}
+
+// 安卓按钮居右
+.bar-buttons-md {
+  -webkit-order: 4;
+  -ms-flex-order: 4;
+  order: 1;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+// 行内垂直居中
+.aq-vertical-center {
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+// 行内垂直居中
+.aq-vertical-end {
+  display: flex;
+  align-items: flex-end !important;
+}
+
+// 行内水平 & 垂直居中
+.aq-vertical-middle {
+  display: flex !important;
+  align-items: center !important;
+}
+
+// flex 居右
+.flex-end {
+  justify-content: flex-end !important;
+  -webkit-justify-content: flex-end !important;
+  -moz-justify-content: flex-end !important;
+}
+
+// 显示块元素
+.aq-block {
+  display: block;
+}
+
+// 显示行内块元素
+.aq-inline-block {
+  display: inline-block;
+}
+
+// 隐藏元素
+.aq-none {
+  display: none;
+}
+
+// 相对定位
+.aq-relative {
+  position: relative;
+}
+
+// 固定定位
+.aq-fixed {
+  position: fixed;
+}
+
+// 绝对定位跟相对定位成对使用
+.aq-absolute {
+  position: absolute;
+}
+
+// 手动增加滚动条
+.aq-scroll {
+  overflow: scroll;
+}
+
+// 圆形
+.aq-circle {
+  border-radius: 50%;
+}
+
+// 圆角 1~10
+@for $i from 1 through 15 {
+  .aq-radius-#{$i} {
+    border-radius: 1px * $i !important;
+  }
+}
+
+// svg 图标和图片图标的宽和高 8, 12, 16, 20, 24, 28, 32 ... 100
+@for $i from 8 through 100 {
+  @if $i%4==0 {
+    .aq-icon-#{$i} {
+      width: 1px * $i !important;
+      height: 1px * $i !important;
+    }
+  }
+}
+
+// padding 上下左右 4 ~64
+$padding-list: 'padding-top',
+'padding-bottom',
+'padding-left',
+'padding',
+'padding-right';
+@each $padding in $padding-list {
+  @for $i from 0 through 64 {
+    @if $i%4==0 {
+      .aq-#{$padding}-#{$i} {
+        #{$padding}: 1px * $i !important;
+      }
+    }
+  }
+}
+
+// margin 上下左右4~64
+$margin-list: 'margin-top',
+'margin-bottom',
+'margin-left',
+'margin-right';
+@each $margin in $margin-list {
+  @for $i from 0 through 64 {
+    @if $i%4==0 {
+      .aq-#{$margin}-#{$i} {
+        #{$margin}: 1px * $i !important;
+      }
+    }
+  }
+}
+
+// 特号字体大小
+.aq-text-size-xsmall {
+  font-size: 1.0rem !important;
+}
+
+// 小号字体大小
+.aq-text-size-small {
+  font-size: 1.2rem !important;
+}
+
+// 正常字体大小，默认不需要设置
+.aq-text-size-normal {
+  font-size: 1.4rem !important;
+}
+
+// 中号字体大小
+.aq-text-size-medium {
+  font-size: 1.6rem !important;
+}q-text-size-small {
+   font-size: 1.2rem !important;
+ }
+
+// 正常字体大小，默认不需要设置
+.aq-text-size-normal {
+  font-size: 1.4rem !important;
+}
+
+// 中号字体大小
+.aq-text-size-medium {
+  font-size: 1.6rem !important;
+}
+
+// 大号字体大小
+.aq-text-size-big {
+  font-size: 1.8rem !important;
+}
+
+//超大号字体
+.aq-text-size-large {
+  font-size: 2.4rem !important;
+}
+
+// 最大号字体大小
+.aq-text-size-xlarge {
+  font-size: 3.0rem !important;
+}
+
+// 超长显示省略号
+.aq-text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 默认border宽度
+.aq-border {
+  border: 1px solid !important;
+}
+
+// 默认border top
+.aq-border-top {
+  border-top: 1px solid;
+}
+
+// 默认border bottom
+.aq-border-bottom {
+  border-bottom: 1px solid;
+}
+
+// 默认border left
+.aq-border-left {
+  border-left: 1px solid;
+}
+
+// 默认border right
+.aq-border-right {
+  border-right: 1px solid;
+}
+
+@for $i from 0 through 4 {
+  .aq-border-width-#{$i} {
+    border-width: 1px * $i !important;
+  }
+}
+
+//color 多字段list数据循环
+$colors: //red
+    (red-10,
+    #FFEBEE),
+    (red-20,
+    #FFCDD2),
+    (red-30,
+    #EF9A9A),
+    (red-40,
+    #E57373),
+    (red-50,
+    #EF5350),
+    (red-55,
+    #FF5252),
+    (red-core,
+    #F44336),
+    (red-60,
+    #E53935),
+    (red-70,
+    #D32F2F),
+    (red-80,
+    #C62828),
+    (red-90,
+    #B71C1C), //purple
+    (purple-10,
+    #F3E5F5),
+    (purple-20,
+    #E1BEE7),
+    (purple-30,
+    #CE93D8),
+    (purple-40,
+    #BA68C8),
+    (purple-50,
+    #AB47BC),
+    (purple-core,
+    #9C27B0),
+    (purple-60,
+    #8E24AA),
+    (purple-70,
+    #7B1FA2),
+    (purple-80,
+    #6A1B9A),
+    (purple-90,
+    #4A148C), //deep-purple
+    (dpurple-10,
+    #EDE7F6),
+    (dpurple-20,
+    #D1C4E9),
+    (dpurple-30,
+    #B39DDB),
+    (dpurple-40,
+    #9575CD),
+    (dpurple-50,
+    #7E57C2),
+    (dpurple-core,
+    #673AB7),
+    (dpurple-60,
+    #5E35B1),
+    (dpurple-70,
+    #512DA8),
+    (dpurple-80,
+    #4527A0),
+    (dpurple-90,
+    #311B92), //blue
+    (blue-10,
+    #E3F2FD),
+    (blue-20,
+    #BBDEFB),
+    (blue-30,
+    #90CAF9),
+    (blue-40,
+    #64B5F6),
+    (blue-50,
+    #42A5F5),
+    (blue-core,
+    #2196F3),
+    (blue-60,
+    #1E88E5),
+    (blue-70,
+    #1976D2),
+    (blue-80,
+    #1565C0),
+    (blue-90,
+    #0D47A1), //light-blue
+    (lblue-10,
+    #E1F5FE),
+    (lblue-20,
+    #B3E5FC),
+    (lblue-30,
+    #81D4FA),
+    (lblue-35,
+    #46EBEB),
+    (lblue-40,
+    #4FC3F7),
+    (lblue-50,
+    #29B6F6),
+    (lblue-core,
+    #03A9F4),
+    (lblue-60,
+    #039BE5),
+    (lblue-70,
+    #0288D1),
+    (lblue-80,
+    #0277BD),
+    (lblue-90,
+    #01579B), //green
+    (green-10,
+    #E8F5E9),
+    (green-20,
+    #C8E6C9),
+    (green-30,
+    #A5D6A7),
+    (green-40,
+    #81C784),
+    (green-50,
+    #66BB6A),
+    (green-core,
+    #4CAF50),
+    (green-55,
+    #00FF00),
+    (green-60,
+    #43A047),
+    (green-70,
+    #388E3C),
+    (green-80,
+    #2E7D32),
+    (green-90,
+    #1B5E20), //light-green
+    (lgreen-10,
+    #F1F8E9),
+    (lgreen-20,
+    #DCEDC8),
+    (lgreen-30,
+    #C5E1A5),
+    (lgreen-40,
+    #AED581),
+    (lgreen-50,
+    #9CCC65),
+    (lgreen-core,
+    #8BC34A),
+    (lgreen-60,
+    #7CB342),
+    (lgreen-70,
+    #689F38),
+    (lgreen-80,
+    #558B2F),
+    (lgreen-90,
+    #33691E), //yellow
+    (yellow-10,
+    #FFFDE7),
+    (yellow-20,
+    #FFF9C4),
+    (yellow-30,
+    #FFF59D),
+    (yellow-40,
+    #FFF176),
+    (yellow-50,
+    #FFEE58),
+    (yellow-core,
+    #FFEB3B),
+    (yellow-60,
+    #FDD835),
+    (yellow-70,
+    #FBC02D),
+    (yellow-80,
+    #F9A825),
+    (yellow-90,
+    #F57F17), //amber
+    (amber-10,
+    #FFF8E1),
+    (amber-20,
+    #FFECB3),
+    (amber-30,
+    #FFE082),
+    (amber-40,
+    #FFD54F),
+    (amber-50,
+    #FFCA28),
+    (amber-core,
+    #FFC107),
+    (amber-60,
+    #FFB300),
+    (amber-70,
+    #FFA000),
+    (amber-80,
+    #FF8F00),
+    (amber-90,
+    #FF6F00), //brown
+    (brown-10,
+    #EFEBE9),
+    (brown-20,
+    #D7CCC8),
+    (brown-30,
+    #BCAAA4),
+    (brown-40,
+    #A1887F),
+    (brown-50,
+    #8D6E63),
+    (brown-core,
+    #795548),
+    (brown-60,
+    #6D4C41),
+    (brown-70,
+    #5D4037),
+    (brown-80,
+    #4E342E),
+    (brown-90,
+    #3E2723), //grey
+    (grey-10,
+    #FAFAFA),
+    (grey-20,
+    #F5F5F5),
+    (grey-30,
+    #EEEEEE),
+    (grey-40,
+    #E0E0E0),
+    (grey-50,
+    #BDBDBD),
+    (grey-55,
+    #bfbfbf),
+    (grey-core,
+    #9E9E9E),
+    (grey-60,
+    #757575),
+    (grey-70,
+    #616161),
+    (grey-80,
+    #424242),
+    (grey-90,
+    #212121), //black and white
+    (black-core,
+    #000000),
+    (white-core,
+    #FFFFFF);
+@each $colorName,
+$color in $colors {
+  .aq-text-color-#{$colorName} {
+    color: $color !important;
+  }
+  .aq-border-color-#{$colorName} {
+    border-color: $color !important;
+  }
+  .aq-bg-color-#{$colorName} {
+    background: $color !important;
+    background-color: $color !important;
+  }
+}
+
+// 清除背景
+.aq-background-none {
+  background: none;
+}
+
+// 2018/5/23 新增
+// 修改全局的返回按鍵顏色
+.back-button {
+  color: #44BA49 !important;
+  padding: 0 10px !important;
+}
+
+.back-button .back-button-icon-ios {
+  font-size: 2.4rem !important;
+  font-weight: normal !important;
+}
+
+.toolbar-background-ios {
+  border-bottom: 0 !important;
+}
+
+.color-money {
+  color: #FE6D0B;
+}
+
+.color-year {
+  color: #8A8A8A;
+}
+
+.col-padding {
+  padding: 12px;
+}
+
+.ngx-tag {
+  background-color: #F5F5F5;
+  margin-right: 10px;
+  padding: 2px 10px;
+  border-radius: 15px;
+  color: #757575;
+  word-break: keep-all;
+  font-size: 1.2rem;
+  display: inline-block;
+}
+
+.color-primary {
+  color: #3CA541;
+}
+
+.bg-primary {
+  background-color: #3CA541 !important;
+}
+
+.border-color-primary {
+  border-color: #3CA541;
+}
+
+.border-primary {
+  border-bottom: 1px solid #BDBDBD;
+  width: 100%;
+}
+
+.color-gray {
+  color: #757575;
+}
+
+.icon-img {
+  height: 24px;
+}
+
+.icon-img-small {
+  height: 16px;
+}
+
+.reduce-margin {
+  margin-top: -10px;
+}
+
+.divider-title {
+  word-break: keep-all;
+  padding-right: 16px;
+}
+
+.button-ios {
+  height: 36px !important;
+}
+
+.bg-gray {
+  background-color: #f4f4f4;
+}
+
+.ngx-seq {
+  min-width: 16px;
+  min-height: 16px;
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  background-color: #E0E0E0;
+  color: #fff;
+  margin-right: 16px;
+  font-size: 1.2rem;
+}
+
+.bg-danger {
+  background-color: #EF5350 !important;
+}
+
+.bg-orange {
+  background-color: #FFA72E !important;
+}
+
+.btn-footer {
+  height: 45px !important;
+}
+
+.offer-title {
+  color: #212121;
+  font-weight: 500;
+}
+
+.color-dark {
+  color: #212121;
+}
+
+.action-sheet-ios .action-sheet-button {
+  min-height: 30px;
+  font-size: 1.6rem;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}

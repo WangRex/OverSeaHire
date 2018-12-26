@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>企业认证</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray">
+
+  <ion-list class="aq-margin-bottom-0 aq-margin-top-4" [ngClass]="{'mandatory': submitted && companyName == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>公司名称</ion-label>
+      <ion-input text-right type="text" [(ngModel)]="companyName" placeholder="请输入公司名称" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && companyDes == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>公司简称</ion-label>
+      <ion-input text-right type="text" [(ngModel)]="companyDes" placeholder="请输入公司简称" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedField == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>所属行业</ion-label>
+      <ion-select [(ngModel)]="selectedField" class="aq-text-size-normal" interface="popover" placeholder="请选择所属行业">
+        <ion-option *ngFor="let option of fields" [value]="option.ItemValue">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedCompanySize == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>公司规模</ion-label>
+      <ion-select [(ngModel)]="selectedCompanySize" class="aq-text-size-normal" interface="popover" placeholder="请选择公司规模">
+        <ion-option *ngFor="let option of companySizes" [value]="option.ItemValue">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="companyImg != ''" class="aq-bg-color-white-core video-container aq-margin-top-4" no-margin>
+    <img [src]="fileUrl + companyImg" class="width-100" />
+  </div>
+
+  <div *ngIf="companyImg == ''" class="aq-relative aq-bg-color-white-core text-container color-primary aq-margin-top-4">
+    <div class="border-container aq-vertical-center" tappable (click)="uploadCompanyImg()">
+      <div>
+        <ion-row>
+          <ion-col class="aq-vertical-center">
+            <img src="assets/icon/add.png" margin-right/>
+            <span class="aq-text-size-medium">上传营业执照</span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="color-gray" text-center>
+            请上传真实数据以便审核
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>
+  </div>
+
+
+</ion-content>
+
+<ion-footer no-padding>
+  <ion-row no-padding>
+    <ion-col col-12 no-padding>
+      <button (click)="updateCompany()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        提交认证
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

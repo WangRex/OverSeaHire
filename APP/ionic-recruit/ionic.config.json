@@ -1,0 +1,7 @@
+{
+  "name": "ionic-recruit",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

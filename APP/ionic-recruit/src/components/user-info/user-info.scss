@@ -1,0 +1,24 @@
+ion-user-info {
+  .head-img {
+    max-width: 80px;
+
+    img {
+      height: 60px;
+      border-radius: 50%;
+      width: 60px;
+    }
+  }
+
+  .icon-img {
+    width: 16px;
+    height: 16px;
+  }
+
+  .contact-col {
+    max-width: 100px;
+  }
+
+  a {
+    text-decoration: none !important;
+  }
+}

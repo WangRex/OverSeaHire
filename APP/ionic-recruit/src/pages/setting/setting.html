@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>设置</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="bg-gray">
+  <div class="aq-margin-top-4 color-gray">
+    <div class="aq-bg-color-white-core item-container">
+      <ion-row tappable (click)="promptMsg()">
+        <ion-col col-10 class="aq-vertical-middle">
+          <span>提醒设置</span>
+        </ion-col>
+        <ion-col col-2 class="aq-vertical-middle flex-end">
+          <ion-icon name="ios-arrow-forward" class="color-gray"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+    <div class="aq-bg-color-white-core item-container">
+      <ion-row tappable (click)="promptMsg()">
+        <ion-col col-10 class="aq-vertical-middle">
+          <span>隐私政策</span>
+        </ion-col>
+        <ion-col col-2 class="aq-vertical-middle flex-end">
+          <ion-icon name="ios-arrow-forward" class="color-gray"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+  <div class="aq-margin-top-4 color-gray">
+    <div class="aq-bg-color-white-core item-container">
+      <ion-row tappable (click)="promptMsg()">
+        <ion-col col-10 class="aq-vertical-middle">
+          <span>海外直聘用户协议</span>
+        </ion-col>
+        <ion-col col-2 class="aq-vertical-middle flex-end">
+          <ion-icon name="ios-arrow-forward" class="color-gray"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="aq-bg-color-white-core item-container">
+      <ion-row tappable (click)="promptMsg()">
+        <ion-col col-10 class="aq-vertical-middle">
+          <span>关于我们</span>
+        </ion-col>
+        <ion-col col-2 class="aq-vertical-middle flex-end">
+          <ion-icon name="ios-arrow-forward" class="color-gray"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div class="aq-bg-color-white-core item-container">
+      <ion-row tappable (click)="promptMsg()">
+        <ion-col col-10 class="aq-vertical-middle">
+          <span>版本更新</span>
+        </ion-col>
+        <ion-col col-2 class="aq-vertical-middle flex-end">
+          <ion-icon name="ios-arrow-forward" class="color-gray"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer no-padding>
+  <ion-row no-padding>
+    <ion-col col-12 no-padding>
+      <button (click)="logout()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        退出登陆
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

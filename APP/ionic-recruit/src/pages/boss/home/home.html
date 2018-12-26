@@ -1,0 +1,31 @@
+<ion-content class="bg-gray" padding-bottom>
+  <div class="banner-container">
+    <img src="assets/imgs/employee/banner.png" class="banner" />
+    <div tappable (click)="goSearchUserPage()" class="search-container" text-center>
+      <div class="search aq-vertical-center">
+        <ion-icon name="search"></ion-icon>
+        搜索职位
+      </div>
+    </div>
+  </div>
+  <!-- 筛选条件 -->
+  <ion-row class="aq-bg-color-white-core condition-container">
+    <ion-col col-6 text-center>
+      <span (click)="switchUserList('recommend')" [ngClass]="{'active': latest == ''}" tappable>推荐</span>
+    </ion-col>
+    <ion-col col-6 text-center>
+      <span (click)="switchUserList('latest')" [ngClass]="{'active': latest == '1'}" tappable>最新</span>
+    </ion-col>
+  </ion-row>
+
+  <div class="reduce-margin-no-data" *ngIf="data.length == 0">
+    <ion-no-record-found></ion-no-record-found>
+  </div>
+  <!--雇员列表-->
+  <div (click)="goUserDetail(item.CustomerId)" tappable [ngClass]="{'aq-margin-top-4': i != 0}" class="aq-bg-color-white-core aq-padding-top-8 aq-padding-bottom-8 aq-padding-right-8" *ngFor="let item of data;let i = index;">
+    <ion-user-info [img]="item.Photo" [name]="item.CustomerName" [description]="item.description"></ion-user-info>
+  </div>
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>应聘成功</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row class="margin-top-50">
+    <ion-col col-12 text-center>
+      <img src="assets/icon/success.png" />
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="aq-margin-top-24">
+    <ion-col col-12 text-center>
+     <span class="aq-text-size-big"><strong>您已经成功提交应聘申请</strong></span>
+    </ion-col>
+    <ion-col col-12 text-center>
+      <span class="color-gray">招聘方会优先处理已支付保证金的应聘申请</span>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="margin-top-50">
+    <ion-col col-12>
+      <div class="color-gray" padding-top>
+        保证金说明：
+      </div>
+      <div class="color-gray">
+        应聘后，劳务公司通常都需要求职者支付面试保证金应聘后，劳务公司通常都需要求职者支付面试保证金
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer no-padding class="zIndex-fixed">
+  <ion-row no-padding>
+    <ion-col col-6 no-padding>
+      <button (click)="toggleContactDetail()" class="color-primary btn-footer aq-border-top aq-border-color-grey-30" ion-button no-margin block color="white" full>
+        先咨询沟通
+      </button>
+    </ion-col>
+    <ion-col col-6 no-padding>
+      <button (click)="goPaymentPage()" class="btn-footer" ion-button no-margin block color="secondary" full>
+        支付保证金
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
+
+<div class="overlay-content" *ngIf="showContactDetail">
+  <ion-row>
+    <ion-col col-8 class="col-padding color-primary aq-vertical-middle">
+      <span class="aq-text-size-medium">公司联系信息</span>
+    </ion-col>
+    <ion-col col-4 class="aq-vertical-middle flex-end color-gray">
+      <ion-icon name="close"></ion-icon> <span padding-left padding-right (click)="toggleContactDetail()">取消</span>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="col-padding">
+      <strong>联系电话</strong>: &nbsp;&nbsp;<a href="tel: {{configDetail.ContactPhone}}"><span class="mobile aq-text-color-lblue-60">{{ configDetail.ContactPhone }}</span></a>
+    </ion-col>
+  </ion-row>
+  <ion-row class="reduce-margin" margin-bottom>
+    <ion-col class="col-padding">
+      <strong>微信</strong>: &nbsp;&nbsp;<span>{{ configDetail.ContactWeChat }}</span> <span (click)="copyWechat()" tappable margin-left class="ngx-tag color-primary aq-text-size-small">复制微信号</span>
+    </ion-col>
+  </ion-row>
+</div>
+<div class="aq-overlay-backdrop" *ngIf="showContactDetail"></div>

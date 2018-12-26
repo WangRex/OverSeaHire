@@ -1,0 +1,26 @@
+<ion-row>
+  <ion-col text-wrap class="col-padding aq-vertical-middle padding-right-clear">
+    <span class="offer-title aq-text-size-small">{{ title }}</span>
+    <span class="aq-margin-left-8 aq-padding-left-8 aq-border-left aq-border-color-grey-30 location-img"><img [src]="fileUrl + img" class="location-img aq-margin-right-8" /></span>
+    <span class="color-gray aq-text-size-small">{{ location }}</span>
+  </ion-col>
+  <ion-col col-4 text-right class="col-padding aq-vertical-middle flex-end money-col padding-left-clear">
+    <span class="color-money aq-text-size-small"><strong>{{lowSalary}}-{{highSalary}}</strong></span><span class="aq-text-size-small color-year">/{{unit}}</span>
+  </ion-col>
+</ion-row>
+<ion-row class="reduce-margin">
+  <ion-col col-8 class="col-padding aq-vertical-middle flex-wrap">
+    <span *ngFor="let tag of tags" class="ngx-tag aq-margin-top-4">{{tag}}</span>
+  </ion-col>
+  <ion-col col-4 text-right class="col-padding aq-vertical-middle flex-end aq-text-size-small">
+    {{date}}
+  </ion-col>
+</ion-row>
+<ion-row class="reduce-margin">
+  <ion-col col-6 class="col-padding aq-vertical-middle color-gray aq-text-size-small">
+    {{description}}
+  </ion-col>
+  <ion-col col-6 text-right class="col-padding aq-vertical-middle flex-end color-gray aq-text-size-small">
+    已应聘<span class="color-primary">&nbsp;{{answerCount}}&nbsp;</span>人
+  </ion-col>
+</ion-row>

@@ -1,0 +1,106 @@
+﻿@model Apps.Models.Sys.SysConfigurationModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+ <table class="formtable">
+    <tbody>
+        @if (Session["IdFlag"].ToString() == "1")
+        {
+            <tr>
+                <th>
+                    @Html.LabelFor(model => model.Id)：
+                </th>
+                <td>
+                    @Model.Id
+                </td>
+            </tr>
+        }
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Tel)：
+            </th>
+            <td>
+                @Model.Tel
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.WebName)：
+            </th>
+            <td>
+                @Model.WebName
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ComName)：
+            </th>
+            <td>
+                @Model.ComName
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.CompanyName)：
+            </th>
+            <td>
+                @Model.CompanyName
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactName)：
+            </th>
+            <td>
+                @Model.ContactName
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactPhone)：
+            </th>
+            <td>
+                @Model.ContactPhone
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactWeChat)：
+            </th>
+            <td>
+                @Model.ContactWeChat
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.ContactMail)：
+            </th>
+            <td>
+                @Model.ContactMail
+            </td>
+        </tr>
+    </tbody>
+</table>
+}
+

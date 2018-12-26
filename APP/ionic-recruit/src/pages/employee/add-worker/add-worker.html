@@ -1,0 +1,163 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>添加工友</ion-title>
+    <ion-buttons end>
+      <button (click)="saveWorkInfo()" ion-button clear color="secondary">
+        保存
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content class="bg-gray color-gray" padding-bottom margin-bottom>
+
+  <ion-list class="aq-margin-bottom-0 aq-margin-top-4">
+    <ion-item detail-push class="border-top-clear">
+      <ion-row no-padding tappable (click)="uploadHeadImg()">
+        <ion-col no-padding col-6 class="color-gray aq-text-size-normal aq-vertical-middle">
+          头像
+        </ion-col>
+        <ion-col no-padding col-6 text-right class="aq-vertical-middle flex-end">
+          <img *ngIf="headImg == ''" src="assets/imgs/default-head.png" class="head-img" />
+          <img *ngIf="headImg != ''" [src]="fileUrl + headImg" class="head-img" />
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && customerName == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>姓名</ion-label>
+      <ion-input text-right type="text" [(ngModel)]="customerName" placeholder="请输入姓名" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && customerTel == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>电话</ion-label>
+      <ion-input text-right type="number" [(ngModel)]="customerTel" placeholder="请输入电话" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && customerSex == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>性别</ion-label>
+      <ion-select [(ngModel)]="customerSex" class="aq-text-size-normal" interface="popover" placeholder="请选择性别">
+        <ion-option value="男">男</ion-option>
+        <ion-option value="女">女</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0"  [ngClass]="{'mandatory': submitted && customerAge == null}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>年龄</ion-label>
+      <ion-input [(ngModel)]="customerAge" text-right type="number" placeholder="请输入年龄" class="aq-text-size-normal"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && hometown.value == ''}">
+    <ion-item tappable (click)="goHomeTown()" detail-push>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>籍贯</ion-label>
+      <span item-end class="color-gray aq-text-size-normal">{{ hometown.displayName }}</span>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="aq-margin-bottom-0" [ngClass]="{'mandatory': submitted && selectedDrivingLicense == ''}">
+    <ion-item>
+      <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>驾照</ion-label>
+      <ion-select [(ngModel)]="selectedDrivingLicense" class="aq-text-size-normal" interface="popover" placeholder="请选择驾照">
+        <ion-option *ngFor="let option of drivingLicenses" [value]="option.ItemValue">{{option.ItemName}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <!--<ion-list class="aq-margin-bottom-0">-->
+    <!--<ion-item>-->
+      <!--<ion-label class="color-gray aq-text-size-normal">现居地</ion-label>-->
+      <!--<ion-input text-right type="number" placeholder="请输入现居地" class="aq-text-size-normal"></ion-input>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
+  <div class="aq-margin-top-4 aq-bg-color-white-core aq-text-size-normal color-gray">
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item>
+        <ion-label class="color-gray aq-text-size-normal">文化水平</ion-label>
+        <ion-select [(ngModel)]="cultural" class="aq-text-size-normal" interface="popover" placeholder="请选择文化水平">
+          <ion-option *ngFor="let option of culs" [value]="option">{{option.ItemName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item>
+        <ion-label class="color-gray aq-text-size-normal">外语等级</ion-label>
+        <ion-select [(ngModel)]="selectedLan" class="aq-text-size-normal" interface="popover" placeholder="请选择外语等级">
+          <ion-option *ngFor="let option of languages" [value]="option">{{option.ItemName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item>
+        <ion-label class="color-gray aq-text-size-normal">护照</ion-label>
+        <ion-select [(ngModel)]="passport" class="aq-text-size-normal" interface="popover" placeholder="请选择护照">
+          <ion-option value="1">有</ion-option>
+          <ion-option value="0">无</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item>
+        <ion-label class="color-gray aq-text-size-normal">出国经历</ion-label>
+        <ion-select [(ngModel)]="selectedExp" class="aq-text-size-normal" interface="popover" placeholder="请选择出国经历">
+          <ion-option *ngFor="let option of exps" [value]="option">{{option.ItemName}}</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item detail-push tappable (click)="goPersonalIntroPage()">
+        <ion-label class="color-gray aq-text-size-normal">个人简介</ion-label>
+        <span *ngIf="personalIntro != ''" item-end class="color-gray aq-text-size-normal">已填写</span>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item detail-push tappable (click)="goChooseWorkType()" [ngClass]="{'mandatory': submitted && types.length  == 0}">
+        <ion-label class="color-gray aq-text-size-normal"><span class="aq-text-color-red-core aq-margin-right-4">*</span>求职意向</ion-label>
+        <span *ngIf="types.length > 0" item-end class="color-gray aq-text-size-normal">
+          <span *ngFor="let option of types">&nbsp;{{ option.name }}</span>
+        </span>
+      </ion-item>
+    </ion-list>
+
+    <ion-list class="aq-margin-bottom-0">
+      <ion-item tappable (click)="goPersonalVideoPage()" detail-push>
+        <ion-label class="color-gray aq-text-size-normal">工作视频</ion-label>
+        <span *ngIf="videoData.path != ''" item-end class="color-gray aq-text-size-normal">已上传</span>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="wordFile.path != ''" class="aq-margin-top-4 aq-text-size-normal color-gray">
+    <ion-row class="aq-bg-color-white-core aq-bg-color-white-core">
+      <ion-col padding class="aq-vertical-middle">
+        {{wordFile.FileName + wordFile.FileExt}}
+      </ion-col>
+      <!--<ion-col col-2 class="aq-vertical-middle icon-delete flex-end" padding-right>-->
+      <!--<ion-icon name="md-close-circle"></ion-icon>-->
+      <!--</ion-col>-->
+    </ion-row>
+  </div>
+</ion-content>
+
+<ion-footer no-padding>
+  <ion-row no-padding>
+    <ion-col col-12 no-padding>
+      <input type="file" #workerfiles style="display:none" (change)="onSelectChanged($event)">
+      <button class="btn-footer" (click)="workerfiles.click()" ion-button no-margin block color="secondary" full>
+        上传word版简历
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

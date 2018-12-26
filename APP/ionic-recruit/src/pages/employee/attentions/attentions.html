@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>出国常识</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-row *ngIf="selectedCategory?.id == 1">
+    <ion-col offset-3 col-9 no-padding>
+      <ion-steps></ion-steps>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="selectedCategory?.id != 1">
+    <ion-col offset-3 col-9 no-padding>
+      <ion-row class="aq-border-bottom aq-border-color-grey-30">
+        <ion-col class="col-img">
+          <img src="assets/imgs/employee/example.png" />
+        </ion-col>
+        <ion-col class="aq-relative">
+          <div><strong>出国劳务需要准备什么？出国专 家帮您解答专业问题</strong></div>
+          <div class="color-gray aq-absolute read">
+            2.8k人阅读
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="aq-border-bottom aq-border-color-grey-30">
+        <ion-col class="col-img">
+          <img src="assets/imgs/employee/example.png" />
+        </ion-col>
+        <ion-col class="aq-relative">
+          <div><strong>出国劳务需要准备什么？出国专 家帮您解答专业问题</strong></div>
+          <div class="color-gray aq-absolute read">
+            2.8k人阅读
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<div *ngIf="showLeftMenu" class="scroll-fixed-scroll-category aq-bg-color-grey-20" [ngStyle]="{'top': headerOffsetH +  'px'}">
+  <ion-row *ngFor="let category of categories">
+    <ion-col tappable (click)="setSelectedCrop(category)" padding col-12 [ngClass]="{'selected-category aq-bg-color-white-core color-primary': selectedCategory?.id == category.id, 'aq-text-color-grey-70': selectedCategory?.id != category.id}" class="text-center">
+      {{category.name}}
+    </ion-col>
+  </ion-row>
+</div>

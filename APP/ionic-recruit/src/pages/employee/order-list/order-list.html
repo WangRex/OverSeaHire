@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar color="white">
+    <ion-title>应聘申请</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content [ngClass]="{'bg-gray': data.length > 0}" padding-bottom>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content  pullingIcon="arrow-dropdown" pullingText="下拉刷新" refreshingSpinner="circles" refreshingText="刷新中...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <!--<div *ngFor="let option of data;let i = index;" [ngClass]="{'reduce-margin': i != 0}">-->
+    <!--<ion-offer-detail (click)="goOrderDetail()" tappable userName="Peter 陈" userDes="男/26岁/大学-本科/辽宁省大连市高新园区/暂无出国经历" showUserInfo="true" totalNum="32" passedNum="24" fee="26000" title="高薪普工(不需要技术)" salary="10万-13万" location="美国" date="2018-09-27" request="男/20-50岁/学历高"></ion-offer-detail>-->
+    <!--<ion-row class="reduce-margin aq-margin-right-8">-->
+      <!--<ion-col text-right>-->
+        <!--<button class="aq-text-size-normal" padding-left padding-right ion-button color="secondary" round>查看进度</button> <button padding-left padding-right ion-button color="secondary" round class="aq-text-size-normal">导航到代理点</button>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+  <!--</div>-->
+  <div *ngIf="data.length > 0">
+    <div *ngFor="let offerDetail of data;let i = index;" [ngClass]="{'reduce-margin': i != 0}">
+      <ion-offer-detail (click)="goOrderDetail(offerDetail?.ApplyJobId)" [userDes]="offerDetail?.userDes" [userImg]="offerDetail?.applyJobUserVm.Photo" [userName]="offerDetail?.applyJobUserVm.CustomerName" [img]="offerDetail?.requirementDetailVm.CountryImg" [request]="offerDetail?.requireDetail" showUserInfo="true" [totalNum]="offerDetail?.requirementDetailVm.TotalHire" [passedNum]="offerDetail?.requirementDetailVm.ApplyCount" [fee]="offerDetail?.requirementDetailVm.TotalServiceMoney" [title]="offerDetail?.requirementDetailVm.Title" [lowSalary]="offerDetail?.requirementDetailVm.SalaryLow" [highSalary]="offerDetail?.requirementDetailVm.SalaryHigh" [location]="offerDetail?.requirementDetailVm.CountryName" [date]="offerDetail?.requirementDetailVm.PublishDate"></ion-offer-detail>
+      <ion-row class="reduce-margin aq-margin-right-8">
+        <ion-col text-right>
+          <button (click)="goOrderDetail(offerDetail?.ApplyJobId)" class="aq-text-size-normal" padding-left padding-right ion-button color="secondary" round>查看进度</button>
+          <button (click)="payment(offerDetail)" *ngIf="(offerDetail?.CurrentStep == '2' && offerDetail?.EnumPromisePayWay != '2') || (offerDetail?.CurrentStep == '5' && offerDetail?.EnumServicePayWay != '2') || (offerDetail?.CurrentStep == '8' && offerDetail?.EnumTailPayWay != '2')" padding-left padding-right ion-button color="secondary" round class="aq-text-size-normal">
+            <span *ngIf="offerDetail?.CurrentStep == '2'">支付保证金</span>
+            <span *ngIf="offerDetail?.CurrentStep == '5'">支付服务费</span>
+            <span *ngIf="offerDetail?.CurrentStep == '8'">支付尾款</span>
+          </button>
+          <button (click)="goNavigationPage(offerDetail?.ApplyJobId)" *ngIf="(offerDetail?.CurrentStep == '2' && offerDetail?.EnumPromisePayWay == '2') || (offerDetail?.CurrentStep == '5' && offerDetail?.EnumServicePayWay == '2') || (offerDetail?.CurrentStep == '8' && offerDetail?.EnumTailPayWay == '2')" padding-left padding-right ion-button color="secondary" round class="aq-text-size-normal">导航到代理点</button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+
+  <!--没有申请数据的时候显示-->
+  <div *ngIf="data.length == 0 && steps.length != 0">
+    <ion-info-primary [showImg]="showImg" label="您目前暂无应聘申请"></ion-info-primary>
+    <div *ngFor="let option of steps; let i = index;">
+      <ion-steps [index]="i + 1" [title]="option.Name" [icon]="option.Icon" [description]="option.Description"></ion-steps>
+    </div>
+  </div>
+
+  <ion-infinite-scroll *ngIf="loadMore == true" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
