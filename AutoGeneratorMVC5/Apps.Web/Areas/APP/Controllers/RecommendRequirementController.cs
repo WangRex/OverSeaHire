@@ -88,7 +88,7 @@ namespace Apps.Web.Areas.APP.Controllers
         public ActionResult Details(string id)
         {
             App_RequirementModel entity = m_BLL.GetById(id);
-            entity.PK_App_Position_Name = _App_PositionBLL.GetName(entity.PK_App_Position_Name);
+            entity.PK_App_Position_Name = _App_PositionBLL.GetNames(entity.PK_App_Position_Name);
             entity.WorkLimitSex = enumDictionaryBLL.GetDicName("App_Requirement.WorkLimitSex", entity.WorkLimitSex);
             entity.EnumWorkLimitDegree = enumDictionaryBLL.GetDicName("App_Requirement.EnumWorkLimitDegree", entity.EnumWorkLimitDegree);
             entity.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(entity.PK_App_Customer_CustomerName);
@@ -97,7 +97,7 @@ namespace Apps.Web.Areas.APP.Controllers
         }
         #endregion
 
-        #region 获取工人列表
+        #region 获取符合条件工人列表
         [SupportFilter]
         public ActionResult IndexResume(string id)
         {
@@ -128,6 +128,7 @@ namespace Apps.Web.Areas.APP.Controllers
                 //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
                 customerResumeQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
             }
+            customerResumeQuery.QueryFlag = "Recommend";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
             foreach (var Item in list)
@@ -143,28 +144,31 @@ namespace Apps.Web.Areas.APP.Controllers
         }
         #endregion
 
-        #region 取消应聘申请
+        #region 发起应聘申请
         [HttpPost]
-        [SupportFilter(ActionName = "CancelApply")]
-        public JsonResult CancelApply(string ReqId, string CustomerId)
+        [SupportFilter(ActionName = "ApplyJob")]
+        public JsonResult ApplyJob(string ReqId, string CustomerId)
         {
-            var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.PK_App_Customer_CustomerName == CustomerId && EF.EnumApplyStatus == "0");
-
-            if (null == applyJob)
-            {
-                return Json(
-                   ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode("获取的应聘申请为空")
-                   );
-            }
-            applyJob.ModificationTime = ResultHelper.NowTime;
-            applyJob.ModificationUserName = GetUserId();
-            applyJob.EnumApplyStatus = "2";
+            ApplyJobPost applyJobPost = new ApplyJobPost();
+            applyJobPost.CustomerId = CustomerId;
+            applyJobPost.RequirementId = ReqId;
+            applyJobPost.UserId = GetUserId();
             try
             {
-                app_ApplyJobBLL.m_Rep.Edit(applyJob);
-                return Json(
-                    ResponseHelper.IsSuccess_Msg_Data_HttpCode("取消成功", applyJob.Id, 1)
-                );
+                string ErrorMsg = "";
+                var applyJobId = app_ApplyJobBLL.CreateApplyJob(applyJobPost, ref ErrorMsg);
+                if (null != applyJobId)
+                {
+                    return Json(
+                        ResponseHelper.IsSuccess_Msg_Data_HttpCode("应聘成功", applyJobId, 1)
+                    );
+                }
+                else
+                {
+                    return Json(
+                       ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                       );
+                }
             }
             catch (Exception ex)
             {

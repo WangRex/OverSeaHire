@@ -1264,10 +1264,29 @@ namespace Apps.BLL.App
                 customerResumeQuery.JobIntension = req.PK_App_Position_Name;
             }
             #endregion
-            //获取当前需求对应的工人列表
-            var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0" && EF.CurrentStep == "2");
-            string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
-            queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
+            //查询应聘的人员信息
+            if ("Applyed" == customerResumeQuery.QueryFlag)
+            {
+                //获取当前需求对应的工人列表
+                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0" && EF.CurrentStep == "2");
+                string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
+                queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
+            }
+            //查询推荐的工人列表
+            if ("Recommend" == customerResumeQuery.QueryFlag)
+            {
+                //获取当前需求对应的工人列表
+                queryData = queryData.Where(EF => EF.Sex == req.WorkLimitSex && EF.Age >= req.WorkLimitAgeLow && EF.Age <= req.WorkLimitAgeHigh);
+                if (!string.IsNullOrWhiteSpace(req.PK_App_Position_Name))
+                {
+                    var arrJobIntension = req.PK_App_Position_Name.Split(',').ToList();
+                    queryData = queryData.ToList().Where(EF => EF.JobIntension != null && EF.JobIntension.Split(',').Intersect(arrJobIntension).Count() > 0).AsQueryable();
+                }
+                //排除已经在面试中的用户
+                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0");
+                string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
+                queryData = queryData.Where(EF => !strCustomerIds.Contains(EF.Id));
+            }
             if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
             {
                 queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));
@@ -1311,12 +1330,17 @@ namespace Apps.BLL.App
             {
                 queryDataCustomer = queryDataCustomer.Where(EF => EF.ParentId == requirementQuery.CustomerId);
             }
+            string strCustomerIds = string.Join(",", queryDataCustomer.Select(EF => EF.Id).ToArray());
+            //排除已经在面试中的用户
+            var listApplyJob = applyJobRepository.FindList(EF => EF.EnumApplyStatus == "0" && strCustomerIds.Contains(EF.PK_App_Customer_CustomerName));
+            strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
+            queryDataCustomer = queryDataCustomer.Where(EF => !strCustomerIds.Contains(EF.Id));
             var listCustomer = queryDataCustomer.ToList();
             //获取按照性别和年龄满足条件的需求列表
             var strSex = string.Join(",", listCustomer.Select(EF => EF.Sex).ToArray());
             int iAgeHigh = listCustomer.OrderByDescending(EF => EF.Age).FirstOrDefault().Age;
             int iAgeLow = listCustomer.OrderBy(EF => EF.Age).FirstOrDefault().Age;
-            var app_Requirements = queryDataRequirement.ToList().Where(EF => strSex.Contains(EF.WorkLimitSex) && iAgeLow >= EF.WorkLimitAgeLow && iAgeHigh <= EF.WorkLimitAgeHigh).ToList();
+            var app_Requirements = queryDataRequirement.ToList().Where(EF => strSex.Contains(EF.WorkLimitSex) && ((iAgeLow >= EF.WorkLimitAgeLow && iAgeLow <= EF.WorkLimitAgeHigh) || (iAgeHigh >= EF.WorkLimitAgeLow && iAgeHigh <= EF.WorkLimitAgeHigh))).ToList();
             //获取所有的工人的求职意向，做推荐用
             var arrJobIntension = listCustomer.Select(EF => EF.JobIntension).ToList();
             app_Requirements = app_Requirements.Where(EF => EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0).ToList();

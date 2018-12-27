@@ -59,76 +59,19 @@
                 { field: 'BirthDay', title: '生日', width: 80, sortable: true },
                 {
                     field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
-                        var btn = '<a class="fa fa-times" onclick="CancelApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;取消</a>';
+                        var btn = '<a class="fa fa-save" onclick="ApplyJob(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;报名</a>';
                         return btn;
                     } }
             ]]
         });
-        $("#btnCreate").click(function () {
-            window.parent.addTab("新增简历", "@Url.Action("Create")", "fa fa-plus");
-        });
-        $("#btnEdit").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                window.parent.addTab("修改简历", "@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-pencil");
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-        });
-        $("#btnDetails").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $("#modalwindow").html("<iframe width='100%' height='98%' scrolling='auto' frameborder='0' src='@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
-                $("#modalwindow").window({ title: '@Resource.Details', width: 700, height: 400, iconCls: 'fa fa-list' }).window('open');
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-         });
         $("#btnQuery").click(function () {
             queryList();
         });
-        $("#btnDelete").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
-                     if (r) {
-                         $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
-                             if (data.type == 1)
-                                 $("#List").datagrid('load');
-                             $.messageBox5s('@Resource.Tip', data.message);
-                         }, "json");
-
-                     }
-                 });
-             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-         });
-        $("#btnCustomerWorkExp").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/App/CustomerWorkExp?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
-                $("#modalwindow").window({ title: '@Resource.Edit', width: 1000, height: 700, iconCls: 'fa fa-pencil' }).window('open');
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-        });
-        $("#btnCustomerApply").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                window.parent.addTab("查看订单", "@Url.Action("ViewOrder")?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-        });
     });
-    //ifram 返回
-    function frameReturnByClose() {
-        $("#modalwindow").window('close');
-    }
-    function frameReturnByReload(flag) {
-        if (flag)
-            $("#List").datagrid('load');
-        else
-            $("#List").datagrid('reload');
-    }
-    function frameReturnByMes(mes) {
-        $.messageBox5s('@Resource.Tip', mes);
-    }
-    function CancelApply(CustomerId, ReqId) {
-        $.messager.confirm('@Resource.Tip', '确定要取消当前应聘申请吗', function (r) {
+    function ApplyJob(CustomerId, ReqId) {
+        $.messager.confirm('@Resource.Tip', '确定要报名当前应聘申请吗', function (r) {
             if (r) {
-                globalUtils.globalAjax("@Url.Action("CancelApply")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
+                globalUtils.globalAjax("@Url.Action("ApplyJob")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);
                     queryList();
                 }, "post");

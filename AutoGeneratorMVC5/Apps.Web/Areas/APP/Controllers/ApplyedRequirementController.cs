@@ -114,6 +114,7 @@ namespace Apps.Web.Areas.APP.Controllers
                 //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
                 customerResumeQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
             }
+            customerResumeQuery.QueryFlag = "Applyed";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
             foreach (var Item in list)

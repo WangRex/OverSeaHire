@@ -519,11 +519,16 @@ namespace Apps.Models.App
         /// </summary>
         public string RequirementId { get; set; }
         public string JobIntension { get; set; }
+        /// <summary>
+        /// Applyed:已经应聘的,InterView:面试中的,Recommend:推荐的,Invite:雇主邀请的
+        /// </summary>
+        public string QueryFlag { get; set; }
         public override string ToString()
         {
             return "CustomerId:" + CustomerId + ",CustomerName:" + CustomerName + ",Sex:" + Sex
                  + ",CustomerPhone:" + CustomerPhone + ",WorkLimitAgeHigh:" + WorkLimitAgeHigh + ",WorkLimitAgeLow:" + WorkLimitAgeLow
-                   + ",AdminFlag:" + AdminFlag + ",RequirementId:" + RequirementId + ",JobIntension:" + JobIntension;
+                   + ",AdminFlag:" + AdminFlag + ",RequirementId:" + RequirementId + ",JobIntension:" + JobIntension
+                    + ",QueryFlag:" + QueryFlag;
         }
     }
     #endregion
