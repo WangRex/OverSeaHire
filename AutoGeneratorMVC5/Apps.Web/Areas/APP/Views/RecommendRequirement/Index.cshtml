@@ -9,9 +9,17 @@
     List<permModel> perm = null;
 }
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
+    <div style="float:left;">
+        标 题: <input id="Title" type="text" style="width:120px;" />
+        性 别: <input id="Sex" type="text" style="width:40px;" />
+        国 家: <input id="Country" type="text" style="width:120px;" />
+        年 龄: <input id="AgeLow" type="text" style="width:30px;" />~<input id="AgeHigh" type="text" style="width:30px;" />
+        薪 资: <input id="SallaryLow" type="text" style="width:60px;" />~<input id="SallaryHigh" type="text" style="width:60px;" />
+        标 签: <input id="Tag" type="text" style="width:60px;" />
+    </div>
+    <div style="float:left;">
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    </div>
 </div>
 <table id="List"></table>
 
@@ -51,6 +59,15 @@
                 { field: 'SwitchBtnRecommend', title: '推荐', width: 35, align:'center',formatter: function (value) {return SwitchBtnFormatter(value)} }
             ]]
         });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                window.parent.addTab("查看需求", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+         });
+        $("#btnQuery").click(function () {
+            QueryList();
+        });
     });
     //ifram 返回
     function frameReturnByClose() {
@@ -65,22 +82,17 @@
     function frameReturnByMes(mes) {
         $.messageBox5s('@Resource.Tip', mes);
     }
-    $(function () {
-        $("#btnDetails").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                window.parent.addTab("查看需求", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-         });
-        $("#btnQuery").click(function () {
-            QueryList();
-        });
-    });
-
     function QueryList() {
-        var queryStr = $("#txtQuery").val();
-        $("#List").datagrid("load", { queryStr: queryStr });
-        $("#List").datagrid("clearSelections");
-    };
+        var Title = $("#Title").val();
+        var Sex = $("#Sex").val();
+        var Country = $("#Country").val();
+        var AgeLow = $("#AgeLow").val();
+        var AgeHigh = $("#AgeHigh").val();
+        var SallaryLow = $("#SallaryLow").val();
+        var SallaryHigh = $("#SallaryHigh").val();
+        var Tag = $("#Tag").val();
+        var data = { Title: Title, Sex: Sex, Country: Country, AgeLow: AgeLow, AgeHigh: AgeHigh, SallaryLow: SallaryLow, SallaryHigh: SallaryHigh, Tag: Tag};
+        $("#List").datagrid("load", data);
+    }
 </script>
 

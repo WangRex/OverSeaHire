@@ -408,11 +408,14 @@ namespace Apps.Models.App
     public class RequirementQuery
     {
         public string Title { get; set; }
-        public string CustomerName { get; set; }
         public string Sex { get; set; }
+        public string Country { get; set; }
         public string CustomerId { get; set; }
-        public string CustomerPhone { get; set; }
-        public int Age { get; set; }
+        public int AgeLow { get; set; }
+        public int AgeHigh { get; set; }
+        public int SallaryLow { get; set; }
+        public int SallaryHigh { get; set; }
+        public string Tag { get; set; }
         public bool AdminFlag { get; set; }
         /// <summary>
         /// 查询条件
@@ -421,9 +424,11 @@ namespace Apps.Models.App
         public string QueryFlag { get; set; }
         public override string ToString()
         {
-            return "CustomerId:" + CustomerId + ",CustomerName:" + CustomerName + ",Sex:" + Sex
-                 + ",CustomerPhone:" + CustomerPhone + ",Age:" + Age + ",AdminFlag:" + AdminFlag
-                  + ",QueryFlag:" + QueryFlag + ",Title:" + Title;
+            return "Title:" + Title + ",Sex:" + Sex
+                + ",Country:" + Country + ",AgeLow:" + AgeLow + ",AdminFlag:" + AdminFlag
+                + ",QueryFlag:" + QueryFlag + ",AgeHigh:" + AgeHigh + ",Tag:" + Tag
+                + ",SallaryLow:" + SallaryLow + ",SallaryHigh:" + SallaryHigh
+                + ",CustomerId:" + CustomerId;
         }
     }
     #endregion

@@ -1184,9 +1184,9 @@ namespace Apps.BLL.App
             }
             string strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
             queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
-            if (!string.IsNullOrWhiteSpace(requirementQuery.CustomerName))
+            if (!string.IsNullOrWhiteSpace(requirementQuery.Title))
             {
-                queryData = queryData.Where(a => a.Title != null && a.Title.Contains(requirementQuery.CustomerName));
+                queryData = queryData.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title));
             }
             pager.totalRows = queryData.Count();
             //排序
@@ -1320,6 +1320,34 @@ namespace Apps.BLL.App
             //获取所有的工人的求职意向，做推荐用
             var arrJobIntension = listCustomer.Select(EF => EF.JobIntension).ToList();
             app_Requirements = app_Requirements.Where(EF => EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0).ToList();
+            if (!string.IsNullOrEmpty(requirementQuery.Title))
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title)).ToList();
+            }
+            if (!string.IsNullOrEmpty(requirementQuery.Country))
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.PK_App_Country_Name == requirementQuery.Country).ToList();
+            }
+            if (!string.IsNullOrEmpty(requirementQuery.Sex))
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.WorkLimitSex == requirementQuery.Sex).ToList();
+            }
+            if (requirementQuery.AgeLow != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeLow && EF.WorkLimitAgeHigh >= requirementQuery.AgeLow).ToList();
+            }
+            if (requirementQuery.AgeHigh != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeHigh && EF.WorkLimitAgeHigh >= requirementQuery.AgeHigh).ToList();
+            }
+            if (requirementQuery.SallaryLow != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => Utils.ObjToDecimal(EF.SalaryLow, 0) <= requirementQuery.SallaryLow && Utils.ObjToDecimal(EF.SalaryHigh, 0) >= requirementQuery.SallaryLow).ToList();
+            }
+            if (requirementQuery.SallaryHigh != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => Utils.ObjToDecimal(EF.SalaryLow, 0) <= requirementQuery.SallaryHigh && Utils.ObjToDecimal(EF.SalaryHigh, 0) >= requirementQuery.SallaryHigh).ToList();
+            }
             pager.totalRows = app_Requirements.Count;
             //排序
             var queryData = LinqHelper.SortingAndPaging(app_Requirements.AsQueryable(), pager.sort, pager.order, pager.page, pager.rows);

@@ -64,39 +64,6 @@
                     } }
             ]]
         });
-    });
-    //ifram 返回
-    function frameReturnByClose() {
-        $("#modalwindow").window('close');
-    }
-    function frameReturnByReload(flag) {
-        if (flag)
-            $("#List").datagrid('load');
-        else
-            $("#List").datagrid('reload');
-    }
-    function frameReturnByMes(mes) {
-        $.messageBox5s('@Resource.Tip', mes);
-    }
-    function CancelApply(CustomerId, ReqId) {
-        $.messager.confirm('@Resource.Tip', '确定要取消当前应聘申请吗', function (r) {
-            if (r) {
-                globalUtils.globalAjax("@Url.Action("CancelApply")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
-                    $.messageBox5s('@Resource.Tip', result.Message);
-                    queryList();
-                }, "post");
-            }
-        });
-    }
-    function queryList() {
-        var CustomerName = $("#CustomerName").val();
-        var Sex = $("#Sex").val();
-        var CustomerPhone = $("#CustomerPhone").val();
-        var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
-        var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
-        $("#List").datagrid("load", { CustomerName: CustomerName, Sex: Sex, CustomerPhone: CustomerPhone, WorkLimitAgeLow: WorkLimitAgeLow, WorkLimitAgeHigh: WorkLimitAgeHigh });
-    }
-    $(function () {
         $("#btnCreate").click(function () {
             window.parent.addTab("新增简历", "@Url.Action("Create")", "fa fa-plus");
         });
@@ -145,4 +112,35 @@
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    function CancelApply(CustomerId, ReqId) {
+        $.messager.confirm('@Resource.Tip', '确定要取消当前应聘申请吗', function (r) {
+            if (r) {
+                globalUtils.globalAjax("@Url.Action("CancelApply")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
+                    $.messageBox5s('@Resource.Tip', result.Message);
+                    queryList();
+                }, "post");
+            }
+        });
+    }
+    function queryList() {
+        var CustomerName = $("#CustomerName").val();
+        var Sex = $("#Sex").val();
+        var CustomerPhone = $("#CustomerPhone").val();
+        var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
+        var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
+        $("#List").datagrid("load", { CustomerName: CustomerName, Sex: Sex, CustomerPhone: CustomerPhone, WorkLimitAgeLow: WorkLimitAgeLow, WorkLimitAgeHigh: WorkLimitAgeHigh });
+    }
 </script>
