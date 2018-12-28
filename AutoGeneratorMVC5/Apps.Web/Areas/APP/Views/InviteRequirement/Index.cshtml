@@ -1,0 +1,99 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "App_Requirement";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <div style="float:left;">
+        标 题: <input id="Title" type="text" style="width:120px;" />
+        性 别: <input id="Sex" type="text" style="width:40px;" />
+        国 家: <input id="Country" type="text" style="width:120px;" />
+        年 龄: <input id="AgeLow" type="text" style="width:30px;" />~<input id="AgeHigh" type="text" style="width:30px;" />
+        薪 资: <input id="SallaryLow" type="text" style="width:60px;" />~<input id="SallaryHigh" type="text" style="width:60px;" />
+        标 签: <input id="Tag" type="text" style="width:60px;" />
+    </div>
+    <div style="float:left;">
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+        @Html.ToolButton("btnDetails", "fa fa-list", "查看详情", false)
+    </div>
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetRecommendReqList")',
+            width:SetGridWidthSub(10),
+            method: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '主键', width: 80,hidden:true },
+                { field: 'Title', title: '标题', width: 160,sortable:true },
+                { field: 'SubTitle', title: '副标题', width: 80,sortable:true },
+                { field: 'PK_App_Position_Name', title: '职位类型', width: 80,sortable:true },
+                { field: 'PK_App_Country_Name', title: '国家', width: 80,sortable:true },
+                { field: 'WorkLimitSex', title: '工作要求性别', width: 80,sortable:true },
+                { field: 'SalaryLow', title: '报酬(最低)', width: 80,sortable:true },
+                { field: 'SalaryHigh', title: '报酬(最高)', width: 80,sortable:true },
+                { field: 'TotalServiceMoney', title: '总服务费', width: 80,sortable:true },
+                { field: 'PublishDate', title: '发布时间', width: 80,sortable:true },
+                { field: 'TotalHire', title: '招聘人数', width: 80,sortable:true },
+                { field: 'Tag', title: '职位标签', width: 80,sortable:true },
+                { field: 'PK_App_Customer_CustomerName', title: '发布人', width: 80,sortable:true },
+                { field: 'SwitchBtnRecommend', title: '推荐', width: 35, align:'center',formatter: function (value) {return SwitchBtnFormatter(value)} }
+            ]]
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                window.parent.addTab("查看需求", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+         });
+        $("#btnQuery").click(function () {
+            QueryList();
+        });
+    });
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    function QueryList() {
+        var Title = $("#Title").val();
+        var Sex = $("#Sex").val();
+        var Country = $("#Country").val();
+        var AgeLow = $("#AgeLow").val();
+        var AgeHigh = $("#AgeHigh").val();
+        var SallaryLow = $("#SallaryLow").val();
+        var SallaryHigh = $("#SallaryHigh").val();
+        var Tag = $("#Tag").val();
+        var data = { Title: Title, Sex: Sex, Country: Country, AgeLow: AgeLow, AgeHigh: AgeHigh, SallaryLow: SallaryLow, SallaryHigh: SallaryHigh, Tag: Tag};
+        $("#List").datagrid("load", data);
+    }
+</script>
+

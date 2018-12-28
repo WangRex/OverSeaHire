@@ -1,0 +1,104 @@
+﻿@model Apps.Models.App.App_RequirementInviteModel
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "修改";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+
+<script type="text/javascript">
+$(function () {
+    $("#btnSave").click(function () {
+        if ($("form").valid()) {
+            $.ajax({
+                url: "@Url.Action("Edit")",
+                type: "Post",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.type == 1) {
+                        window.parent.frameReturnByMes(data.message);
+                        window.parent.frameReturnByReload(true);
+                        window.parent.frameReturnByClose()
+                    }
+                    else {
+                        window.parent.frameReturnByMes(data.message);
+                    }
+                }
+            });
+        }
+        return false;
+    });
+    $("#btnReturn").click(function () {
+         window.parent.frameReturnByClose();
+    });
+$("#PK_App_Requirement_Title").val('@Model.PK_App_Requirement_Title');
+});
+</script>
+<div class="mvctool bgb">
+@Html.ToolButton("btnSave", "fa fa-save", Resource.Save,ref perm, "Save", true)
+@Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply,false)
+</div>
+@using (Html.BeginForm())
+{
+             @Html.HiddenFor(model => model.Id)
+             @Html.HiddenFor(model => model.CreateTime)
+             @Html.HiddenFor(model => model.ModificationTime)
+             @Html.HiddenFor(model => model.CreateUserName)
+             @Html.HiddenFor(model => model.ModificationUserName)
+             @Html.HiddenFor(model => model.SortCode)
+             @Html.HiddenFor(model => model.ParentId)
+ <table class="formtable">
+    <tbody>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.PK_App_Requirement_Title)：
+            </th>
+            <td>
+                @Html.DropDownListFor(model => model.PK_App_Requirement_Title,ViewBag.PK_App_Requirement_Title as SelectList,"---请选择---")
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.PK_App_Requirement_Title)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.InitiatorId)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.InitiatorId)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.InitiatorId)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.Inviter)：
+            </th>
+            <td >
+                @Html.EditorFor(model => model.Inviter)
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.Inviter)</td>
+        </tr>
+        <tr>
+            <th>
+                @Html.LabelFor(model => model.SwitchBtnAgree)：
+            </th>
+            <td>
+                @if (Model.SwitchBtnAgree == "1")
+                {
+                    @Html.SwitchButtonByEdit("SwitchBtnAgree", true)
+                }
+                else
+                {
+                    @Html.SwitchButtonByEdit("SwitchBtnAgree", false)
+                }
+            </td>
+            <td>@Html.ValidationMessageFor(model => model.SwitchBtnAgree)</td>
+        </tr>
+    </tbody>
+</table>
+}
+
