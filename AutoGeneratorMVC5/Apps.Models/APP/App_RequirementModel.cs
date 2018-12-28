@@ -409,6 +409,13 @@ namespace Apps.Models.App
     {
         public string Title { get; set; }
         public string Sex { get; set; }
+        /// <summary>
+        /// 工种
+        /// </summary>
+        public string PositionId { get; set; }
+        /// <summary>
+        /// 国家
+        /// </summary>
         public string Country { get; set; }
         public string CustomerId { get; set; }
         public int AgeLow { get; set; }

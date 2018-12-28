@@ -1190,6 +1190,35 @@ namespace Apps.BLL.App
             {
                 queryData = queryData.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title));
             }
+            if (!string.IsNullOrWhiteSpace(requirementQuery.PositionId))
+            {
+                var arrPositionId = requirementQuery.PositionId.Split(',').ToList();
+                queryData = queryData.ToList().Where(EF => EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrPositionId).Count() > 0).AsQueryable();
+            }
+            if (!string.IsNullOrWhiteSpace(requirementQuery.Sex))
+            {
+                queryData = queryData.Where(EF => EF.WorkLimitSex == requirementQuery.Sex);
+            }
+            if (requirementQuery.AgeLow != 0)
+            {
+                queryData = queryData.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeLow && EF.WorkLimitAgeHigh >= requirementQuery.AgeLow);
+            }
+            if (requirementQuery.AgeHigh != 0)
+            {
+                queryData = queryData.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeHigh && EF.WorkLimitAgeHigh >= requirementQuery.AgeHigh);
+            }
+            if (requirementQuery.SallaryLow != 0)
+            {
+                queryData = queryData.ToList().Where(EF => EF.SalaryLow != null && Utils.ObjToDecimal(EF.SalaryLow, 0) >= requirementQuery.SallaryLow).AsQueryable();
+            }
+            if (requirementQuery.SallaryHigh != 0)
+            {
+                queryData = queryData.ToList().Where(EF => EF.SalaryHigh != null && Utils.ObjToDecimal(EF.SalaryHigh, 0) >= requirementQuery.SallaryHigh).AsQueryable();
+            }
+            if (!string.IsNullOrWhiteSpace(requirementQuery.Country))
+            {
+                queryData = queryData.Where(EF => EF.PK_App_Country_Name == requirementQuery.Country);
+            }
             pager.totalRows = queryData.Count();
             //排序
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);

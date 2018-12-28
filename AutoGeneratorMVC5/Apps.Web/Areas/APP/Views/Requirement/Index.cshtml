@@ -8,20 +8,80 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
+
+<style>
+    .saveBtn {
+        position: absolute;
+        height: 28px;
+        background-color: rgb(250, 250, 250);
+        padding-top: 4px;
+        padding-left: 5px;
+        border-bottom: 1px solid;
+        width: 577px;
+        z-index: 9999;
+    }
+
+    .mvctool label {
+        font-size: larger;
+        font-weight: bolder;
+    }
+</style>
 <div class="mvctool">
-    <input id="txtQuery" type="text" class="searchText" />
-    @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query,ref perm, "Query", true)
-    @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create,ref perm, "Create", true)
-    @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit,ref perm, "Edit", true)
-    @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details,ref perm, "Details", true)
-    @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete,ref perm, "Delete", true)
+    <div style="float:left;">
+        <input type="hidden" id="PositionId" />
+        <label>
+            标题:
+        </label><input id="Title" type="text" style="width:120px;" />
+        <label>
+            工 种:
+        </label><input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
+        <label>
+            性 别:
+        </label><input id="Sex" type="text" style="width:40px;" />
+        <label>
+            国 家:
+        </label><input id="Country" type="text" style="width:120px;" />
+        <label>
+            年 龄:
+        </label><input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
+        <label>
+            薪 资:
+        </label><input id="SallaryLow" type="text" style="width:60px;" />~<input id="SallaryHigh" type="text" style="width:60px;" />
+        <label>
+            标 签:
+        </label><input id="Tag" type="text" style="width:60px;" />
+    </div>
+    <div style="float:left;">
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+        @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
+        @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+        @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
+        @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+    </div>
 </div>
 <table id="List"></table>
-
+<div id="positiontree" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false" style="overflow-y:scroll">
+    <div class="saveBtn">
+        @Html.ToolButton("btnSaveTree", "fa fa-save", Resource.Save, true)
+        @Html.ToolButton("btnReturnTree", "fa fa-reply", Resource.Reply, false)
+    </div>
+    <div style="position:relative;top:40px;"><ul id="tt" class="easyui-tree"></ul></div>
+</div>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
 <script type="text/javascript">
+    var treeData = {};
+    var countryCombo = [];
     $(function () {
+        globalUtils.globalAjax("http://dlanqi.com:1001/api/Requirement/GetCountries?UserId=0&PageNum=0&RecordNum=0", {}, function (data) {
+            countryCombo = data.Data;
+            countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
+            $('#Country').combobox({
+                valueField: 'Id',
+                textField: 'Name',
+                data: countryCombo
+            });
+        }, "get");
         $('#List').datagrid({
             url: '@Url.Action("GetList")',
             width:SetGridWidthSub(10),
@@ -54,22 +114,6 @@
                 { field: 'SwitchBtnRecommend', title: '推荐', width: 35, align:'center',formatter: function (value) {return SwitchBtnFormatter(value)} }
             ]]
         });
-    });
-    //ifram 返回
-    function frameReturnByClose() {
-        $("#modalwindow").window('close');
-        window.parent.closeTab("@Resource.Create", "@Url.Action("Create")", "fa fa-plus");
-    }
-    function frameReturnByReload(flag) {
-        if (flag)
-            $("#List").datagrid('load');
-        else
-            $("#List").datagrid('reload');
-    }
-    function frameReturnByMes(mes) {
-        $.messageBox5s('@Resource.Tip', mes);
-    }
-    $(function () {
         $("#btnCreate").click(function () {
             window.parent.addTab("新增需求", "@Url.Action("Create")", "fa fa-plus");
         });
@@ -102,13 +146,99 @@
                      }
                  });
              } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-         });
+        });
+        $("#btnReturnTree").click(function () {
+            $("#positiontree").window('close');
+        });
+        $("#btnSaveTree").click(function () {
+            var nodes = $('#tt').tree('getChecked');	// get checked nodes
+            var ids = '';
+            var texts = '';
+            nodes.forEach(function (value, index, array) {
+                ids += ',' + value.id;
+                texts += ',' + value.text;
+            })
+            if (ids != '') {
+                ids = ids.substring(1);
+                texts = texts.substring(1);
+            }
+            $("#PositionId").val(ids);
+            $("#positiontreeinput").val(texts);
+            $("#positiontree").window('close');
+        });
+        $("#positiontreeinput").click(function () {
+            if (treeData.length) {
+                initPosTree(treeData);
+            } else {
+                globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
+                    treeData = data;
+                    initPosTree(treeData);
+                }, "post");
+            }
+        });
     });
-
+    //ifram 返回
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+        window.parent.closeTab("@Resource.Create", "@Url.Action("Create")", "fa fa-plus");
+    }
+    function frameReturnByReload(flag) {
+        if (flag)
+            $("#List").datagrid('load');
+        else
+            $("#List").datagrid('reload');
+    }
+    function frameReturnByMes(mes) {
+        $.messageBox5s('@Resource.Tip', mes);
+    }
+    function initPosTree(treeData) {
+        $('#tt').tree({
+            data: treeData,
+            animate: true,
+            checkbox: true,
+            onlyLeafCheck: true,
+            onLoadSuccess: function (node, data) {
+                var ids = $("#PositionId").val();
+                if (ids != '') {
+                    var idArr = ids.split(",");
+                    for (var i = 0; i < idArr.length; i++) {
+                        // find a node and then select it
+                        var node = $('#tt').tree('find', idArr[i]);
+                        $('#tt').tree('check', node.target);
+                    }
+                }
+            }
+        });
+        $("#positiontree").window({
+            title: '职位',
+            width: 600,
+            height: 400,
+            top: 350,
+            iconCls: 'fa fa-pencil'
+        }).window('open');
+    }
     function QueryList() {
-        var queryStr = $("#txtQuery").val();
-        $("#List").datagrid("load", { queryStr: queryStr });
-        $("#List").datagrid("clearSelections");
+        var Title = $("#Title").val();
+        var Sex = $("#Sex").val();
+        var Country = $('#Country').combobox('getValue');
+        var AgeLow = $("#AgeLow").val();
+        var AgeHigh = $("#AgeHigh").val();
+        var SallaryLow = $("#SallaryLow").val();
+        var SallaryHigh = $("#SallaryHigh").val();
+        var Tag = $("#Tag").val();
+        var PositionId = $("#PositionId").val();
+        var data = {
+            Title: Title,
+            Sex: Sex,
+            Country: Country,
+            AgeLow: AgeLow,
+            AgeHigh: AgeHigh,
+            SallaryLow: SallaryLow,
+            SallaryHigh: SallaryHigh,
+            Tag: Tag,
+            PositionId: PositionId,
+        };
+        $("#List").datagrid("load", data);
     };
 </script>
 

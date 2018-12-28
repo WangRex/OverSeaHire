@@ -6,11 +6,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Rex\SVN\OverseasHire\trunk\AutoGeneratorMVC5\Apps.WebApi\bin\Release\Publish</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Rex\Git\OverSeaHire\AutoGeneratorMVC5\Apps.WebApi\bin\Release\Publish</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Apps.WebApi.XML">
-      <publishTime>12/18/2018 14:11:15</publishTime>
+      <publishTime>12/28/2018 22:39:15</publishTime>
     </File>
     <File Include="bin/aliyun-net-sdk-core.dll">
       <publishTime>11/07/2018 23:32:01</publishTime>
@@ -28,85 +28,85 @@
       <publishTime>11/07/2018 23:32:28</publishTime>
     </File>
     <File Include="bin/Apps.BLL.dll">
-      <publishTime>12/18/2018 14:11:13</publishTime>
+      <publishTime>12/28/2018 22:30:45</publishTime>
     </File>
     <File Include="bin/Apps.BLL.dll.config">
       <publishTime>11/07/2018 23:31:53</publishTime>
     </File>
     <File Include="bin/Apps.BLL.pdb">
-      <publishTime>12/18/2018 14:11:13</publishTime>
+      <publishTime>12/28/2018 22:30:45</publishTime>
     </File>
     <File Include="bin/Apps.Common.dll">
-      <publishTime>12/14/2018 15:32:50</publishTime>
+      <publishTime>12/26/2018 14:07:09</publishTime>
     </File>
     <File Include="bin/Apps.Common.pdb">
-      <publishTime>12/14/2018 15:32:50</publishTime>
+      <publishTime>12/26/2018 14:07:09</publishTime>
     </File>
     <File Include="bin/Apps.Core.dll">
-      <publishTime>12/18/2018 14:11:14</publishTime>
+      <publishTime>12/28/2018 22:30:46</publishTime>
     </File>
     <File Include="bin/Apps.Core.dll.config">
       <publishTime>11/07/2018 23:31:59</publishTime>
     </File>
     <File Include="bin/Apps.Core.pdb">
-      <publishTime>12/18/2018 14:11:14</publishTime>
+      <publishTime>12/28/2018 22:30:46</publishTime>
     </File>
     <File Include="bin/Apps.DAL.dll">
-      <publishTime>12/18/2018 14:11:12</publishTime>
+      <publishTime>12/28/2018 20:07:33</publishTime>
     </File>
     <File Include="bin/Apps.DAL.dll.config">
       <publishTime>11/07/2018 23:31:59</publishTime>
     </File>
     <File Include="bin/Apps.DAL.pdb">
-      <publishTime>12/18/2018 14:11:12</publishTime>
+      <publishTime>12/28/2018 20:07:33</publishTime>
     </File>
     <File Include="bin/Apps.IBLL.dll">
-      <publishTime>12/18/2018 14:11:12</publishTime>
+      <publishTime>12/28/2018 20:07:32</publishTime>
     </File>
     <File Include="bin/Apps.IBLL.pdb">
-      <publishTime>12/18/2018 14:11:12</publishTime>
+      <publishTime>12/28/2018 20:07:32</publishTime>
     </File>
     <File Include="bin/Apps.IDAL.dll">
-      <publishTime>12/18/2018 14:11:11</publishTime>
+      <publishTime>12/28/2018 20:07:32</publishTime>
     </File>
     <File Include="bin/Apps.IDAL.dll.config">
       <publishTime>11/07/2018 23:32:00</publishTime>
     </File>
     <File Include="bin/Apps.IDAL.pdb">
-      <publishTime>12/18/2018 14:11:11</publishTime>
+      <publishTime>12/28/2018 20:07:32</publishTime>
     </File>
     <File Include="bin/Apps.Locale.dll">
-      <publishTime>12/14/2018 15:32:50</publishTime>
+      <publishTime>12/26/2018 14:07:09</publishTime>
     </File>
     <File Include="bin/Apps.Locale.pdb">
-      <publishTime>12/14/2018 15:32:50</publishTime>
+      <publishTime>12/26/2018 14:07:09</publishTime>
     </File>
     <File Include="bin/Apps.Models.dll">
-      <publishTime>12/18/2018 14:11:11</publishTime>
+      <publishTime>12/28/2018 20:07:31</publishTime>
     </File>
     <File Include="bin/Apps.Models.dll.config">
-      <publishTime>12/16/2018 21:48:42</publishTime>
+      <publishTime>12/28/2018 11:32:12</publishTime>
     </File>
     <File Include="bin/Apps.Models.pdb">
-      <publishTime>12/18/2018 14:11:11</publishTime>
+      <publishTime>12/28/2018 20:07:31</publishTime>
     </File>
     <File Include="bin/Apps.WebApi.dll">
-      <publishTime>12/18/2018 14:11:15</publishTime>
+      <publishTime>12/28/2018 22:39:15</publishTime>
     </File>
     <File Include="bin/Apps.WebApi.pdb">
-      <publishTime>12/18/2018 14:11:15</publishTime>
+      <publishTime>12/28/2018 22:39:15</publishTime>
     </File>
     <File Include="bin/Apps.WebApi.XML">
-      <publishTime>12/18/2018 14:11:15</publishTime>
+      <publishTime>12/28/2018 22:39:15</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>12/18/2018 14:11:21</publishTime>
+      <publishTime>12/28/2018 22:39:23</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>12/18/2018 14:11:21</publishTime>
+      <publishTime>12/28/2018 22:39:23</publishTime>
     </File>
     <File Include="bin/en-US/Apps.Locale.resources.dll">
-      <publishTime>12/14/2018 15:32:51</publishTime>
+      <publishTime>12/26/2018 14:07:09</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/02/2015 09:32:26</publishTime>
@@ -259,7 +259,7 @@
       <publishTime>11/07/2018 23:31:58</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>12/18/2018 14:11:16</publishTime>
+      <publishTime>12/28/2018 22:39:17</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>11/07/2018 23:31:58</publishTime>
@@ -289,7 +289,7 @@
       <publishTime>11/07/2018 23:31:58</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/05/2018 16:23:22</publishTime>
+      <publishTime>12/28/2018 22:39:16</publishTime>
     </File>
   </ItemGroup>
 </Project>
