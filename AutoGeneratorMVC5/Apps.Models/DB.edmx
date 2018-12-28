@@ -351,6 +351,22 @@
           <Property Name="PK_App_Requirement_Title" Type="nvarchar(max)" />
           <Property Name="PK_App_Customer_CustomerName" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="App_RequirementInvite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="ModificationTime" Type="datetime" Nullable="false" />
+          <Property Name="CreateUserName" Type="nvarchar(max)" />
+          <Property Name="ModificationUserName" Type="nvarchar(max)" />
+          <Property Name="SortCode" Type="int" Nullable="false" />
+          <Property Name="ParentId" Type="varchar" MaxLength="50" />
+          <Property Name="PK_App_Requirement_Title" Type="nvarchar(max)" />
+          <Property Name="InitiatorId" Type="nvarchar(max)" />
+          <Property Name="Inviter" Type="nvarchar(max)" />
+          <Property Name="SwitchBtnAgree" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="App_RequirementSearch">
           <Key>
             <PropertyRef Name="Id" />
@@ -2377,6 +2393,7 @@
           <EntitySet Name="App_Position" EntityType="Self.App_Position" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="App_Requirement" EntityType="Self.App_Requirement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="App_RequirementCollect" EntityType="Self.App_RequirementCollect" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="App_RequirementInvite" EntityType="Self.App_RequirementInvite" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="App_RequirementSearch" EntityType="Self.App_RequirementSearch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEF_CaseType" EntityType="Self.DEF_CaseType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DEF_Defect" EntityType="Self.DEF_Defect" Schema="dbo" store:Type="Tables" />
@@ -3198,6 +3215,7 @@
             <End Role="SysRole" EntitySet="SysRole" />
             <End Role="SysUser" EntitySet="SysUser" />
           </AssociationSet>
+          <EntitySet Name="App_RequirementInvite" EntityType="DB.App_RequirementInvite" />
           </EntityContainer>
         <EntityType Name="DEF_Defect">
           <Key>
@@ -5643,6 +5661,22 @@
           <End Type="DB.SysRole" Role="SysRole" Multiplicity="*" />
           <End Type="DB.SysUser" Role="SysUser" Multiplicity="*" />
         </Association>
+        <EntityType Name="App_RequirementInvite">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModificationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModificationUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SortCode" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PK_App_Requirement_Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InitiatorId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Inviter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SwitchBtnAgree" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7535,6 +7569,23 @@
               <ScalarProperty Name="Id" ColumnName="SysRoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="App_RequirementInvite">
+            <EntityTypeMapping TypeName="DB.App_RequirementInvite">
+              <MappingFragment StoreEntitySet="App_RequirementInvite">
+                <ScalarProperty Name="SwitchBtnAgree" ColumnName="SwitchBtnAgree" />
+                <ScalarProperty Name="Inviter" ColumnName="Inviter" />
+                <ScalarProperty Name="InitiatorId" ColumnName="InitiatorId" />
+                <ScalarProperty Name="PK_App_Requirement_Title" ColumnName="PK_App_Requirement_Title" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="SortCode" ColumnName="SortCode" />
+                <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

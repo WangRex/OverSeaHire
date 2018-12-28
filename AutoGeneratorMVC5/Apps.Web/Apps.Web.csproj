@@ -235,6 +235,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\APP\APPAreaRegistration.cs" />
+    <Compile Include="Areas\APP\Controllers\InviteRequirementController.cs" />
     <Compile Include="Areas\APP\Controllers\RecommendRequirementController.cs" />
     <Compile Include="Areas\APP\Controllers\ApplyedRequirementController.cs" />
     <Compile Include="Areas\APP\Controllers\ApplyJobController.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Areas\APP\Controllers\PositionController.cs" />
     <Compile Include="Areas\APP\Controllers\RequirementCollectController.cs" />
     <Compile Include="Areas\APP\Controllers\RequirementController.cs" />
+    <Compile Include="Areas\APP\Controllers\RequirementInviteController.cs" />
     <Compile Include="Areas\APP\Controllers\RequirementSearchController.cs" />
     <Compile Include="Areas\Def\Controllers\CaseTypeController.cs" />
     <Compile Include="Areas\Def\Controllers\DefectController.cs" />
@@ -719,6 +721,13 @@
     <Content Include="Areas\APP\Views\RecommendRequirement\Details.cshtml" />
     <Content Include="Areas\APP\Views\RecommendRequirement\Index.cshtml" />
     <Content Include="Areas\APP\Views\RecommendRequirement\IndexResume.cshtml" />
+    <Content Include="Areas\APP\Views\RequirementInvite\Create.cshtml" />
+    <Content Include="Areas\APP\Views\RequirementInvite\Details.cshtml" />
+    <Content Include="Areas\APP\Views\RequirementInvite\Edit.cshtml" />
+    <Content Include="Areas\APP\Views\RequirementInvite\Index.cshtml" />
+    <Content Include="Areas\APP\Views\InviteRequirement\Details.cshtml" />
+    <Content Include="Areas\APP\Views\InviteRequirement\Index.cshtml" />
+    <Content Include="Areas\APP\Views\InviteRequirement\IndexResume.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

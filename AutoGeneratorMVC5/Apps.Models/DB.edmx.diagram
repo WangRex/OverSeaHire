@@ -144,6 +144,7 @@
         <AssociationConnector Association="DB.FK_SysUserConfig_SysUser" />
         <AssociationConnector Association="DB.FK_WC_OfficalAcconts_SysUser" />
         <AssociationConnector Association="DB.SysRoleSysUser" />
+        <EntityTypeShape EntityType="DB.App_RequirementInvite" Width="1.5" PointX="31.375" PointY="12.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

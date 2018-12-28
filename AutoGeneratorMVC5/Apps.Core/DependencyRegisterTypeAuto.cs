@@ -49,6 +49,8 @@ namespace Apps.Core
 			container.RegisterType<Apps.IDAL.App.IApp_RequirementRepository, Apps.DAL.App.App_RequirementRepository>();
 			container.RegisterType<Apps.IBLL.App.IApp_RequirementCollectBLL, Apps.BLL.App.App_RequirementCollectBLL>();
 			container.RegisterType<Apps.IDAL.App.IApp_RequirementCollectRepository, Apps.DAL.App.App_RequirementCollectRepository>();
+			container.RegisterType<Apps.IBLL.App.IApp_RequirementInviteBLL, Apps.BLL.App.App_RequirementInviteBLL>();
+			container.RegisterType<Apps.IDAL.App.IApp_RequirementInviteRepository, Apps.DAL.App.App_RequirementInviteRepository>();
 			container.RegisterType<Apps.IBLL.App.IApp_RequirementSearchBLL, Apps.BLL.App.App_RequirementSearchBLL>();
 			container.RegisterType<Apps.IDAL.App.IApp_RequirementSearchRepository, Apps.DAL.App.App_RequirementSearchRepository>();
 			container.RegisterType<Apps.IBLL.DEF.IDEF_CaseTypeBLL, Apps.BLL.DEF.DEF_CaseTypeBLL>();

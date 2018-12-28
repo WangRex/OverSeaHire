@@ -1119,6 +1119,22 @@ namespace Apps.BLL.App
             {
                 queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));
             }
+            if (customerResumeQuery.Recommend)
+            {
+                queryData = queryData.Where(EF => EF.SwitchBtnRecommend == "1");
+            }
+            if (customerResumeQuery.Video)
+            {
+                queryData = queryData.Where(EF => EF.VideoPath != "" && EF.VideoPath != null);
+            }
+            if (customerResumeQuery.DriverLicence)
+            {
+                queryData = queryData.Where(EF => EF.EnumDriverLicence != "0" && EF.EnumDriverLicence != null);
+            }
+            if (customerResumeQuery.AbroadExp)
+            {
+                queryData = queryData.Where(EF => EF.EnumDriverLicence == "1");
+            }
             if (!string.IsNullOrWhiteSpace(customerResumeQuery.Sex))
             {
                 queryData = queryData.Where(a => a.Sex == customerResumeQuery.Sex);

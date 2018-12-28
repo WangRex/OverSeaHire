@@ -511,6 +511,10 @@ namespace Apps.Models.App
         public string Sex { get; set; }
         public string CustomerId { get; set; }
         public string CustomerPhone { get; set; }
+        public bool Recommend { get; set; }
+        public bool Video { get; set; }
+        public bool DriverLicence { get; set; }
+        public bool AbroadExp { get; set; }
         public int WorkLimitAgeHigh { get; set; }
         public int WorkLimitAgeLow { get; set; }
         public bool AdminFlag { get; set; }
@@ -526,9 +530,10 @@ namespace Apps.Models.App
         public override string ToString()
         {
             return "CustomerId:" + CustomerId + ",CustomerName:" + CustomerName + ",Sex:" + Sex
-                 + ",CustomerPhone:" + CustomerPhone + ",WorkLimitAgeHigh:" + WorkLimitAgeHigh + ",WorkLimitAgeLow:" + WorkLimitAgeLow
-                   + ",AdminFlag:" + AdminFlag + ",RequirementId:" + RequirementId + ",JobIntension:" + JobIntension
-                    + ",QueryFlag:" + QueryFlag;
+                + ",CustomerPhone:" + CustomerPhone + ",WorkLimitAgeHigh:" + WorkLimitAgeHigh + ",WorkLimitAgeLow:" + WorkLimitAgeLow
+                + ",AdminFlag:" + AdminFlag + ",RequirementId:" + RequirementId + ",JobIntension:" + JobIntension
+                + ",QueryFlag:" + QueryFlag + ",Recommend:" + Recommend + ",Video:" + Video
+                + ",DriverLicence:" + DriverLicence + ",AbroadExp:" + AbroadExp;
         }
     }
     #endregion

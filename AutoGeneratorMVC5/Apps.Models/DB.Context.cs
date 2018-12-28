@@ -119,6 +119,7 @@ namespace Apps.Models
         public virtual DbSet<App_Country> App_Country { get; set; }
         public virtual DbSet<App_CustomerPosSearch> App_CustomerPosSearch { get; set; }
         public virtual DbSet<SysUser> SysUser { get; set; }
+        public virtual DbSet<App_RequirementInvite> App_RequirementInvite { get; set; }
     
         public virtual int P_DEF_CreateTestJobs(string vercode)
         {

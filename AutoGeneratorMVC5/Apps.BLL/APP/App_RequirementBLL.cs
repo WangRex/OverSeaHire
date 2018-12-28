@@ -45,6 +45,8 @@ namespace Apps.BLL.App
         public App_CustomerCollectRepository customerCollectRepository { get; set; }
         [Dependency]
         public App_CustomerPosSearchRepository customerPosSearchRepository { get; set; }
+        [Dependency]
+        public App_RequirementInviteRepository requirementInviteRepository { get; set; }
         #endregion
 
         #region 获取首页需求列表
@@ -1180,7 +1182,7 @@ namespace Apps.BLL.App
             if ("Applyed".Equals(requirementQuery.QueryFlag))
             {
                 //获取所有的发起申请的工人主键集合
-                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0" && EF.CurrentStep == "2").ToList();
+                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0").ToList();
             }
             string strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
             queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
@@ -1206,6 +1208,10 @@ namespace Apps.BLL.App
         {
             //获取当前登录人所辖属的所有工人列表
             IQueryable<App_Customer> queryData = customerRepository.GetList(EF => EF.ParentId != null);
+            if (!customerResumeQuery.AdminFlag)
+            {
+                queryData = queryData.Where(EF => EF.ParentId == customerResumeQuery.CustomerId);
+            }
             //获取需求信息
             var req = m_Rep.GetById(customerResumeQuery.RequirementId);
             #region 如果入参为空，则默认使用需求信息
@@ -1344,6 +1350,62 @@ namespace Apps.BLL.App
             //获取所有的工人的求职意向，做推荐用
             var arrJobIntension = listCustomer.Select(EF => EF.JobIntension).ToList();
             app_Requirements = app_Requirements.Where(EF => EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0).ToList();
+            if (!string.IsNullOrEmpty(requirementQuery.Title))
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title)).ToList();
+            }
+            if (!string.IsNullOrEmpty(requirementQuery.Country))
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.PK_App_Country_Name == requirementQuery.Country).ToList();
+            }
+            if (!string.IsNullOrEmpty(requirementQuery.Sex))
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.WorkLimitSex == requirementQuery.Sex).ToList();
+            }
+            if (requirementQuery.AgeLow != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeLow && EF.WorkLimitAgeHigh >= requirementQuery.AgeLow).ToList();
+            }
+            if (requirementQuery.AgeHigh != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeHigh && EF.WorkLimitAgeHigh >= requirementQuery.AgeHigh).ToList();
+            }
+            if (requirementQuery.SallaryLow != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => Utils.ObjToDecimal(EF.SalaryLow, 0) <= requirementQuery.SallaryLow && Utils.ObjToDecimal(EF.SalaryHigh, 0) >= requirementQuery.SallaryLow).ToList();
+            }
+            if (requirementQuery.SallaryHigh != 0)
+            {
+                app_Requirements = app_Requirements.Where(EF => Utils.ObjToDecimal(EF.SalaryLow, 0) <= requirementQuery.SallaryHigh && Utils.ObjToDecimal(EF.SalaryHigh, 0) >= requirementQuery.SallaryHigh).ToList();
+            }
+            pager.totalRows = app_Requirements.Count;
+            //排序
+            var queryData = LinqHelper.SortingAndPaging(app_Requirements.AsQueryable(), pager.sort, pager.order, pager.page, pager.rows);
+            return queryData;
+        }
+        #endregion
+
+        #region 【后台】获取雇主发起邀请职位列表
+        /// <summary>
+        /// 【后台】获取雇主发起邀请职位列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="requirementQuery"></param>
+        /// <returns></returns>
+        public IQueryable<App_Requirement> GetInviteRequirementList(ref GridPager pager, RequirementQuery requirementQuery)
+        {
+            //获取当前登录人所辖属的所有工人列表
+            IQueryable<App_Customer> queryDataCustomer = customerRepository.GetList(EF => EF.ParentId != null);
+            IQueryable<App_Requirement> queryDataRequirement = m_Rep.GetList(EF => EF.SwitchBtnOpen == "1");
+            if (!requirementQuery.AdminFlag)
+            {
+                queryDataCustomer = queryDataCustomer.Where(EF => EF.ParentId == requirementQuery.CustomerId);
+            }
+            string strCustomerIds = string.Join(",", queryDataCustomer.Select(EF => EF.Id).ToArray());
+            //获取所有的当前工人下的邀请数据
+            var app_RequirementInvites = requirementInviteRepository.FindList(EF => strCustomerIds.Contains(EF.Inviter));
+            string reqIds = string.Join(",", app_RequirementInvites.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+            var app_Requirements = queryDataRequirement.ToList().Where(EF => reqIds.Contains(EF.Id)).ToList();
             if (!string.IsNullOrEmpty(requirementQuery.Title))
             {
                 app_Requirements = app_Requirements.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title)).ToList();
