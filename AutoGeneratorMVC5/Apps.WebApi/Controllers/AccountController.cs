@@ -530,5 +530,33 @@ namespace Apps.WebApi.Controllers
         }
         #endregion
 
+        #region 【后台】创建简历
+        /// <summary>
+        /// 【后台】创建简历
+        /// </summary>
+        /// <param name="customerResumePost"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public object CreateCustomerResume(CustomerResumePost customerResumePost)
+        {
+            LogHandler.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString(), "开始", "CreateCustomerResume", "AccountController");
+            string ErrorMsg = "";
+            var flag = customerBLL.CreateCustomerResume(customerResumePost, ref ErrorMsg);
+            LogHandler.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateCustomerResume", "AccountController");
+            if (!flag)
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                    );
+            }
+            else
+            {
+                return Json(
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, true)
+                    );
+            }
+        }
+        #endregion
+
     }
 }

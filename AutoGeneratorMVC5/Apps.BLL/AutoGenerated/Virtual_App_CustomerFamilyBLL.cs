@@ -45,6 +45,7 @@ namespace Apps.BLL.App
 								|| a.Name.Contains(queryStr)
 								
 								|| a.Relation.Contains(queryStr)
+								|| a.Occupation.Contains(queryStr)
 								);
             }
             else
@@ -73,6 +74,7 @@ namespace Apps.BLL.App
 													Name = r.Name,
 													Age = r.Age,
 													Relation = r.Relation,
+													Occupation = r.Occupation,
           
                                               }).ToList();
 
@@ -101,6 +103,7 @@ namespace Apps.BLL.App
 				entity.Name = model.Name;
 				entity.Age = model.Age;
 				entity.Relation = model.Relation;
+				entity.Occupation = model.Occupation;
   
 
                 if (m_Rep.Create(entity))
@@ -198,6 +201,7 @@ namespace Apps.BLL.App
 				entity.Name = model.Name;
 				entity.Age = model.Age;
 				entity.Relation = model.Relation;
+				entity.Occupation = model.Occupation;
  
 
 
@@ -239,6 +243,7 @@ namespace Apps.BLL.App
 				model.Name = entity.Name;
 				model.Age = entity.Age;
 				model.Relation = entity.Relation;
+				model.Occupation = entity.Occupation;
  
                 return model;
             }

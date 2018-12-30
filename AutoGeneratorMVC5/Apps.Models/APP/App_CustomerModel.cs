@@ -45,6 +45,9 @@ namespace Apps.Models.App
         [Display(Name = "真实姓名")]
         public override string CustomerName { get; set; }
 
+        [Display(Name = "英文名")]
+        public override string EnglishName { get; set; }
+
         [Display(Name = "密码")]
         public override string Password { get; set; }
 
@@ -129,19 +132,29 @@ namespace Apps.Models.App
         [Display(Name = "求职意向")]
         public string JobIntensionNames { get; set; }
 
+        [Display(Name = "婚姻")]
+        public override string MaritalStatus { get; set; }
+
+        [Display(Name = "护照号")]
+        public override string PassportNo { get; set; }
+
+        [Display(Name = "宗教信仰")]
+        public override string Religion { get; set; }
+
         public override string ToString()
         {
             return "Record:" + Record + ",Info:" + Info + ",EnumCustomerLevel:" + EnumCustomerLevel
-                 + ",CustomerName:" + CustomerName + ",Password:" + Password + ",Sex:" + Sex
-                 + ",Phone:" + Phone + ",NickName:" + NickName + ",Age:" + Age
-                 + ",Height:" + Height + ",Weight:" + Weight + ",Nation:" + Nation
-                 + ",Introduction:" + Introduction + ",CustomerPhoto:" + CustomerPhoto + ",OpenID:" + OpenID
-                 + ",BirthDay:" + BirthDay + ",BirthPlace:" + BirthPlace + ",CurrentPlace:" + CurrentPlace
-                 + ",WeChatNumber:" + WeChatNumber + ",Cultural:" + Cultural + ",EnumCustomerType:" + EnumCustomerType
-                 + ",EnumForeignLangGrade:" + EnumForeignLangGrade + ",SwitchBtnPassport:" + SwitchBtnPassport + ",AbroadExp:" + AbroadExp
-                 + ",EnumDriverLicence:" + EnumDriverLicence + ",SwitchBtnRecommend:" + SwitchBtnRecommend + ",VideoPath:" + VideoPath
-                 + ",WordPath:" + WordPath + ",WordName:" + WordName + ",WordExt:" + WordExt
-                 + ",JobIntension:" + JobIntension;
+                + ",CustomerName:" + CustomerName + ",Password:" + Password + ",Sex:" + Sex
+                + ",Phone:" + Phone + ",NickName:" + NickName + ",Age:" + Age
+                + ",Height:" + Height + ",Weight:" + Weight + ",Nation:" + Nation
+                + ",Introduction:" + Introduction + ",CustomerPhoto:" + CustomerPhoto + ",OpenID:" + OpenID
+                + ",BirthDay:" + BirthDay + ",BirthPlace:" + BirthPlace + ",CurrentPlace:" + CurrentPlace
+                + ",WeChatNumber:" + WeChatNumber + ",Cultural:" + Cultural + ",EnumCustomerType:" + EnumCustomerType
+                + ",EnumForeignLangGrade:" + EnumForeignLangGrade + ",SwitchBtnPassport:" + SwitchBtnPassport + ",AbroadExp:" + AbroadExp
+                + ",EnumDriverLicence:" + EnumDriverLicence + ",SwitchBtnRecommend:" + SwitchBtnRecommend + ",VideoPath:" + VideoPath
+                + ",WordPath:" + WordPath + ",WordName:" + WordName + ",WordExt:" + WordExt
+                + ",JobIntension:" + JobIntension + ",EnglishName:" + EnglishName + ",MaritalStatus:" + MaritalStatus
+                + ",PassportNo:" + PassportNo + ",Religion:" + Religion;
         }
     }
     #endregion
@@ -542,6 +555,41 @@ namespace Apps.Models.App
     public partial class ApplyJobResumeModel : App_CustomerModel
     {
         public string ApplyJobId { get; set; }
+    }
+    #endregion
+
+    #region 后台提交的简历信息
+    public class CustomerResumePost
+    {
+        public string PositionId { get; set; }
+        public string UserId { get; set; }
+        public string CustomerPhoto { get; set; }
+        public string CustomerName { get; set; }
+        public string Sex { get; set; }
+        public string EnglishName { get; set; }
+        public string MaritalStatus { get; set; }
+        public string Phone { get; set; }
+        public int Age { get; set; }
+        public string PassportNo { get; set; }
+        public string Height { get; set; }
+        public string BirthPlace { get; set; }
+        public string Weight { get; set; }
+        public string Nation { get; set; }
+        public string AbroadExp { get; set; }
+        public string EnumForeignLangGrade { get; set; }
+        public string Religion { get; set; }
+        public string JobIntension { get; set; }
+        public string ExpectCountry { get; set; }
+        public string EnumDriverLicence { get; set; }
+        public List<EduExpPost> eduExpPosts { get; set; }
+        public List<WorkExpPost> workExpPosts { get; set; }
+        public List<FamilyPost> familyPosts { get; set; }
+        public override string ToString()
+        {
+            return "UserId:" + UserId + ",PositionId:" + PositionId + ",CustomerPhoto:" + CustomerPhoto
+                + ",CustomerName:" + CustomerName
+                + ",Sex:" + Sex + ",EnglishName:" + EnglishName;
+        }
     }
     #endregion
 

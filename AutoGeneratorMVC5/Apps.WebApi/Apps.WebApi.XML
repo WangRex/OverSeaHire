@@ -142,6 +142,13 @@
             <param name="UserId"></param>
             <returns></returns>
         </member>
+        <member name="M:Apps.WebApi.Controllers.AccountController.CreateCustomerResume(Apps.Models.App.CustomerResumePost)">
+            <summary>
+            【后台】创建简历
+            </summary>
+            <param name="customerResumePost"></param>
+            <returns></returns>
+        </member>
         <member name="T:Apps.WebApi.Controllers.AddressListController">
             <summary>
             

@@ -141,6 +141,11 @@
           <Property Name="WordName" Type="nvarchar(max)" />
           <Property Name="WordExt" Type="nvarchar(max)" />
           <Property Name="JobIntension" Type="nvarchar(max)" />
+          <Property Name="EnglishName" Type="nvarchar(max)" />
+          <Property Name="MaritalStatus" Type="nvarchar(max)" />
+          <Property Name="PassportNo" Type="nvarchar(max)" />
+          <Property Name="Religion" Type="nvarchar(max)" />
+          <Property Name="ExpectCountry" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="App_CustomerCertificate">
           <Key>
@@ -189,6 +194,8 @@
           <Property Name="EndDate" Type="nvarchar(max)" />
           <Property Name="School" Type="nvarchar(max)" />
           <Property Name="Degree" Type="nvarchar(max)" />
+          <Property Name="Certificate" Type="nvarchar(max)" />
+          <Property Name="Major" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="App_CustomerFamily">
           <Key>
@@ -205,6 +212,7 @@
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="Age" Type="int" Nullable="false" />
           <Property Name="Relation" Type="nvarchar(max)" />
+          <Property Name="Occupation" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="App_CustomerJobIntension">
           <Key>
@@ -258,6 +266,7 @@
           <Property Name="EndDate" Type="nvarchar(max)" />
           <Property Name="Company" Type="nvarchar(max)" />
           <Property Name="Position" Type="nvarchar(max)" />
+          <Property Name="JobDescription" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="App_Office">
           <Key>
@@ -3167,7 +3176,6 @@
           <EntitySet Name="App_Office" EntityType="DB.App_Office" />
           <EntitySet Name="SysFeedback" EntityType="DB.SysFeedback" />
           <EntitySet Name="App_Requirement" EntityType="DB.App_Requirement" />
-          <EntitySet Name="App_Customer" EntityType="DB.App_Customer" />
           <EntitySet Name="App_CustomerCollect" EntityType="DB.App_CustomerCollect" />
           <EntitySet Name="App_Company" EntityType="DB.App_Company" />
           <EntitySet Name="SysMessage" EntityType="DB.SysMessage" />
@@ -3216,6 +3224,7 @@
             <End Role="SysUser" EntitySet="SysUser" />
           </AssociationSet>
           <EntitySet Name="App_RequirementInvite" EntityType="DB.App_RequirementInvite" />
+          <EntitySet Name="App_Customer" EntityType="DB.App_Customer" />
           </EntityContainer>
         <EntityType Name="DEF_Defect">
           <Key>
@@ -5172,6 +5181,8 @@
           <Property Name="EndDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="School" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Degree" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Certificate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Major" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="App_CustomerFamily">
           <Key>
@@ -5188,6 +5199,7 @@
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Age" Type="Int32" Nullable="false" />
           <Property Name="Relation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Occupation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="App_CustomerWorkExp">
           <Key>
@@ -5205,6 +5217,7 @@
           <Property Name="EndDate" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Company" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Position" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="App_CustomerCertificate">
           <Key>
@@ -5344,49 +5357,6 @@
           <Property Name="PreTaxSalary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WorkHourPerWeek" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EnumWorkPermit" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="App_Customer">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModificationTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreateUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ModificationUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SortCode" Type="Int32" Nullable="false" />
-          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Record" Type="Int32" />
-          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EnumCustomerLevel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Sex" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="NickName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Age" Type="Int32" Nullable="false" />
-          <Property Name="Height" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Weight" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Nation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CustomerPhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="OpenID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CurrentPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WeChatNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Cultural" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EnumCustomerType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EnumForeignLangGrade" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SwitchBtnPassport" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AbroadExp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EnumDriverLicence" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SwitchBtnRecommend" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="VideoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WordPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WordName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="WordExt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="JobIntension" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="App_CustomerCollect">
           <Key>
@@ -5676,6 +5646,54 @@
           <Property Name="InitiatorId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Inviter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SwitchBtnAgree" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="App_Customer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModificationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModificationUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SortCode" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Record" Type="Int32" />
+          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnumCustomerLevel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Sex" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Height" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Weight" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Introduction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerPhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OpenID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BirthPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WeChatNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cultural" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnumCustomerType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnumForeignLangGrade" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SwitchBtnPassport" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AbroadExp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnumDriverLicence" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SwitchBtnRecommend" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="VideoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WordPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WordName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WordExt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobIntension" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnglishName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MaritalStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PassportNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Religion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExpectCountry" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7166,6 +7184,8 @@
           <EntitySetMapping Name="App_CustomerEduExp">
             <EntityTypeMapping TypeName="DB.App_CustomerEduExp">
               <MappingFragment StoreEntitySet="App_CustomerEduExp">
+                <ScalarProperty Name="Major" ColumnName="Major" />
+                <ScalarProperty Name="Certificate" ColumnName="Certificate" />
                 <ScalarProperty Name="Degree" ColumnName="Degree" />
                 <ScalarProperty Name="School" ColumnName="School" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
@@ -7184,6 +7204,7 @@
           <EntitySetMapping Name="App_CustomerFamily">
             <EntityTypeMapping TypeName="DB.App_CustomerFamily">
               <MappingFragment StoreEntitySet="App_CustomerFamily">
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
                 <ScalarProperty Name="Relation" ColumnName="Relation" />
                 <ScalarProperty Name="Age" ColumnName="Age" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -7201,6 +7222,7 @@
           <EntitySetMapping Name="App_CustomerWorkExp">
             <EntityTypeMapping TypeName="DB.App_CustomerWorkExp">
               <MappingFragment StoreEntitySet="App_CustomerWorkExp">
+                <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
                 <ScalarProperty Name="Position" ColumnName="Position" />
                 <ScalarProperty Name="Company" ColumnName="Company" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
@@ -7351,50 +7373,6 @@
                 <ScalarProperty Name="PK_App_Position_Name" ColumnName="PK_App_Position_Name" />
                 <ScalarProperty Name="SubTitle" ColumnName="SubTitle" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="SortCode" ColumnName="SortCode" />
-                <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />
-                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
-                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="App_Customer">
-            <EntityTypeMapping TypeName="DB.App_Customer">
-              <MappingFragment StoreEntitySet="App_Customer">
-                <ScalarProperty Name="JobIntension" ColumnName="JobIntension" />
-                <ScalarProperty Name="WordExt" ColumnName="WordExt" />
-                <ScalarProperty Name="WordName" ColumnName="WordName" />
-                <ScalarProperty Name="WordPath" ColumnName="WordPath" />
-                <ScalarProperty Name="VideoPath" ColumnName="VideoPath" />
-                <ScalarProperty Name="SwitchBtnRecommend" ColumnName="SwitchBtnRecommend" />
-                <ScalarProperty Name="EnumDriverLicence" ColumnName="EnumDriverLicence" />
-                <ScalarProperty Name="AbroadExp" ColumnName="AbroadExp" />
-                <ScalarProperty Name="SwitchBtnPassport" ColumnName="SwitchBtnPassport" />
-                <ScalarProperty Name="EnumForeignLangGrade" ColumnName="EnumForeignLangGrade" />
-                <ScalarProperty Name="EnumCustomerType" ColumnName="EnumCustomerType" />
-                <ScalarProperty Name="Cultural" ColumnName="Cultural" />
-                <ScalarProperty Name="WeChatNumber" ColumnName="WeChatNumber" />
-                <ScalarProperty Name="CurrentPlace" ColumnName="CurrentPlace" />
-                <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
-                <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
-                <ScalarProperty Name="OpenID" ColumnName="OpenID" />
-                <ScalarProperty Name="CustomerPhoto" ColumnName="CustomerPhoto" />
-                <ScalarProperty Name="Introduction" ColumnName="Introduction" />
-                <ScalarProperty Name="Nation" ColumnName="Nation" />
-                <ScalarProperty Name="Weight" ColumnName="Weight" />
-                <ScalarProperty Name="Height" ColumnName="Height" />
-                <ScalarProperty Name="Age" ColumnName="Age" />
-                <ScalarProperty Name="NickName" ColumnName="NickName" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="EnumCustomerLevel" ColumnName="EnumCustomerLevel" />
-                <ScalarProperty Name="Info" ColumnName="Info" />
-                <ScalarProperty Name="Record" ColumnName="Record" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="SortCode" ColumnName="SortCode" />
                 <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />
@@ -7576,6 +7554,55 @@
                 <ScalarProperty Name="Inviter" ColumnName="Inviter" />
                 <ScalarProperty Name="InitiatorId" ColumnName="InitiatorId" />
                 <ScalarProperty Name="PK_App_Requirement_Title" ColumnName="PK_App_Requirement_Title" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="SortCode" ColumnName="SortCode" />
+                <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="App_Customer">
+            <EntityTypeMapping TypeName="DB.App_Customer">
+              <MappingFragment StoreEntitySet="App_Customer">
+                <ScalarProperty Name="ExpectCountry" ColumnName="ExpectCountry" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="PassportNo" ColumnName="PassportNo" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="EnglishName" ColumnName="EnglishName" />
+                <ScalarProperty Name="JobIntension" ColumnName="JobIntension" />
+                <ScalarProperty Name="WordExt" ColumnName="WordExt" />
+                <ScalarProperty Name="WordName" ColumnName="WordName" />
+                <ScalarProperty Name="WordPath" ColumnName="WordPath" />
+                <ScalarProperty Name="VideoPath" ColumnName="VideoPath" />
+                <ScalarProperty Name="SwitchBtnRecommend" ColumnName="SwitchBtnRecommend" />
+                <ScalarProperty Name="EnumDriverLicence" ColumnName="EnumDriverLicence" />
+                <ScalarProperty Name="AbroadExp" ColumnName="AbroadExp" />
+                <ScalarProperty Name="SwitchBtnPassport" ColumnName="SwitchBtnPassport" />
+                <ScalarProperty Name="EnumForeignLangGrade" ColumnName="EnumForeignLangGrade" />
+                <ScalarProperty Name="EnumCustomerType" ColumnName="EnumCustomerType" />
+                <ScalarProperty Name="Cultural" ColumnName="Cultural" />
+                <ScalarProperty Name="WeChatNumber" ColumnName="WeChatNumber" />
+                <ScalarProperty Name="CurrentPlace" ColumnName="CurrentPlace" />
+                <ScalarProperty Name="BirthPlace" ColumnName="BirthPlace" />
+                <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+                <ScalarProperty Name="OpenID" ColumnName="OpenID" />
+                <ScalarProperty Name="CustomerPhoto" ColumnName="CustomerPhoto" />
+                <ScalarProperty Name="Introduction" ColumnName="Introduction" />
+                <ScalarProperty Name="Nation" ColumnName="Nation" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="Height" ColumnName="Height" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="EnumCustomerLevel" ColumnName="EnumCustomerLevel" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Record" ColumnName="Record" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="SortCode" ColumnName="SortCode" />
                 <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />

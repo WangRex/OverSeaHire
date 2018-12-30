@@ -18,6 +18,8 @@ namespace Apps.BLL.App
         [Dependency]
         public SysLogRepository sysLog { get; set; }
         [Dependency]
+        public SysUserRepository sysUserRepository { get; set; }
+        [Dependency]
         public EnumDictionaryBLL enumDictionary { get; set; }
         [Dependency]
         public App_CustomerWorkExpBLL customerWorkExpBLL { get; set; }
@@ -1160,6 +1162,203 @@ namespace Apps.BLL.App
             //排序
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelList(ref queryData);
+        }
+        #endregion
+
+        #region 【后台】创建简历
+        /// <summary>
+        /// 【后台】创建简历
+        /// </summary>
+        /// <param name="customerResumePost"></param>
+        /// <param name="ErrorMsg"></param>
+        /// <returns></returns>
+        public string CreateCustomerResume(CustomerResumePost customerResumePost, ref string ErrorMsg)
+        {
+            sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString(), "开始", "CreateCustomerResume", "App_CustomerBLL");
+            App_Customer customerOwner = new App_Customer();
+            App_Customer customer = new App_Customer();
+            var now = ResultHelper.NowTime;
+            var sysUser = sysUserRepository.GetById(customerResumePost.UserId);
+            if (null == sysUser)
+            {
+                ErrorMsg = "用户不存在";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateCustomerResume", "App_CustomerBLL");
+                return null;
+            }
+            customerOwner = m_Rep.GetById(sysUser.PK_App_Customer_CustomerName);
+            if (null == customerOwner)
+            {
+                ErrorMsg = "用户不存在";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateCustomerResume", "App_CustomerBLL");
+                return null;
+            }
+            customer.Id = ResultHelper.NewId;
+            customer.CreateTime = now;
+            customer.CreateUserName = sysUser.PK_App_Customer_CustomerName;
+            customer.ModificationTime = now;
+            customer.ModificationUserName = sysUser.PK_App_Customer_CustomerName;
+            customer.ParentId = sysUser.PK_App_Customer_CustomerName;
+            customer.SwitchBtnPassport = "0";
+            customer.SwitchBtnRecommend = "0";
+            if (!string.IsNullOrEmpty(customerResumePost.CustomerPhoto))
+            {
+                customer.CustomerPhoto = customerResumePost.CustomerPhoto;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.PositionId))
+            {
+                customer.CustomerPhoto = customerResumePost.PositionId;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.CustomerName))
+            {
+                customer.CustomerName = customerResumePost.CustomerName;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.Sex))
+            {
+                customer.Sex = customerResumePost.Sex;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.EnglishName))
+            {
+                customer.EnglishName = customerResumePost.EnglishName;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.MaritalStatus))
+            {
+                customer.MaritalStatus = customerResumePost.MaritalStatus;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.Phone))
+            {
+                customer.Phone = customerResumePost.Phone;
+            }
+            if (0 != customerResumePost.Age)
+            {
+                customer.Age = customerResumePost.Age;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.PassportNo))
+            {
+                customer.PassportNo = customerResumePost.PassportNo;
+                customer.SwitchBtnPassport = "1";
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.Height))
+            {
+                customer.Height = customerResumePost.Height;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.BirthPlace))
+            {
+                customer.BirthPlace = customerResumePost.BirthPlace;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.Weight))
+            {
+                customer.Weight = customerResumePost.Weight;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.Nation))
+            {
+                customer.Nation = customerResumePost.Nation;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.AbroadExp))
+            {
+                customer.AbroadExp = customerResumePost.AbroadExp;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.EnumForeignLangGrade))
+            {
+                customer.EnumForeignLangGrade = customerResumePost.EnumForeignLangGrade;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.Religion))
+            {
+                customer.Religion = customerResumePost.Religion;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.JobIntension))
+            {
+                customer.JobIntension = customerResumePost.JobIntension;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.ExpectCountry))
+            {
+                customer.ExpectCountry = customerResumePost.ExpectCountry;
+            }
+            if (!string.IsNullOrEmpty(customerResumePost.EnumDriverLicence))
+            {
+                customer.EnumDriverLicence = customerResumePost.EnumDriverLicence;
+            }
+            try
+            {
+                m_Rep.Create(customer);
+                //用户更新成功后，添加工作经历
+                if (null != customerResumePost.workExpPosts)
+                {
+                    //先删掉之前保存的集合
+                    var workExps = customerWorkExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                    var Ids = workExps.Select(EF => EF.Id).ToArray();
+                    customerWorkExpBLL.m_Rep.Delete(Ids);
+                    foreach (var item in customerResumePost.workExpPosts)
+                    {
+                        App_CustomerWorkExp app_CustomerWorkExp = new App_CustomerWorkExp();
+                        app_CustomerWorkExp.Id = ResultHelper.NewId;
+                        app_CustomerWorkExp.CreateTime = now;
+                        app_CustomerWorkExp.CreateUserName = customer.Id;
+                        app_CustomerWorkExp.ModificationTime = now;
+                        app_CustomerWorkExp.ModificationUserName = customer.Id;
+                        app_CustomerWorkExp.PK_App_Customer_CustomerName = customer.Id;
+                        app_CustomerWorkExp.StartDate = item.StartDate;
+                        app_CustomerWorkExp.EndDate = item.EndDate;
+                        app_CustomerWorkExp.Company = item.Company;
+                        app_CustomerWorkExp.Position = item.Position;
+                        app_CustomerWorkExp.JobDescription = item.JobDescription;
+                        customerWorkExpBLL.m_Rep.Create(app_CustomerWorkExp);
+                    }
+                }
+                if (null != customerResumePost.eduExpPosts)
+                {
+                    //先删掉之前保存的集合
+                    var eduExps = customerEduExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                    var Ids = eduExps.Select(EF => EF.Id).ToArray();
+                    customerEduExpBLL.m_Rep.Delete(Ids);
+                    foreach (var item in customerResumePost.eduExpPosts)
+                    {
+                        App_CustomerEduExp app_CustomerEduExp = new App_CustomerEduExp();
+                        app_CustomerEduExp.Id = ResultHelper.NewId;
+                        app_CustomerEduExp.CreateTime = now;
+                        app_CustomerEduExp.CreateUserName = customer.Id;
+                        app_CustomerEduExp.ModificationTime = now;
+                        app_CustomerEduExp.ModificationUserName = customer.Id;
+                        app_CustomerEduExp.PK_App_Customer_CustomerName = customer.Id;
+                        app_CustomerEduExp.StartDate = item.StartDate;
+                        app_CustomerEduExp.EndDate = item.EndDate;
+                        app_CustomerEduExp.School = item.School;
+                        app_CustomerEduExp.Degree = item.Degree;
+                        app_CustomerEduExp.Certificate = item.Certificate;
+                        customerEduExpBLL.m_Rep.Create(app_CustomerEduExp);
+                    }
+                }
+                if (null != customerResumePost.familyPosts)
+                {
+                    //先删掉之前保存的集合
+                    var families = customerFamilyBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                    var Ids = families.Select(EF => EF.Id).ToArray();
+                    customerFamilyBLL.m_Rep.Delete(Ids);
+                    foreach (var item in customerResumePost.familyPosts)
+                    {
+                        App_CustomerFamily app_CustomerFamily = new App_CustomerFamily();
+                        app_CustomerFamily.Id = ResultHelper.NewId;
+                        app_CustomerFamily.CreateTime = now;
+                        app_CustomerFamily.CreateUserName = customer.Id;
+                        app_CustomerFamily.ModificationTime = now;
+                        app_CustomerFamily.ModificationUserName = customer.Id;
+                        app_CustomerFamily.PK_App_Customer_CustomerName = customer.Id;
+                        app_CustomerFamily.Name = item.Name;
+                        app_CustomerFamily.Age = item.Age;
+                        app_CustomerFamily.Relation = item.Relation;
+                        app_CustomerFamily.Occupation = item.Occupation;
+                        customerFamilyBLL.m_Rep.Create(app_CustomerFamily);
+                    }
+                }
+                ErrorMsg = "用户工友添加成功";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateCustomerResume", "App_CustomerBLL");
+                return customer.Id;
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = "用户工友添加失败";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg + ex.Message, "结束", "CreateCustomerResume", "App_CustomerBLL");
+                return null;
+            }
         }
         #endregion
     }

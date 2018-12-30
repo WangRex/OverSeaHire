@@ -39,10 +39,13 @@ namespace Apps.Models.App
         [Display(Name = "关系")]
         public override string Relation { get; set; }
 
+        [Display(Name = "职业")]
+        public override string Occupation { get; set; }
+
         public override string ToString()
         {
             return "PK_App_Customer_CustomerName:" + PK_App_Customer_CustomerName + ",Name:" + Name + ",Age:" + Age
-                + ",Relation:" + Relation;
+                + ",Relation:" + Relation + ",Occupation:" + Occupation;
         }
     }
     #endregion
@@ -66,11 +69,15 @@ namespace Apps.Models.App
         /// 关系
         /// </summary>
         public string Relation { get; set; }
+        /// <summary>
+        /// 职业
+        /// </summary>
+        public string Occupation { get; set; }
 
         public override string ToString()
         {
             return "PK_App_Customer_CustomerName:" + PK_App_Customer_CustomerName + ",Name:" + Name + ",Age:" + Age
-                + ",Relation:" + Relation;
+                + ",Relation:" + Relation + ",Occupation:" + Occupation;
         }
     }
     #endregion

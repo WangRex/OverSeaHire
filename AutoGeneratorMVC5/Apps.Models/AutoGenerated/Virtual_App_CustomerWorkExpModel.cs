@@ -25,5 +25,6 @@ namespace Apps.Models.App
 			public virtual string EndDate { get; set; }
 			public virtual string Company { get; set; }
 			public virtual string Position { get; set; }
+			public virtual string JobDescription { get; set; }
 		}
 }

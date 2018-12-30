@@ -26,6 +26,7 @@
         font-weight: bolder;
     }
 </style>
+
 <div class="mvctool">
     <div style="float:left;">
         <input type="hidden" id="JobIntension" />
@@ -36,26 +37,14 @@
             工 种:
         </label><input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
         <label>
-            性 别:
-        </label><input id="Sex" type="text" style="width:40px;" />
-        <label>
-            系统推荐:
-        </label> <input class="easyui-switchbutton" onText="是" offText="否" id="Recommend">
-        <label>
-            视 频:
-        </label> <input class="easyui-switchbutton" onText="有" offText="无" id="Video">
-        <label>
-            驾 照:
-        </label> <input class="easyui-switchbutton" onText="有" offText="无" id="DriverLicence">
-        <label>
-            出国经验:
-        </label> <input class="easyui-switchbutton" onText="有" offText="无" id="AbroadExp">
-        <label>
             手机号:
         </label> <input id="CustomerPhone" type="text" style="width:120px;" />
         <label>
             年 龄:
         </label><input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
+        <label>
+            系统推荐:
+        </label> <input class="easyui-switchbutton" onText="是" offText="否" id="Recommend">
     </div>
     <div style="float:left;">
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -97,22 +86,23 @@
             //rownumbers: true,//行号
             columns: [[
                 { field: 'Id', title: '主键', width: 80,hidden:true },
-                { field: 'CreateTime', title: '创建时间', width: 120,sortable:true },
-                { field: 'OwnerName', title: '拥有人姓名', width: 80,sortable:true },
-                { field: 'CustomerName', title: '工友姓名', width: 80,sortable:true },
+                //{ field: 'CreateTime', title: '创建时间', width: 120,sortable:true },
+                { field: 'CustomerName', title: '姓名', width: 80,sortable:true },
                 { field: 'Sex', title: '性别', width: 80,sortable:true },
-                { field: 'Phone', title: '电话', width: 80,sortable:true },
                 { field: 'Age', title: '年龄', width: 80,sortable:true },
-                {
-                    field: 'CustomerPhoto', title: '照片', width: 80, sortable: true, formatter: function (value) {
-                        if (value) {
-                            return '<img width="80px;" src="' + value + '" />';
-                        } else {
-                            return "暂无图片";
-                        }
-                    }},
-                { field: 'BirthDay', title: '生日', width: 80, sortable: true },
-                { field: 'EnumCustomerType', title: '用户身份', width: 80, sortable: true }
+                { field: 'JobIntensionNames', title: '工种', width: 80,sortable:true },
+                { field: 'AbroadExp', title: '出国经历', width: 80,sortable:true },
+                { field: 'EnumDriverLicence', title: '驾照', width: 80,sortable:true },
+                { field: 'Phone', title: '电话', width: 80,sortable:true },
+                //{
+                //    field: 'CustomerPhoto', title: '照片', width: 80, sortable: true, formatter: function (value) {
+                //        if (value) {
+                //            return '<img width="80px;" src="' + value + '" />';
+                //        } else {
+                //            return "暂无图片";
+                //        }
+                //    }},
+                { field: 'OwnerName', title: '拥有人姓名', width: 80, sortable: true },
             ]]
         });
         $("#btnCreate").click(function () {
@@ -233,30 +223,19 @@
     }
     function QueryList() {
         var SwitchbtnRecommend = $("#Recommend");//获取switchbutton对象
-        var SwitchbtnVideo = $("#Video");//获取switchbutton对象
-        var SwitchbtnDriverLicence = $("#DriverLicence");//获取switchbutton对象
-        var SwitchbtnAbroadExp = $("#AbroadExp");//获取switchbutton对象
         var Recommend = SwitchbtnRecommend.switchbutton("options").checked;//获取switchbtn值
-        var Video = SwitchbtnVideo.switchbutton("options").checked;//获取switchbtn值
-        var DriverLicence = SwitchbtnDriverLicence.switchbutton("options").checked;//获取switchbtn值
-        var AbroadExp = SwitchbtnAbroadExp.switchbutton("options").checked;//获取switchbtn值
         var CustomerName = $("#CustomerName").val();
-        var Sex = $("#Sex").val();
         var CustomerPhone = $("#CustomerPhone").val();
         var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
         var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
         var JobIntension = $("#JobIntension").val();
         $("#List").datagrid("load", {
             CustomerName: CustomerName,
-            Sex: Sex,
             CustomerPhone: CustomerPhone,
             WorkLimitAgeLow: WorkLimitAgeLow,
             WorkLimitAgeHigh: WorkLimitAgeHigh,
             JobIntension: JobIntension,
             Recommend: Recommend,
-            Video: Video,
-            DriverLicence: DriverLicence,
-            AbroadExp: AbroadExp,
         });
     }
 </script>

@@ -51,5 +51,10 @@ namespace Apps.Models.App
 			public virtual string WordName { get; set; }
 			public virtual string WordExt { get; set; }
 			public virtual string JobIntension { get; set; }
+			public virtual string EnglishName { get; set; }
+			public virtual string MaritalStatus { get; set; }
+			public virtual string PassportNo { get; set; }
+			public virtual string Religion { get; set; }
+			public virtual string ExpectCountry { get; set; }
 		}
 }

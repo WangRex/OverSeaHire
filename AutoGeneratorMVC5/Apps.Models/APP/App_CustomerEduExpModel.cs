@@ -42,10 +42,16 @@ namespace Apps.Models.App
         [Display(Name = "学历")]
         public override string Degree { get; set; }
 
+        [Display(Name = "专业")]
+        public override string Major { get; set; }
+
+        [Display(Name = "证书")]
+        public override string Certificate { get; set; }
+
         public override string ToString()
         {
             return "PK_App_Customer_CustomerName:" + PK_App_Customer_CustomerName + ",StartDate:" + StartDate + ",EndDate:" + EndDate
-                + ",School:" + School + ",Degree:" + Degree;
+                + ",School:" + School + ",Degree:" + Degree + ",Major:" + Major + ",Certificate:" + Certificate;
         }
     }
     #endregion
@@ -70,14 +76,22 @@ namespace Apps.Models.App
         /// </summary>
         public string School { get; set; }
         /// <summary>
+        /// 专业
+        /// </summary>
+        public string Major { get; set; }
+        /// <summary>
         /// 学历
         /// </summary>
         public string Degree { get; set; }
+        /// <summary>
+        /// 证书
+        /// </summary>
+        public string Certificate { get; set; }
 
         public override string ToString()
         {
             return "PK_App_Customer_CustomerName:" + PK_App_Customer_CustomerName + ",StartDate:" + StartDate + ",EndDate:" + EndDate
-                + ",School:" + School + ",Degree:" + Degree;
+                + ",School:" + School + ",Major:" + Major + ",Degree:" + Degree + ",Certificate:" + Certificate;
         }
     }
     #endregion

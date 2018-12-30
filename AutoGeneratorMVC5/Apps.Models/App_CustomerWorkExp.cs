@@ -26,5 +26,6 @@ namespace Apps.Models
         public string EndDate { get; set; }
         public string Company { get; set; }
         public string Position { get; set; }
+        public string JobDescription { get; set; }
     }
 }

@@ -46,6 +46,8 @@ namespace Apps.BLL.App
 								|| a.EndDate.Contains(queryStr)
 								|| a.School.Contains(queryStr)
 								|| a.Degree.Contains(queryStr)
+								|| a.Certificate.Contains(queryStr)
+								|| a.Major.Contains(queryStr)
 								);
             }
             else
@@ -75,6 +77,8 @@ namespace Apps.BLL.App
 													EndDate = r.EndDate,
 													School = r.School,
 													Degree = r.Degree,
+													Certificate = r.Certificate,
+													Major = r.Major,
           
                                               }).ToList();
 
@@ -104,6 +108,8 @@ namespace Apps.BLL.App
 				entity.EndDate = model.EndDate;
 				entity.School = model.School;
 				entity.Degree = model.Degree;
+				entity.Certificate = model.Certificate;
+				entity.Major = model.Major;
   
 
                 if (m_Rep.Create(entity))
@@ -202,6 +208,8 @@ namespace Apps.BLL.App
 				entity.EndDate = model.EndDate;
 				entity.School = model.School;
 				entity.Degree = model.Degree;
+				entity.Certificate = model.Certificate;
+				entity.Major = model.Major;
  
 
 
@@ -244,6 +252,8 @@ namespace Apps.BLL.App
 				model.EndDate = entity.EndDate;
 				model.School = entity.School;
 				model.Degree = entity.Degree;
+				model.Certificate = entity.Certificate;
+				model.Major = entity.Major;
  
                 return model;
             }

@@ -46,6 +46,7 @@ namespace Apps.BLL.App
 								|| a.EndDate.Contains(queryStr)
 								|| a.Company.Contains(queryStr)
 								|| a.Position.Contains(queryStr)
+								|| a.JobDescription.Contains(queryStr)
 								);
             }
             else
@@ -75,6 +76,7 @@ namespace Apps.BLL.App
 													EndDate = r.EndDate,
 													Company = r.Company,
 													Position = r.Position,
+													JobDescription = r.JobDescription,
           
                                               }).ToList();
 
@@ -104,6 +106,7 @@ namespace Apps.BLL.App
 				entity.EndDate = model.EndDate;
 				entity.Company = model.Company;
 				entity.Position = model.Position;
+				entity.JobDescription = model.JobDescription;
   
 
                 if (m_Rep.Create(entity))
@@ -202,6 +205,7 @@ namespace Apps.BLL.App
 				entity.EndDate = model.EndDate;
 				entity.Company = model.Company;
 				entity.Position = model.Position;
+				entity.JobDescription = model.JobDescription;
  
 
 
@@ -244,6 +248,7 @@ namespace Apps.BLL.App
 				model.EndDate = entity.EndDate;
 				model.Company = entity.Company;
 				model.Position = entity.Position;
+				model.JobDescription = entity.JobDescription;
  
                 return model;
             }

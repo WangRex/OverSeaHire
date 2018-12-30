@@ -7,6 +7,7 @@ using Microsoft.Practices.Unity;
 using Apps.BLL.Sys;
 using Apps.BLL.App;
 using Apps.Models.App;
+using Newtonsoft.Json;
 
 namespace Apps.Web.Areas.App.Controllers
 {
@@ -88,48 +89,30 @@ namespace Apps.Web.Areas.App.Controllers
 
         [HttpPost]
         [SupportFilter]
-        public JsonResult Create(App_CustomerModel model)
+        public JsonResult Create(string strCustomerResumePost, string eduPosts, string workPosts, string memberPosts)
         {
+            //自己反序列化处理，更灵活处理
+            CustomerResumePost customerResumePost = JsonConvert.DeserializeObject<CustomerResumePost>(strCustomerResumePost);
+            List<EduExpPost> listEdu = JsonConvert.DeserializeObject<List<EduExpPost>>(eduPosts);
+            List<WorkExpPost> listWork = JsonConvert.DeserializeObject<List<WorkExpPost>>(workPosts);
+            List<FamilyPost> listMember = JsonConvert.DeserializeObject<List<FamilyPost>>(memberPosts);
             string strUserId = GetUserId();
-            model.Id = ResultHelper.NewId;
-            model.CreateTime = ResultHelper.NowTime;
-            model.CreateUserName = strUserId;
-            model.ModificationTime = ResultHelper.NowTime;
-            //保存后台录入时，appcustomer对应的用户主键信息
-            model.ParentId = sysUserBLL.GetById(strUserId).PK_App_Customer_CustomerName;
-            if (model != null && ModelState.IsValid)
+            string ErrorMsg = "";
+            customerResumePost.eduExpPosts = listEdu;
+            customerResumePost.workExpPosts = listWork;
+            customerResumePost.familyPosts = listMember;
+            customerResumePost.UserId = strUserId;
+            string CustomerId = m_BLL.CreateCustomerResume(customerResumePost, ref ErrorMsg);
+            if (CustomerId != null)
             {
-                if (model.SwitchBtnPassport == null)
-                {
-                    model.SwitchBtnPassport = "0";
-                }
-                else
-                {
-                    model.SwitchBtnPassport = "1";
-                }
-                if (model.SwitchBtnRecommend == null)
-                {
-                    model.SwitchBtnRecommend = "0";
-                }
-                else
-                {
-                    model.SwitchBtnRecommend = "1";
-                }
-                if (m_BLL.Create(ref errors, model))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "创建", "APP_Customer");
-                    return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime + "," + ErrorCol, "失败", "创建", "APP_Customer");
-                    return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
-                }
+                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",CreateTime:" + ResultHelper.NowTime, "成功", "创建", "APP_Customer");
+                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail));
+                string ErrorCol = errors.Error;
+                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",CreateTime:" + ResultHelper.NowTime + "," + ErrorMsg, "失败", "创建", "APP_Customer");
+                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
             }
         }
         #endregion

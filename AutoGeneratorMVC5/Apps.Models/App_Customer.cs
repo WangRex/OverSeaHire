@@ -52,5 +52,10 @@ namespace Apps.Models
         public string WordName { get; set; }
         public string WordExt { get; set; }
         public string JobIntension { get; set; }
+        public string EnglishName { get; set; }
+        public string MaritalStatus { get; set; }
+        public string PassportNo { get; set; }
+        public string Religion { get; set; }
+        public string ExpectCountry { get; set; }
     }
 }

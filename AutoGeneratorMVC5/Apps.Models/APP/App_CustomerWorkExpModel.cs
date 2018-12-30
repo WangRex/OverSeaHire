@@ -42,6 +42,9 @@ namespace Apps.Models.App
         [Display(Name = "职位")]
         public override string Position { get; set; }
 
+        [Display(Name = "工作内容")]
+        public override string JobDescription { get; set; }
+
         public override string ToString()
         {
             return "PK_App_Customer_CustomerName:" + PK_App_Customer_CustomerName + ",StartDate:" + StartDate + ",EndDate:" + EndDate
@@ -73,11 +76,15 @@ namespace Apps.Models.App
         /// 职位
         /// </summary>
         public string Position { get; set; }
+        /// <summary>
+        /// 工作内容
+        /// </summary>
+        public string JobDescription { get; set; }
 
         public override string ToString()
         {
             return "PK_App_Customer_CustomerName:" + PK_App_Customer_CustomerName + ",StartDate:" + StartDate + ",EndDate:" + EndDate
-                + ",Company:" + Company + ",Position:" + Position;
+                + ",Company:" + Company + ",Position:" + Position + ",JobDescription:" + JobDescription;
         }
     }
     #endregion

@@ -126,7 +126,6 @@
         <EntityTypeShape EntityType="DB.App_Office" Width="1.5" PointX="18.375" PointY="27.75" />
         <EntityTypeShape EntityType="DB.SysFeedback" Width="1.5" PointX="5.375" PointY="29.75" />
         <EntityTypeShape EntityType="DB.App_Requirement" Width="1.5" PointX="29.375" PointY="9.75" />
-        <EntityTypeShape EntityType="DB.App_Customer" Width="1.5" PointX="30.375" PointY="25.75" />
         <EntityTypeShape EntityType="DB.App_CustomerCollect" Width="1.5" PointX="25.375" PointY="27.75" />
         <EntityTypeShape EntityType="DB.App_Company" Width="1.5" PointX="27.375" PointY="29.75" />
         <EntityTypeShape EntityType="DB.SysMessage" Width="1.5" PointX="14.375" PointY="26.75" />
@@ -145,6 +144,7 @@
         <AssociationConnector Association="DB.FK_WC_OfficalAcconts_SysUser" />
         <AssociationConnector Association="DB.SysRoleSysUser" />
         <EntityTypeShape EntityType="DB.App_RequirementInvite" Width="1.5" PointX="31.375" PointY="12.75" />
+        <EntityTypeShape EntityType="DB.App_Customer" Width="1.5" PointX="31.375" PointY="16.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

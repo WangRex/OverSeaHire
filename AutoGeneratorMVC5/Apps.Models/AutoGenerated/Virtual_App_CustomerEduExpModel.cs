@@ -25,5 +25,7 @@ namespace Apps.Models.App
 			public virtual string EndDate { get; set; }
 			public virtual string School { get; set; }
 			public virtual string Degree { get; set; }
+			public virtual string Certificate { get; set; }
+			public virtual string Major { get; set; }
 		}
 }

@@ -72,6 +72,11 @@ namespace Apps.BLL.App
 								|| a.WordName.Contains(queryStr)
 								|| a.WordExt.Contains(queryStr)
 								|| a.JobIntension.Contains(queryStr)
+								|| a.EnglishName.Contains(queryStr)
+								|| a.MaritalStatus.Contains(queryStr)
+								|| a.PassportNo.Contains(queryStr)
+								|| a.Religion.Contains(queryStr)
+								|| a.ExpectCountry.Contains(queryStr)
 								);
             }
             else
@@ -127,6 +132,11 @@ namespace Apps.BLL.App
 													WordName = r.WordName,
 													WordExt = r.WordExt,
 													JobIntension = r.JobIntension,
+													EnglishName = r.EnglishName,
+													MaritalStatus = r.MaritalStatus,
+													PassportNo = r.PassportNo,
+													Religion = r.Religion,
+													ExpectCountry = r.ExpectCountry,
           
                                               }).ToList();
 
@@ -182,6 +192,11 @@ namespace Apps.BLL.App
 				entity.WordName = model.WordName;
 				entity.WordExt = model.WordExt;
 				entity.JobIntension = model.JobIntension;
+				entity.EnglishName = model.EnglishName;
+				entity.MaritalStatus = model.MaritalStatus;
+				entity.PassportNo = model.PassportNo;
+				entity.Religion = model.Religion;
+				entity.ExpectCountry = model.ExpectCountry;
   
 
                 if (m_Rep.Create(entity))
@@ -306,6 +321,11 @@ namespace Apps.BLL.App
 				entity.WordName = model.WordName;
 				entity.WordExt = model.WordExt;
 				entity.JobIntension = model.JobIntension;
+				entity.EnglishName = model.EnglishName;
+				entity.MaritalStatus = model.MaritalStatus;
+				entity.PassportNo = model.PassportNo;
+				entity.Religion = model.Religion;
+				entity.ExpectCountry = model.ExpectCountry;
  
 
 
@@ -374,6 +394,11 @@ namespace Apps.BLL.App
 				model.WordName = entity.WordName;
 				model.WordExt = entity.WordExt;
 				model.JobIntension = entity.JobIntension;
+				model.EnglishName = entity.EnglishName;
+				model.MaritalStatus = entity.MaritalStatus;
+				model.PassportNo = entity.PassportNo;
+				model.Religion = entity.Religion;
+				model.ExpectCountry = entity.ExpectCountry;
  
                 return model;
             }
