@@ -581,6 +581,7 @@ namespace Apps.Models.App
         public string JobIntension { get; set; }
         public string ExpectCountry { get; set; }
         public string EnumDriverLicence { get; set; }
+        public string Introduction { get; set; }
         public List<EduExpPost> eduExpPosts { get; set; }
         public List<WorkExpPost> workExpPosts { get; set; }
         public List<FamilyPost> familyPosts { get; set; }
@@ -588,7 +589,7 @@ namespace Apps.Models.App
         {
             return "UserId:" + UserId + ",PositionId:" + PositionId + ",CustomerPhoto:" + CustomerPhoto
                 + ",CustomerName:" + CustomerName
-                + ",Sex:" + Sex + ",EnglishName:" + EnglishName;
+                + ",Sex:" + Sex + ",EnglishName:" + EnglishName + ",Introduction:" + Introduction;
         }
     }
     #endregion

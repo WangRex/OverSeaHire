@@ -198,23 +198,24 @@ namespace Apps.Web.Areas.App.Controllers
         [SupportFilter]
         public JsonResult Delete(string id)
         {
+            string ErrorMsg = "";
             if (!string.IsNullOrWhiteSpace(id))
             {
-                if (m_BLL.Delete(ref errors, id))
+                if (m_BLL.DeleteCustomerResume(GetUserId(), id, ref ErrorMsg))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "APP_Customer");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
                 }
                 else
                 {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "APP_Customer");
-                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorMsg, "失败", "删除", "APP_Customer");
+                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorMsg));
                 }
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail));
+                ErrorMsg = "要删除的主键为空";
+                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorMsg));
             }
 
 

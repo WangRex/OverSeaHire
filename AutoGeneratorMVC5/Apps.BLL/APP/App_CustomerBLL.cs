@@ -1277,6 +1277,7 @@ namespace Apps.BLL.App
             {
                 customer.EnumDriverLicence = customerResumePost.EnumDriverLicence;
             }
+            customer.Introduction = customerResumePost.Introduction;
             try
             {
                 m_Rep.Create(customer);
@@ -1358,6 +1359,49 @@ namespace Apps.BLL.App
                 ErrorMsg = "用户工友添加失败";
                 sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg + ex.Message, "结束", "CreateCustomerResume", "App_CustomerBLL");
                 return null;
+            }
+        }
+        #endregion
+
+        #region 【后台】删除简历
+        /// <summary>
+        /// 【后台】删除简历
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="CustomerId"></param>
+        /// <returns></returns>
+        public bool DeleteCustomerResume(string UserId, string CustomerId, ref string ErrorMsg)
+        {
+            sysLog.WriteServiceLog(UserId, "CustomerId:" + CustomerId, "开始", "DeleteCustomerResume", "App_CustomerBLL");
+            var customer = m_Rep.GetById(CustomerId);
+            if (null == customer)
+            {
+                ErrorMsg = "用户不存在";
+                sysLog.WriteServiceLog(UserId, "CustomerId:" + CustomerId + ",ErrorMsg:" + ErrorMsg, "结束", "DeleteCustomerResume", "App_CustomerBLL");
+                return false;
+            }
+            try
+            {
+                m_Rep.Delete(customer);
+                //用户删除成功后，删除工作经历
+                var workExps = customerWorkExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                var Ids = workExps.Select(EF => EF.Id).ToArray();
+                customerWorkExpBLL.m_Rep.Delete(Ids);
+                var eduExps = customerEduExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                Ids = eduExps.Select(EF => EF.Id).ToArray();
+                customerEduExpBLL.m_Rep.Delete(Ids);
+                var families = customerFamilyBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                Ids = families.Select(EF => EF.Id).ToArray();
+                customerFamilyBLL.m_Rep.Delete(Ids);
+                ErrorMsg = "简历删除成功";
+                sysLog.WriteServiceLog(UserId, "CustomerId:" + CustomerId + ",ErrorMsg:" + ErrorMsg, "结束", "DeleteCustomerResume", "App_CustomerBLL");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = "简历删除失败";
+                sysLog.WriteServiceLog(UserId, "CustomerId:" + CustomerId + ",ErrorMsg:" + ErrorMsg + ex.Message, "结束", "DeleteCustomerResume", "App_CustomerBLL");
+                return false;
             }
         }
         #endregion

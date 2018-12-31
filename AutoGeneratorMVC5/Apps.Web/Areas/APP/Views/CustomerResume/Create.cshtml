@@ -295,7 +295,7 @@
                 </tr>
             }
             <tr>
-                <td colspan="2">申请职位:</td>
+                <td colspan="2" align="center">申请职位:</td>
                 <td colspan="4"><input type="text" id="PositionId" name="PositionId"></td>
                 <td rowspan="5">
                     @Html.HiddenFor(model => model.CustomerPhoto)
@@ -318,11 +318,11 @@
                     中文
                 </td>
                 <td>@Html.EditorFor(model => model.CustomerName)</td>
-                <th align="center">
+                <td align="center">
                     Sex
                     <br />
                     性别
-                </th>
+                </td>
                 <td>
                     @Html.EditorFor(model => model.Sex)
                 </td>
@@ -449,8 +449,8 @@
                     @Html.DropDownListFor(model => model.EnumDriverLicence, ViewBag.EnumDriverLicence as SelectList, "---请选择---")
                 </td>
             </tr>
-            <tr>
-                <td colspan="7"><span class="TitleSpan">Educational Background  教育/培训经历</span></td>
+            <tr class="TitleSpan">
+                <td colspan="7">Educational Background  教育/培训经历</td>
             </tr>
             <tr>
                 <td colspan="7">
@@ -489,8 +489,8 @@
                     </table>
                 </td>
             </tr>
-            <tr>
-                <td colspan="7"><span class="TitleSpan">Working Career  工作经历</span></td>
+            <tr class="TitleSpan">
+                <td colspan="7">Working Career  工作经历</td>
             </tr>
             <tr>
                 <td colspan="7">
@@ -524,8 +524,8 @@
                     </table>
                 </td>
             </tr>
-            <tr>
-                <td colspan="7"><span class="TitleSpan">Family Member  家庭成员</span></td>
+            <tr class="TitleSpan">
+                <td colspan="7">Family Member  家庭成员</td>
             </tr>
             <tr>
                 <td colspan="7">
