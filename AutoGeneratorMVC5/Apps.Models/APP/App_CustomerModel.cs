@@ -561,7 +561,7 @@ namespace Apps.Models.App
     #region 后台提交的简历信息
     public class CustomerResumePost
     {
-        public string PositionId { get; set; }
+        public string Id { get; set; }
         public string UserId { get; set; }
         public string CustomerPhoto { get; set; }
         public string CustomerName { get; set; }
@@ -587,7 +587,7 @@ namespace Apps.Models.App
         public List<FamilyPost> familyPosts { get; set; }
         public override string ToString()
         {
-            return "UserId:" + UserId + ",PositionId:" + PositionId + ",CustomerPhoto:" + CustomerPhoto
+            return "UserId:" + UserId + ",CustomerPhoto:" + CustomerPhoto
                 + ",CustomerName:" + CustomerName
                 + ",Sex:" + Sex + ",EnglishName:" + EnglishName + ",Introduction:" + Introduction;
         }

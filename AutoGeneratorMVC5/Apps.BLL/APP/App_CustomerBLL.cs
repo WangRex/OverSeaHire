@@ -1204,10 +1204,6 @@ namespace Apps.BLL.App
             {
                 customer.CustomerPhoto = customerResumePost.CustomerPhoto;
             }
-            if (!string.IsNullOrEmpty(customerResumePost.PositionId))
-            {
-                customer.CustomerPhoto = customerResumePost.PositionId;
-            }
             if (!string.IsNullOrEmpty(customerResumePost.CustomerName))
             {
                 customer.CustomerName = customerResumePost.CustomerName;
@@ -1323,6 +1319,7 @@ namespace Apps.BLL.App
                         app_CustomerEduExp.StartDate = item.StartDate;
                         app_CustomerEduExp.EndDate = item.EndDate;
                         app_CustomerEduExp.School = item.School;
+                        app_CustomerEduExp.Major = item.Major;
                         app_CustomerEduExp.Degree = item.Degree;
                         app_CustomerEduExp.Certificate = item.Certificate;
                         customerEduExpBLL.m_Rep.Create(app_CustomerEduExp);
@@ -1402,6 +1399,206 @@ namespace Apps.BLL.App
                 ErrorMsg = "简历删除失败";
                 sysLog.WriteServiceLog(UserId, "CustomerId:" + CustomerId + ",ErrorMsg:" + ErrorMsg + ex.Message, "结束", "DeleteCustomerResume", "App_CustomerBLL");
                 return false;
+            }
+        }
+        #endregion
+
+        #region 【后台】编辑页面初始化
+        /// <summary>
+        /// 【后台】编辑页面初始化
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="ErrorMsg"></param>
+        /// <returns></returns>
+        public CustomerResumePost InitEdit(string id, ref string ErrorMsg)
+        {
+            CustomerResumePost customerResumePost = new CustomerResumePost();
+            var customer = m_Rep.GetById(id);
+            customerResumePost.Id = id;
+            customerResumePost.CustomerPhoto = customer.CustomerPhoto;
+            customerResumePost.CustomerName = customer.CustomerName;
+            customerResumePost.Sex = customer.Sex;
+            customerResumePost.EnglishName = customer.EnglishName;
+            customerResumePost.MaritalStatus = customer.MaritalStatus;
+            customerResumePost.Phone = customer.Phone;
+            customerResumePost.Age = customer.Age;
+            customerResumePost.PassportNo = customer.PassportNo;
+            customerResumePost.Height = customer.Height;
+            customerResumePost.BirthPlace = customer.BirthPlace;
+            customerResumePost.Weight = customer.Weight;
+            customerResumePost.Nation = customer.Nation;
+            customerResumePost.AbroadExp = customer.AbroadExp;
+            customerResumePost.EnumForeignLangGrade = customer.EnumForeignLangGrade;
+            customerResumePost.Religion = customer.Religion;
+            customerResumePost.JobIntension = customer.JobIntension;
+            customerResumePost.ExpectCountry = customer.ExpectCountry;
+            customerResumePost.EnumDriverLicence = customer.EnumDriverLicence;
+            customerResumePost.Introduction = customer.Introduction;
+            var workExps = customerWorkExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+            var eduExps = customerEduExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+            var families = customerFamilyBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+            customerResumePost.eduExpPosts = eduExps.Select(EF => new EduExpPost
+            {
+                StartDate = EF.StartDate,
+                EndDate = EF.EndDate,
+                School = EF.School,
+                Major = EF.Major,
+                Degree = EF.Degree,
+                Certificate = EF.Certificate,
+            }).ToList();
+            customerResumePost.workExpPosts = workExps.Select(EF => new WorkExpPost
+            {
+                StartDate = EF.StartDate,
+                EndDate = EF.EndDate,
+                Company = EF.Company,
+                Position = EF.Position,
+                JobDescription = EF.JobDescription,
+            }).ToList();
+            customerResumePost.familyPosts = families.Select(EF => new FamilyPost
+            {
+                Name = EF.Name,
+                Age = EF.Age,
+                Relation = EF.Relation,
+                Occupation = EF.Occupation,
+            }).ToList();
+            return customerResumePost;
+        }
+        #endregion
+
+        #region 【后台】编辑简历
+        /// <summary>
+        /// 【后台】编辑简历
+        /// </summary>
+        /// <param name="customerResumePost"></param>
+        /// <param name="ErrorMsg"></param>
+        /// <returns></returns>
+        public string EditCustomerResume(CustomerResumePost customerResumePost, ref string ErrorMsg)
+        {
+            sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString(), "开始", "EditCustomerResume", "App_CustomerBLL");
+            App_Customer customerOwner = new App_Customer();
+            App_Customer customer = new App_Customer();
+            var now = ResultHelper.NowTime;
+            var sysUser = sysUserRepository.GetById(customerResumePost.UserId);
+            if (null == sysUser)
+            {
+                ErrorMsg = "用户不存在";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "EditCustomerResume", "App_CustomerBLL");
+                return null;
+            }
+            customerOwner = m_Rep.GetById(sysUser.PK_App_Customer_CustomerName);
+            if (null == customerOwner)
+            {
+                ErrorMsg = "用户不存在";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "EditCustomerResume", "App_CustomerBLL");
+                return null;
+            }
+            customer = m_Rep.GetById(customerResumePost.Id);
+            customer.ModificationTime = now;
+            customer.ModificationUserName = sysUser.PK_App_Customer_CustomerName;
+            customer.SwitchBtnPassport = "0";
+            customer.SwitchBtnRecommend = "0";
+            customer.CustomerPhoto = customerResumePost.CustomerPhoto;
+            customer.CustomerName = customerResumePost.CustomerName;
+            customer.Sex = customerResumePost.Sex;
+            customer.EnglishName = customerResumePost.EnglishName;
+            customer.MaritalStatus = customerResumePost.MaritalStatus;
+            customer.Phone = customerResumePost.Phone;
+            customer.Age = customerResumePost.Age;
+            customer.PassportNo = customerResumePost.PassportNo;
+            customer.SwitchBtnPassport = "1";
+            customer.Height = customerResumePost.Height;
+            customer.BirthPlace = customerResumePost.BirthPlace;
+            customer.Weight = customerResumePost.Weight;
+            customer.Nation = customerResumePost.Nation;
+            customer.AbroadExp = customerResumePost.AbroadExp;
+            customer.EnumForeignLangGrade = customerResumePost.EnumForeignLangGrade;
+            customer.Religion = customerResumePost.Religion;
+            customer.JobIntension = customerResumePost.JobIntension;
+            customer.ExpectCountry = customerResumePost.ExpectCountry;
+            customer.EnumDriverLicence = customerResumePost.EnumDriverLicence;
+            customer.Introduction = customerResumePost.Introduction;
+            try
+            {
+                m_Rep.Edit(customer);
+                //用户更新成功后，添加工作经历
+                if (null != customerResumePost.workExpPosts)
+                {
+                    //先删掉之前保存的集合
+                    var workExps = customerWorkExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                    var Ids = workExps.Select(EF => EF.Id).ToArray();
+                    customerWorkExpBLL.m_Rep.Delete(Ids);
+                    foreach (var item in customerResumePost.workExpPosts)
+                    {
+                        App_CustomerWorkExp app_CustomerWorkExp = new App_CustomerWorkExp();
+                        app_CustomerWorkExp.Id = ResultHelper.NewId;
+                        app_CustomerWorkExp.CreateTime = now;
+                        app_CustomerWorkExp.CreateUserName = customer.Id;
+                        app_CustomerWorkExp.ModificationTime = now;
+                        app_CustomerWorkExp.ModificationUserName = customer.Id;
+                        app_CustomerWorkExp.PK_App_Customer_CustomerName = customer.Id;
+                        app_CustomerWorkExp.StartDate = item.StartDate;
+                        app_CustomerWorkExp.EndDate = item.EndDate;
+                        app_CustomerWorkExp.Company = item.Company;
+                        app_CustomerWorkExp.Position = item.Position;
+                        app_CustomerWorkExp.JobDescription = item.JobDescription;
+                        customerWorkExpBLL.m_Rep.Create(app_CustomerWorkExp);
+                    }
+                }
+                if (null != customerResumePost.eduExpPosts)
+                {
+                    //先删掉之前保存的集合
+                    var eduExps = customerEduExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                    var Ids = eduExps.Select(EF => EF.Id).ToArray();
+                    customerEduExpBLL.m_Rep.Delete(Ids);
+                    foreach (var item in customerResumePost.eduExpPosts)
+                    {
+                        App_CustomerEduExp app_CustomerEduExp = new App_CustomerEduExp();
+                        app_CustomerEduExp.Id = ResultHelper.NewId;
+                        app_CustomerEduExp.CreateTime = now;
+                        app_CustomerEduExp.CreateUserName = customer.Id;
+                        app_CustomerEduExp.ModificationTime = now;
+                        app_CustomerEduExp.ModificationUserName = customer.Id;
+                        app_CustomerEduExp.PK_App_Customer_CustomerName = customer.Id;
+                        app_CustomerEduExp.StartDate = item.StartDate;
+                        app_CustomerEduExp.EndDate = item.EndDate;
+                        app_CustomerEduExp.School = item.School;
+                        app_CustomerEduExp.Major = item.Major;
+                        app_CustomerEduExp.Degree = item.Degree;
+                        app_CustomerEduExp.Certificate = item.Certificate;
+                        customerEduExpBLL.m_Rep.Create(app_CustomerEduExp);
+                    }
+                }
+                if (null != customerResumePost.familyPosts)
+                {
+                    //先删掉之前保存的集合
+                    var families = customerFamilyBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == customer.Id);
+                    var Ids = families.Select(EF => EF.Id).ToArray();
+                    customerFamilyBLL.m_Rep.Delete(Ids);
+                    foreach (var item in customerResumePost.familyPosts)
+                    {
+                        App_CustomerFamily app_CustomerFamily = new App_CustomerFamily();
+                        app_CustomerFamily.Id = ResultHelper.NewId;
+                        app_CustomerFamily.CreateTime = now;
+                        app_CustomerFamily.CreateUserName = customer.Id;
+                        app_CustomerFamily.ModificationTime = now;
+                        app_CustomerFamily.ModificationUserName = customer.Id;
+                        app_CustomerFamily.PK_App_Customer_CustomerName = customer.Id;
+                        app_CustomerFamily.Name = item.Name;
+                        app_CustomerFamily.Age = item.Age;
+                        app_CustomerFamily.Relation = item.Relation;
+                        app_CustomerFamily.Occupation = item.Occupation;
+                        customerFamilyBLL.m_Rep.Create(app_CustomerFamily);
+                    }
+                }
+                ErrorMsg = "简历编辑成功";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "EditCustomerResume", "App_CustomerBLL");
+                return customer.Id;
+            }
+            catch (Exception ex)
+            {
+                ErrorMsg = "简历编辑失败";
+                sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg + ex.Message, "结束", "EditCustomerResume", "App_CustomerBLL");
+                return null;
             }
         }
         #endregion

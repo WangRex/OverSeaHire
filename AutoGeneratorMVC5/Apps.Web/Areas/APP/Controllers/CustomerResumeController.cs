@@ -134,44 +134,39 @@ namespace Apps.Web.Areas.App.Controllers
 
         [HttpPost]
         [SupportFilter]
-        public JsonResult Edit(App_CustomerModel model)
+        public JsonResult Edit(string strCustomerResumePost, string eduPosts, string workPosts, string memberPosts)
         {
-            if (model != null && ModelState.IsValid)
+            //自己反序列化处理，更灵活处理
+            CustomerResumePost customerResumePost = JsonConvert.DeserializeObject<CustomerResumePost>(strCustomerResumePost);
+            List<EduExpPost> listEdu = JsonConvert.DeserializeObject<List<EduExpPost>>(eduPosts);
+            List<WorkExpPost> listWork = JsonConvert.DeserializeObject<List<WorkExpPost>>(workPosts);
+            List<FamilyPost> listMember = JsonConvert.DeserializeObject<List<FamilyPost>>(memberPosts);
+            string strUserId = GetUserId();
+            string ErrorMsg = "";
+            customerResumePost.eduExpPosts = listEdu;
+            customerResumePost.workExpPosts = listWork;
+            customerResumePost.familyPosts = listMember;
+            customerResumePost.UserId = strUserId;
+            string CustomerId = m_BLL.EditCustomerResume(customerResumePost, ref ErrorMsg);
+            if (CustomerId != null)
             {
-                model.ModificationUserName = GetUserId();
-                model.ModificationTime = ResultHelper.NowTime;
-                if (model.SwitchBtnPassport == null)
-                {
-                    model.SwitchBtnPassport = "0";
-                }
-                else
-                {
-                    model.SwitchBtnPassport = "1";
-                }
-                if (model.SwitchBtnRecommend == null)
-                {
-                    model.SwitchBtnRecommend = "0";
-                }
-                else
-                {
-                    model.SwitchBtnRecommend = "1";
-                }
-                if (m_BLL.Edit(ref errors, model))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "修改", "APP_Customer");
-                    return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
-                }
-                else
-                {
-                    string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime + "," + ErrorCol, "失败", "修改", "APP_Customer");
-                    return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
-                }
+                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",ModificationTime" + ResultHelper.NowTime, "成功", "修改", "APP_Customer");
+                return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
             }
             else
             {
-                return Json(JsonHandler.CreateMessage(0, Resource.EditFail));
+                string ErrorCol = ErrorMsg;
+                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",ModificationTime" + ResultHelper.NowTime + "," + ErrorCol, "失败", "修改", "APP_Customer");
+                return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
             }
+        }
+
+        [HttpPost]
+        public JsonResult EditInit(string id)
+        {
+            string ErrorMsg = "";
+            CustomerResumePost customerResumePost = m_BLL.InitEdit(id, ref ErrorMsg);
+            return Json(customerResumePost);
         }
         #endregion
 
@@ -190,7 +185,6 @@ namespace Apps.Web.Areas.App.Controllers
             entity.JobIntension = app_PositionBLL.GetNames(entity.JobIntension);
             return View(entity);
         }
-
         #endregion
 
         #region 删除

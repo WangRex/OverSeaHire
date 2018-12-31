@@ -6,148 +6,416 @@
 @using Apps.Locale;
 @using Apps.Models.Sys;
 @{
-    /**/
-
-    ViewBag.Title = "详情";
+    ViewBag.Title = "修改";
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
     List<permModel> perm = null;
 }
+<script src="~/Scripts/template.js"></script>
+<script src="~/Scripts/jquery.serializejson.js"></script>
+
+<style>
+    table, td {
+        border: 1px solid #ddd;
+    }
+
+    #CustomerInfo {
+        border-collapse: collapse;
+        margin: 0 10px;
+        width: 100%;
+    }
+
+    .TitleSpan {
+        font-size: large;
+        font-weight: bolder;
+        background: #ccc;
+    }
+
+    .DetailsTable {
+        width: 100%;
+    }
+
+        .DetailsTable input {
+            width: 100px;
+        }
+
+    .fa-plus {
+        cursor: pointer;
+    }
+
+    .fa-minus {
+        cursor: pointer;
+    }
+</style>
 
 <script type="text/javascript">
     $(function () {
+        initTable();
         $("#btnReturn").click(function () {
-            window.parent.frameReturnByClose();
+            frameReturnByClose();
         });
     });
+    //ifram 返回
+    function frameReturnByClose() {
+        window.parent.closeTab("简历详情", "简历管理", "app/CustomerResume", "fa fa-child");
+    }
+    function initTable() {
+        globalUtils.globalAjax("@Url.Action("EditInit")", {id: "@Model.Id"}, function (data) {
+            //初始化教育经历表格
+            var arrEdu = data.eduExpPosts;
+            $.each(arrEdu, function (idx, val) {
+                $("#EduTable").find("tbody").append(template("tpl-edutr", val));
+            });
+            var arrWork = data.workExpPosts;
+            $.each(arrWork, function (idx, val) {
+                $("#WorkingCareerTable").find("tbody").append(template("tpl-worktr", val));
+            });
+            var arrMember = data.familyPosts;
+            $.each(arrMember, function (idx, val) {
+                $("#FamilyMemberTable").find("tbody").append(template("tpl-membertr", val));
+            });
+        }, "post");
+    }
 </script>
 <div class="mvctool bgb">
     @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
 </div>
+@* 教育经历tr模板 *@
+<script id="tpl-edutr" type="text/html">
+    <tr>
+        <td>
+            {{StartDate}}~{{EndDate}}
+        </td>
+        <td>
+            {{School}}
+        </td>
+        <td>
+            {{Major}}
+        </td>
+        <td>
+            {{Degree}}
+        </td>
+        <td>
+            {{Certificate}}
+        </td>
+    </tr>
+</script>
+@* 工作经历tr模板 *@
+<script id="tpl-worktr" type="text/html">
+    <tr>
+        <td>
+            {{StartDate}}~{{EndDate}}
+        </td>
+        <td>
+            {{Company}}
+        </td>
+        <td>
+            {{Position}}
+        </td>
+        <td>
+            {{JobDescription}}
+        </td>
+    </tr>
+</script>
+@* 家庭成员tr模板 *@
+<script id="tpl-membertr" type="text/html">
+    <tr>
+        <td>
+            {{Name}}
+        </td>
+        <td>
+            {{Relation}}
+        </td>
+        <td>
+            {{Age}}
+        </td>
+        <td>
+            {{Occupation}}
+        </td>
+    </tr>
+</script>
 @using (Html.BeginForm())
 {
-    <table class="formtable">
+    <table id="CustomerInfo">
         <tbody>
-            @if (Session["IdFlag"].ToString() == "1")
+            @if (Session["IdFlag"].ToString() == "1" || Session["ohadmin"].ToString() == "1")
             {
                 <tr>
                     <th>
-                        @Html.LabelFor(model => model.Id)：
+                        @Html.LabelFor(model => model.SwitchBtnRecommend)：
                     </th>
                     <td>
-                        @Model.Id
+                        @Model.SwitchBtnRecommend
                     </td>
+                    <td></td>
                 </tr>
             }
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.CustomerName)：
-                </th>
-                <td>
-                    @Model.CustomerName
+                <td colspan="2" align="center">申请职位:</td>
+                <td colspan="4">
+                    @Model.JobIntension
+                </td>
+                <td rowspan="5">
+                    <img class="expic" src="@((Model.CustomerPhoto==null||Model.CustomerPhoto=="")?"/Content/Images/NotPic.jpg":Model.CustomerPhoto)" />
                 </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.Password)：
-                </th>
-                <td>
-                    @Model.Password
+                <td rowspan="2" align="center">
+                    Name
+                    <br />
+                    姓名:
                 </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Sex)：
-                </th>
+                <td align="center">
+                    Chinese
+                    <br />
+                    中文
+                </td>
+                <td>@Model.CustomerName</td>
+                <td align="center">
+                    Sex
+                    <br />
+                    性别
+                </td>
                 <td>
                     @Model.Sex
                 </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.Phone)：
-                </th>
+                <td align="center">
+                    English
+                    <br />
+                    英文
+                </td>
+                <td>@Model.EnglishName</td>
+                <td align="center">
+                    Marital Status
+                    <br />
+                    婚  姻
+                </td>
                 <td>
-                    @Model.Phone
+                    @Model.MaritalStatus
                 </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.Age)：
-                </th>
+                <td colspan="2" align="center">
+                    电  话
+                </td>
+                <td>
+                    @Model.Phone
+                </td>
+                <td align="center">
+                    Age
+                    <br />
+                    年  龄
+                </td>
                 <td>
                     @Model.Age
                 </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.Height)：
-                </th>
+                <td colspan="2" align="center">
+                    Passport No.
+                    <br />
+                    护照号码
+                </td>
+                <td>
+                    @Model.PassportNo
+                </td>
+                <td align="center">
+                    Height
+                    <br />
+                    身  高
+                </td>
                 <td>
                     @Model.Height
                 </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.Weight)：
-                </th>
+                <td colspan="2" align="center">
+                    Address
+                    <br />
+                    籍  贯
+                </td>
+                <td>
+                    @Model.BirthPlace
+                </td>
+                <td align="center">
+                    Weight
+                    <br />
+                    体  重
+                </td>
                 <td>
                     @Model.Weight
                 </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Nation)：
-                </th>
+                <td align="center">
+                    Race
+                    <br />
+                    民  族
+                </td>
                 <td>
                     @Model.Nation
                 </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.EnumForeignLangGrade)：
-                </th>
-                <td>
-                    @Model.EnumForeignLangGrade
+                <td colspan="2" align="center">
+                    Working Overseas
+                    <br />
+                    出国经历
                 </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.SwitchBtnPassport)：
-                </th>
-                <td>
-                    @Model.SwitchBtnPassport
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.AbroadExp)：
-                </th>
                 <td>
                     @Model.AbroadExp
                 </td>
+                <td align="center">
+                    English
+                    <br />
+                    英  语
+                </td>
+                <td>
+                    @Model.EnumForeignLangGrade
+                </td>
+                <td align="center">
+                    Religion
+                    <br />
+                    宗教信仰
+                </td>
+                <td>
+                    @Model.Religion
+                </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.EnumDriverLicence)：
-                </th>
+                <td colspan="2" align="center">
+                    期望职位
+                </td>
+                <td>
+                    @Model.JobIntension
+                </td>
+                <td align="center">
+                    期望国家
+                </td>
+                <td>
+                    @Model.ExpectCountry
+                </td>
+                <td align="center">
+                    驾照
+                </td>
                 <td>
                     @Model.EnumDriverLicence
                 </td>
             </tr>
+            <tr class="TitleSpan">
+                <td colspan="7">Educational Background  教育/培训经历</td>
+            </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.SwitchBtnRecommend)：
-                </th>
-                <td>
-                    @Model.SwitchBtnRecommend
+                <td colspan="7">
+                    <table id="EduTable" class="DetailsTable">
+                        <thead>
+                            <tr>
+                                <td>
+                                    From…To…
+                                    <br />
+                                    起止时间
+                                </td>
+                                <td>
+                                    School
+                                    <br />
+                                    学  校  名  称
+                                </td>
+                                <td>
+                                    Majored in
+                                    <br />
+                                    专  业
+                                </td>
+                                <td>
+                                    Qualification
+                                    <br />
+                                    学  历
+                                </td>
+                                <td>
+                                    Certificate
+                                    <br />
+                                    证书
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr class="TitleSpan">
+                <td colspan="7">Working Career  工作经历</td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <table id="WorkingCareerTable" class="DetailsTable">
+                        <thead>
+                            <tr>
+                                <td>
+                                    From…To…
+                                    <br />
+                                    起止时间
+                                </td>
+                                <td>
+                                    Employer
+                                    <br />
+                                    工  作  单  位
+                                </td>
+                                <td>
+                                    Working as
+                                    <br />
+                                    工  种
+                                </td>
+                                <td>
+                                    Job description
+                                    <br />
+                                    （工作内容）
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr class="TitleSpan">
+                <td colspan="7">Family Member  家庭成员</td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <table id="FamilyMemberTable" class="DetailsTable">
+                        <thead>
+                            <tr>
+                                <td>
+                                    Name
+                                    <br />
+                                    姓  名
+                                </td>
+                                <td>
+                                    Relationship
+                                    <br />
+                                    与本人关系
+                                </td>
+                                <td>
+                                    Age
+                                    <br />
+                                    年龄
+                                </td>
+                                <td>
+                                    Occupation
+                                    <br />
+                                    职  业
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </td>
             </tr>
             <tr>
-                <th>
-                    @Html.LabelFor(model => model.JobIntension)：
-                </th>
-                <td>
-                    @Model.JobIntension
+                <td align="center">
+                    Self assessment
+                    <br />
+                    自我评价
+                </td>
+                <td colspan="6">
+                    @Model.Introduction
                 </td>
             </tr>
         </tbody>

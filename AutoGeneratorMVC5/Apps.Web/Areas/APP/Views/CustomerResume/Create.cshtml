@@ -277,7 +277,6 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.JobIntension)
     <input id="CreateTime" type="hidden" name="CreateTime" value="2017-12-31" />
     <input id="ModificationTime" type="hidden" name="ModificationTime" value="2017-12-31" />
     <table id="CustomerInfo">
@@ -296,7 +295,7 @@
             }
             <tr>
                 <td colspan="2" align="center">申请职位:</td>
-                <td colspan="4"><input type="text" id="PositionId" name="PositionId"></td>
+                <td colspan="4">@Html.EditorFor(model => model.JobIntension)</td>
                 <td rowspan="5">
                     @Html.HiddenFor(model => model.CustomerPhoto)
                     <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
@@ -566,7 +565,7 @@
                     自我评价
                 </td>
                 <td colspan="6">
-                    <textarea id="Introduction" name="Introduction" style="width:100%;height:100px;"></textarea>
+                    @Html.TextAreaFor(m => m.Introduction, new { @style = "width:100%;height:100px;" })
                 </td>
             </tr>
         </tbody>
