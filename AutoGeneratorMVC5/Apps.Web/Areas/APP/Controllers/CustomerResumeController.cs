@@ -61,14 +61,32 @@ namespace Apps.Web.Areas.App.Controllers
                 customerResumeQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
             }
             List<App_CustomerModel> list = m_BLL.GetResumeList(ref pager, customerResumeQuery);
+            List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
             foreach (var Item in list)
             {
-                Item.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", Item.EnumCustomerLevel);
-                Item.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", Item.EnumCustomerType);
-                Item.OwnerName = m_BLL.GetCustomerName(Item.ParentId);
+                CustomerResumeVm customerResumeVm = new CustomerResumeVm();
+                customerResumeVm.Id = Item.Id;
+                customerResumeVm.CustomerName = Item.CustomerName;
+                customerResumeVm.Sex = Item.Sex;
+                customerResumeVm.Age = Item.Age;
+                customerResumeVm.JobIntensionNames = Item.JobIntensionNames;
+                customerResumeVm.AbroadExp = Item.AbroadExp;
+                customerResumeVm.EnumDriverLicence = Item.EnumDriverLicence;
+                customerResumeVm.Phone = Item.Phone;
+                customerResumeVm.OwnerName = Item.OwnerName;
+                customerResumeVm.BusinessStatus = "暂无";
+                customerResumeVm.ApplyJobId = "";
+                //获取当前用户的应聘申请
+                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && EF.EnumApplyStatus == "0");
+                if (null != applyJob)
+                {
+                    customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
+                    customerResumeVm.ApplyJobId = applyJob.Id;
+                }
+                customerResumeVms.Add(customerResumeVm);
             }
-            GridRows<App_CustomerModel> grs = new GridRows<App_CustomerModel>();
-            grs.rows = list;
+            GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
+            grs.rows = customerResumeVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }

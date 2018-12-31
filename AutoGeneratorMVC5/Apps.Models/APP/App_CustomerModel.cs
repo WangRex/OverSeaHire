@@ -558,7 +558,7 @@ namespace Apps.Models.App
     }
     #endregion
 
-    #region 后台提交的简历信息
+    #region 【后台】提交的简历信息
     public class CustomerResumePost
     {
         public string Id { get; set; }
@@ -591,6 +591,23 @@ namespace Apps.Models.App
                 + ",CustomerName:" + CustomerName
                 + ",Sex:" + Sex + ",EnglishName:" + EnglishName + ",Introduction:" + Introduction;
         }
+    }
+    #endregion
+
+    #region 【后台】简历列表
+    public class CustomerResumeVm
+    {
+        public string Id { get; set; }
+        public string CustomerName { get; set; }
+        public string Sex { get; set; }
+        public int Age { get; set; }
+        public string JobIntensionNames { get; set; }
+        public string AbroadExp { get; set; }
+        public string EnumDriverLicence { get; set; }
+        public string Phone { get; set; }
+        public string OwnerName { get; set; }
+        public string BusinessStatus { get; set; }
+        public string ApplyJobId { get; set; }
     }
     #endregion
 

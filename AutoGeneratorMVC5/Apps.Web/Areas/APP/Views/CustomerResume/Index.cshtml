@@ -50,10 +50,10 @@
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
         @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
         @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
-        @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
         @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
-        @Html.ToolButton("btnCustomerWorkExp", "fa fa-list", "工作经历", ref perm, "Create", true)
-        @Html.ToolButton("btnCustomerApply", "fa fa-list", "参与订单", ref perm, "Create", true)
+        @Html.ToolButton("btnDetails", "fa fa-list", "简历详情", ref perm, "Details", true)
+        @Html.ToolButton("btnRelateJob", "fa fa-list", "相关职位", ref perm, "Create", true)
+        @Html.ToolButton("btnCustomerApply", "fa fa-list", "业务记录", ref perm, "Create", true)
     </div>
 </div>
 <table id="List"></table>
@@ -102,8 +102,9 @@
                 //            return "暂无图片";
                 //        }
                 //    }},
-                { field: 'OwnerName', title: '拥有人姓名', width: 80, sortable: true },
-                //{ field: 'BusinessStatus', title: '业务状态', width: 80, sortable: true },
+                { field: 'OwnerName', title: '拥有人姓名', width: 80 },
+                { field: 'BusinessStatus', title: '业务状态', width: 80 },
+                { field: 'ApplyJobId', title: '应聘主键', width: 80, hidden: true },
             ]]
         });
         $("#btnCreate").click(function () {
@@ -139,11 +140,15 @@
                  });
              } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
          });
-        $("#btnCustomerWorkExp").click(function () {
+        $("#btnRelateJob").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/App/CustomerWorkExp?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
-                $("#modalwindow").window({ title: '@Resource.Edit', width: 1000, height: 700, iconCls: 'fa fa-pencil' }).window('open');
+                if (row.ApplyJobId == "") {
+                    $.messageBox5s('@Resource.Tip', '无对应职位信息');
+                } else {
+                    @*$("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/App/CustomerWorkExp?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                    $("#modalwindow").window({ title: '@Resource.Edit', width: 1000, height: 700, iconCls: 'fa fa-pencil' }).window('open');*@
+                }
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnCustomerApply").click(function () {
