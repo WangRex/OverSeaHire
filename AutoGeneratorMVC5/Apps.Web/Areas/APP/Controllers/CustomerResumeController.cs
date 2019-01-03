@@ -8,6 +8,8 @@ using Apps.BLL.Sys;
 using Apps.BLL.App;
 using Apps.Models.App;
 using Newtonsoft.Json;
+using System.Linq;
+using Apps.Models;
 
 namespace Apps.Web.Areas.App.Controllers
 {
@@ -27,9 +29,13 @@ namespace Apps.Web.Areas.App.Controllers
         [Dependency]
         public App_ApplyJobBLL app_ApplyJobBLL { get; set; }
         [Dependency]
+        public App_CountryBLL app_CountryBLL { get; set; }
+        [Dependency]
         public App_ApplyJobStepBLL app_ApplyJobStepBLL { get; set; }
         [Dependency]
         public App_RequirementBLL app_RequirementBLL { get; set; }
+        [Dependency]
+        public App_RequirementInviteBLL app_RequirementInviteBLL { get; set; }
         [Dependency]
         public SysRoleBLL sysRoleBLL { get; set; }
         #endregion
@@ -289,6 +295,42 @@ namespace Apps.Web.Areas.App.Controllers
             }
             GridRows<App_ApplyJobModel> grs = new GridRows<App_ApplyJobModel>();
             grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
+
+        #region 获取相关职位列表
+        public ActionResult RelateJob(string CustomerId)
+        {
+            ViewBag.CustomerId = CustomerId;
+            return View();
+        }
+        [HttpPost]
+        public JsonResult RelateJob(GridPager pager, RequirementQuery requirementQuery)
+        {
+            LogHandler.WriteServiceLog(GetUserId(), requirementQuery.ToString(), "开始", "RelateJob", "CustomerResumeController");
+            var list = app_RequirementBLL.GetRelateJobs(ref pager, requirementQuery);
+            List<RequirementInfoVm> requirementInfoVms = new List<RequirementInfoVm>();
+            foreach (var Item in list)
+            {
+                requirementInfoVms.Add(new RequirementInfoVm()
+                {
+                    Id = Item.Id,
+                    Title = Item.Title,
+                    Position = app_PositionBLL.GetNames(Item.PK_App_Position_Name),
+                    Country = app_CountryBLL.GetName(Item.PK_App_Country_Name),
+                    Sex = Item.WorkLimitSex,
+                    AgeLimit = Item.WorkLimitAgeLow + "-" + Item.WorkLimitAgeHigh,
+                    YearSalary = Utils.ObjToDecimal(Item.SalaryLow, 0) / 10000 + "万-" + Utils.ObjToDecimal(Item.SalaryHigh, 0) / 10000 + "万",
+                    ApplyCount = Item.ApplyCount,
+                    Tag = Item.Tag,
+                    TotalServiceMoney = Utils.ObjToDecimal(Item.TotalServiceMoney, 0) / 10000 + "万",
+                    PublishDate = Item.PublishDate,
+                });
+            }
+            GridRows<RequirementInfoVm> grs = new GridRows<RequirementInfoVm>();
+            grs.rows = requirementInfoVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }

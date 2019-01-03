@@ -1469,6 +1469,38 @@ namespace Apps.BLL.App
             return queryData;
         }
         #endregion
+
+        #region 【后台】获取相关职位
+        public List<App_RequirementModel> GetRelateJobs(ref GridPager pager, RequirementQuery requirementQuery)
+        {
+            List<string> listReqId = new List<string>();
+            string strCustomerId = requirementQuery.CustomerId;
+            var customerResume = customerRepository.GetById(strCustomerId);
+            var arrJobIntension = customerResume.JobIntension.Split(',');
+            var requirements = m_Rep.FindList(EF => EF.SwitchBtnOpen == "1").ToList();
+            //这里包括了这个简历，所关联的所有职位，包括应聘的，系统推荐的，雇主面试邀请 ，办理中的职位
+            //获取应聘的需求列表
+            //系统推荐的
+            var recommendReqList = requirements.Where(EF =>
+                        EF.WorkLimitAgeLow <= customerResume.Age
+                        && EF.WorkLimitAgeHigh >= customerResume.Age
+                        && EF.WorkLimitSex == customerResume.Sex
+                        && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
+            listReqId.AddRange(recommendReqList.Select(EF => EF.Id).ToList());
+            //雇主面试邀请
+            var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId);
+            listReqId.AddRange(inviteList.Select(EF => EF.PK_App_Requirement_Title).ToList());
+            //办理中的职位
+            var applyJobList = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
+            listReqId.AddRange(applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToList());
+            string strReqIds = string.Join(",", listReqId.Distinct().ToArray());
+            var queryData = requirements.Where(EF => strReqIds.Contains(EF.Id)).AsQueryable();
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
+        }
+        #endregion
     }
 }
 

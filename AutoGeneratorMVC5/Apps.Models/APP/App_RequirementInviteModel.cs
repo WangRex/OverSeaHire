@@ -38,9 +38,11 @@ namespace Apps.Models.App
         [Display(Name = "同意")]
         public override string SwitchBtnAgree { get; set; }
 
-    public override string ToString()    {
-        return "PK_App_Requirement_Title:" + PK_App_Requirement_Title + ",InitiatorId:" + InitiatorId + ",Inviter:" + Inviter
- + ",SwitchBtnAgree:" + SwitchBtnAgree;          }
-     }
+        public override string ToString()
+        {
+            return "PK_App_Requirement_Title:" + PK_App_Requirement_Title + ",InitiatorId:" + InitiatorId + ",Inviter:" + Inviter
+     + ",SwitchBtnAgree:" + SwitchBtnAgree;
+        }
+    }
 }
 

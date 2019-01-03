@@ -439,4 +439,21 @@ namespace Apps.Models.App
         }
     }
     #endregion
+
+    #region 【后台】职位列表用
+    public class RequirementInfoVm
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Position { get; set; }
+        public string Country { get; set; }
+        public string Sex { get; set; }
+        public string AgeLimit { get; set; }
+        public string YearSalary { get; set; }
+        public int ApplyCount { get; set; }
+        public string Tag { get; set; }
+        public string TotalServiceMoney { get; set; }
+        public string PublishDate { get; set; }
+    }
+    #endregion
 }

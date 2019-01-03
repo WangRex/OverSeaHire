@@ -728,6 +728,7 @@
     <Content Include="Areas\APP\Views\InviteRequirement\Details.cshtml" />
     <Content Include="Areas\APP\Views\InviteRequirement\Index.cshtml" />
     <Content Include="Areas\APP\Views\InviteRequirement\IndexResume.cshtml" />
+    <Content Include="Areas\APP\Views\CustomerResume\RelateJob.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

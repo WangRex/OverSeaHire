@@ -38,6 +38,12 @@ namespace Apps.BLL.App
         [Dependency]
         public App_CustomerCollectRepository customerCollectRepository { get; set; }
         [Dependency]
+        public App_RequirementRepository requirementRepository { get; set; }
+        [Dependency]
+        public App_RequirementInviteRepository requirementInviteRepository { get; set; }
+        [Dependency]
+        public App_ApplyJobRepository applyJobRepository { get; set; }
+        [Dependency]
         public App_CompanyBLL companyBLL { get; set; }
         #endregion
 
