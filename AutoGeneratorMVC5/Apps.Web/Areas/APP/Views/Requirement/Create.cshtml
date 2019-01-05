@@ -132,7 +132,9 @@
     }
     //ifram 返回
     function frameReturnByClose() {
-        window.parent.closeTab("新增需求", "需求管理", "app/Requirement", "fa fa-money");
+        var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+        var ptitle = window.parent.globalTabObj[menuName];
+        window.parent.closeTab(menuName, ptitle, "app/Requirement", "fa fa-money");
     }
 </script>
 

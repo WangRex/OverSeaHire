@@ -1471,9 +1471,16 @@ namespace Apps.BLL.App
         #endregion
 
         #region 【后台】获取相关职位
+        /// <summary>
+        /// 【后台】获取相关职位
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="requirementQuery"></param>
+        /// <returns></returns>
         public List<App_RequirementModel> GetRelateJobs(ref GridPager pager, RequirementQuery requirementQuery)
         {
             List<string> listReqId = new List<string>();
+            List<App_RequirementModel> listReq = new List<App_RequirementModel>();
             string strCustomerId = requirementQuery.CustomerId;
             var customerResume = customerRepository.GetById(strCustomerId);
             var arrJobIntension = customerResume.JobIntension.Split(',');
@@ -1486,19 +1493,41 @@ namespace Apps.BLL.App
                         && EF.WorkLimitAgeHigh >= customerResume.Age
                         && EF.WorkLimitSex == customerResume.Sex
                         && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
-            listReqId.AddRange(recommendReqList.Select(EF => EF.Id).ToList());
+            foreach (var recommendReq in recommendReqList)
+            {
+                App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                LinqHelper.ModelTrans(recommendReq, app_RequirementModel);
+                app_RequirementModel.ReqType = "2";
+                listReq.Add(app_RequirementModel);
+            }
             //雇主面试邀请
             var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId);
-            listReqId.AddRange(inviteList.Select(EF => EF.PK_App_Requirement_Title).ToList());
+            string strReqIds = string.Join(",", inviteList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+            var inviteReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
+            foreach (var inviteReq in inviteReqList)
+            {
+                App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                LinqHelper.ModelTrans(inviteReq, app_RequirementModel);
+                app_RequirementModel.ReqType = "3";
+                listReq.Add(app_RequirementModel);
+            }
             //办理中的职位
             var applyJobList = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
-            listReqId.AddRange(applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToList());
-            string strReqIds = string.Join(",", listReqId.Distinct().ToArray());
-            var queryData = requirements.Where(EF => strReqIds.Contains(EF.Id)).AsQueryable();
-            pager.totalRows = queryData.Count();
-            //排序
-            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
-            return CreateModelList(ref queryData);
+            strReqIds = string.Join(",", applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+            var applyJobReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
+            foreach (var applyJobReq in applyJobReqList)
+            {
+                App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                LinqHelper.ModelTrans(applyJobReq, app_RequirementModel);
+                app_RequirementModel.ReqType = "4";
+                listReq.Add(app_RequirementModel);
+            }
+            pager.totalRows = listReq.Count();
+            if (pager.page > 0)
+            {
+                listReq = listReq.OrderBy(EF => EF.ReqType).ThenByDescending(EF => EF.ModificationTime).Skip((pager.page - 1) * pager.rows).Take(pager.rows).ToList();
+            }
+            return listReq;
         }
         #endregion
     }

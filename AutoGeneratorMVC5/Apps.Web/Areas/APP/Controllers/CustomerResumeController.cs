@@ -323,10 +323,11 @@ namespace Apps.Web.Areas.App.Controllers
                     Sex = Item.WorkLimitSex,
                     AgeLimit = Item.WorkLimitAgeLow + "-" + Item.WorkLimitAgeHigh,
                     YearSalary = Utils.ObjToDecimal(Item.SalaryLow, 0) / 10000 + "万-" + Utils.ObjToDecimal(Item.SalaryHigh, 0) / 10000 + "万",
-                    ApplyCount = Item.ApplyCount,
+                    TotalHire = Item.TotalHire,
                     Tag = Item.Tag,
                     TotalServiceMoney = Utils.ObjToDecimal(Item.TotalServiceMoney, 0) / 10000 + "万",
                     PublishDate = Item.PublishDate,
+                    ReqType = Item.ReqType,
                 });
             }
             GridRows<RequirementInfoVm> grs = new GridRows<RequirementInfoVm>();

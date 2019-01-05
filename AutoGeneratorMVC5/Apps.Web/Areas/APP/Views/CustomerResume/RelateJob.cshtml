@@ -74,7 +74,8 @@
     var treeData = {};
     var countryCombo = [];
     $(function () {
-        globalUtils.globalAjax("http://dlanqi.com:1001/api/Requirement/GetCountries?UserId=0&PageNum=0&RecordNum=0", {}, function (data) {
+        var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
+        globalUtils.globalAjax(url, {}, function (data) {
             countryCombo = data.Data;
             countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
             $('#Country').combobox({
@@ -110,6 +111,7 @@
                 { field: 'Tag', title: '职位标签', width: 80,sortable:false },
                 { field: 'TotalServiceMoney', title: '总服务费', width: 80,sortable:false },
                 { field: 'PublishDate', title: '发布时间', width: 80,sortable:false },
+                { field: 'ReqType', title: '类型', width: 80,hidden:true },
             ]]
         });
         $("#btnCreate").click(function () {

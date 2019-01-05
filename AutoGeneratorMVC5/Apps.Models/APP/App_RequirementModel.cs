@@ -121,6 +121,12 @@ namespace Apps.Models.App
         [Display(Name = "工签")]
         public override string EnumWorkPermit { get; set; }
 
+        /// <summary>
+        /// 包括应聘的职位，系统推荐的职位，雇主邀请面试的职位，办理中的职位
+        /// </summary>
+        [Display(Name = "职位类型")]
+        public string ReqType { get; set; }
+
         public override string ToString()
         {
             return "Title:" + Title + ",SubTitle:" + SubTitle + ",EnumPositionType:" + PK_App_Position_Name
@@ -133,7 +139,8 @@ namespace Apps.Models.App
                 + ",SwitchBtnRecommend:" + SwitchBtnRecommend + ",CompanyName:" + CompanyName + ",PK_App_Country_Name:" + PK_App_Country_Name
                 + ",TotalYear:" + TotalYear + ",TransactProvince:" + TransactProvince + ",ApplyCount:" + ApplyCount
                 + ",ServiceTailMoney:" + ServiceTailMoney + ",SwitchBtnOpen:" + SwitchBtnOpen + ",ClickNumber:" + ClickNumber
-                + ",PreTaxSalary:" + PreTaxSalary + ",WorkHourPerWeek:" + WorkHourPerWeek + ",EnumWorkPermit:" + EnumWorkPermit;
+                + ",PreTaxSalary:" + PreTaxSalary + ",WorkHourPerWeek:" + WorkHourPerWeek + ",EnumWorkPermit:" + EnumWorkPermit
+                + ",ReqType:" + ReqType;
         }
     }
     #endregion
@@ -450,10 +457,21 @@ namespace Apps.Models.App
         public string Sex { get; set; }
         public string AgeLimit { get; set; }
         public string YearSalary { get; set; }
-        public int ApplyCount { get; set; }
+        public int TotalHire { get; set; }
         public string Tag { get; set; }
         public string TotalServiceMoney { get; set; }
         public string PublishDate { get; set; }
+        public string ReqType { get; set; }
+    }
+    #endregion
+
+    #region 【后台】职位详情用
+    public class RequirementDetailsVm : RequirementInfoVm
+    {
+        public string Description { get; set; }
+        public string PromiseMoney { get; set; }
+        public string ServiceTailMoney { get; set; }
+        public string ServiceMoney { get; set; }
     }
     #endregion
 }

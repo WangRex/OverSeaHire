@@ -136,7 +136,9 @@
     }
     //ifram 返回
     function frameReturnByClose() {
-        window.parent.closeTab("修改需求", "需求管理", "app/Requirement", "fa fa-money");
+        var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+        var ptitle = window.parent.globalTabObj[menuName];
+        window.parent.closeTab(menuName, ptitle, "app/Requirement", "fa fa-money");
     }
 </script>
 
@@ -182,7 +184,7 @@
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.SubTitle)</td>
             </tr>
-            @if (Session["ohadmin"].ToString() == "1")
+            @if (Session["ohadmin"].ToString() == "1" || Session["IdFlag"].ToString() == "1")
             {
                 <tr>
                     <th>

@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿var globalTabObj = {};
+
+$(function () {
 
     $('#tab_menu-tabrefresh').click(function () { /*重新设置该标签 */
         var url = $(".tabs-panels .panel").eq($('.tabs-selected').index()).find("iframe").attr("src");
@@ -127,56 +129,56 @@ function loadAccordionMenu(parentId) {
         "id": parentId
     }, //获取第一层目录
 
-	function (data) {
-	    //清空
-	    var rcount = $('#RightAccordion .panel').length;
-	    for (var i = 0; i < rcount; i++) {
-	        $('#RightAccordion').accordion("remove", 0);
-	    }
-	    $("#miannav").show();
-	    var fristTitle;
-	    if (data == "0") {
-	        window.location = "/Account";
-	    }
-	    $.each(data, function (i, e) { //循环创建手风琴的项
-	        if (i == 0) fristTitle = e.text;
-	        var id = e.id;
-	        $('#RightAccordion').accordion('add', {
-	            title: e.text,
-	            content: "<ul id='tree" + id + "'></ul>",
-	            selected: true,
-	            //必须展开之后填充
-	            iconCls: e.iconCls //e.Icon
-	        });
+        function (data) {
+            //清空
+            var rcount = $('#RightAccordion .panel').length;
+            for (var i = 0; i < rcount; i++) {
+                $('#RightAccordion').accordion("remove", 0);
+            }
+            $("#miannav").show();
+            var fristTitle;
+            if (data == "0") {
+                window.location = "/Account";
+            }
+            $.each(data, function (i, e) { //循环创建手风琴的项
+                if (i == 0) fristTitle = e.text;
+                var id = e.id;
+                $('#RightAccordion').accordion('add', {
+                    title: e.text,
+                    content: "<ul id='tree" + id + "'></ul>",
+                    selected: true,
+                    //必须展开之后填充
+                    iconCls: e.iconCls //e.Icon
+                });
 
 
-	        $.post("/" + _YMGlobal.Config.currentCulture + "/Home/GetTreeByEasyui?id=" + id, function (data) { //循环创建树的项
-	            $("#tree" + id).tree({
-	                data: data,
-	                onBeforeExpand: function (node, param) {
-	                    $("#tree" + id).tree('options').url = "/" + _YMGlobal.Config.currentCulture + "/Home/GetTreeByEasyui?id=" + node.id;
-	                },
-	                onClick: function (node) {
-	                    if (node.state == 'closed') {
-	                        $(this).tree('expand', node.target);
-	                    } else if (node.state == 'open') {
-	                        $(this).tree('collapse', node.target);
-	                        if (node.children == undefined) {
-	                            var tabTitle = node.text;
-	                            var url = "../../" + node.attributes;
-	                            var icon = node.iconCls;
-	                            addTab(tabTitle, url, icon);
-	                        }
-	                    }
-	                }
-	            });
-	        }, 'json');
-	        $('#RightAccordion').accordion('select', fristTitle); //选中第一个
+                $.post("/" + _YMGlobal.Config.currentCulture + "/Home/GetTreeByEasyui?id=" + id, function (data) { //循环创建树的项
+                    $("#tree" + id).tree({
+                        data: data,
+                        onBeforeExpand: function (node, param) {
+                            $("#tree" + id).tree('options').url = "/" + _YMGlobal.Config.currentCulture + "/Home/GetTreeByEasyui?id=" + node.id;
+                        },
+                        onClick: function (node) {
+                            if (node.state == 'closed') {
+                                $(this).tree('expand', node.target);
+                            } else if (node.state == 'open') {
+                                $(this).tree('collapse', node.target);
+                                if (node.children == undefined) {
+                                    var tabTitle = node.text;
+                                    var url = "../../" + node.attributes;
+                                    var icon = node.iconCls;
+                                    addTab(tabTitle, url, icon);
+                                }
+                            }
+                        }
+                    });
+                }, 'json');
+                $('#RightAccordion').accordion('select', fristTitle); //选中第一个
 
 
-	        $("#tree" + id + "").parent().css("overflow-y", "auto");
-	    });
-	}, "json");
+                $("#tree" + id + "").parent().css("overflow-y", "auto");
+            });
+        }, "json");
 }
 
 function loadTreeMenu(parentId) {
@@ -186,28 +188,28 @@ function loadTreeMenu(parentId) {
         "id": parentId
     }, //获取第一层目录
 
-	function (data) {
-	    $("#miannav").show();
-	    $("#RightTree").tree({
-	        data: data,
-	        onBeforeExpand: function (node, param) {
-	            $("#RightTree").tree('options').url = "../../" + _YMGlobal.Config.currentCulture + "/Home/GetTreeByEasyui?id=" + node.id;
-	        },
-	        onClick: function (node) {
-	            if (node.state == 'closed') {
-	                $(this).tree('expand', node.target);
-	            } else if (node.state == 'open') {
-	                $(this).tree('collapse', node.target);
-	                if (node.children == undefined) {
-	                    var tabTitle = node.text;
-	                    var url = "../../" + node.attributes;
-	                    var icon = node.iconCls;
-	                    addTab(tabTitle, url, icon);
-	                }
-	            }
-	        }
-	    });
-	}, 'json');
+        function (data) {
+            $("#miannav").show();
+            $("#RightTree").tree({
+                data: data,
+                onBeforeExpand: function (node, param) {
+                    $("#RightTree").tree('options').url = "../../" + _YMGlobal.Config.currentCulture + "/Home/GetTreeByEasyui?id=" + node.id;
+                },
+                onClick: function (node) {
+                    if (node.state == 'closed') {
+                        $(this).tree('expand', node.target);
+                    } else if (node.state == 'open') {
+                        $(this).tree('collapse', node.target);
+                        if (node.children == undefined) {
+                            var tabTitle = node.text;
+                            var url = "../../" + node.attributes;
+                            var icon = node.iconCls;
+                            addTab(tabTitle, url, icon);
+                        }
+                    }
+                }
+            });
+        }, 'json');
 }
 
 function initTabs() {
@@ -248,7 +250,8 @@ $(window).resize(function () {
     }, 100);
 });
 
-function addTab(subtitle, url, icon) {
+function addTab(subtitle, url, icon, ptitle) {
+    globalTabObj[subtitle] = ptitle;
     if (!$("#mainTab").tabs('exists', subtitle)) {
         var closableFlag = true;
         if (url.indexOf("/Home/Desktop") > -1) {

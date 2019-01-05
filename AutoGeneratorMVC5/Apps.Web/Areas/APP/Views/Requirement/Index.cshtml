@@ -57,6 +57,7 @@
         @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
         @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
         @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+        @Html.ToolButton("btnApplyJob", "fa fa-pencil", "送人", ref perm, "ApplyJob", false)
     </div>
 </div>
 <table id="List"></table>
@@ -73,7 +74,8 @@
     var treeData = {};
     var countryCombo = [];
     $(function () {
-        globalUtils.globalAjax("http://dlanqi.com:1001/api/Requirement/GetCountries?UserId=0&PageNum=0&RecordNum=0", {}, function (data) {
+        var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
+        globalUtils.globalAjax(url, {}, function (data) {
             countryCombo = data.Data;
             countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
             $('#Country').combobox({
@@ -98,35 +100,36 @@
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
             columns: [[
-                { field: 'Id', title: '主键', width: 80,hidden:true },
-                { field: 'Title', title: '标题', width: 160,sortable:true },
-                { field: 'SubTitle', title: '副标题', width: 80,sortable:true },
-                { field: 'PK_App_Position_Name', title: '职位类型', width: 80,sortable:true },
-                { field: 'PK_App_Country_Name', title: '国家', width: 80,sortable:true },
-                { field: 'WorkLimitSex', title: '工作要求性别', width: 80,sortable:true },
-                { field: 'SalaryLow', title: '报酬(最低)', width: 80,sortable:true },
-                { field: 'SalaryHigh', title: '报酬(最高)', width: 80,sortable:true },
-                { field: 'TotalServiceMoney', title: '总服务费', width: 80,sortable:true },
-                { field: 'PublishDate', title: '发布时间', width: 80,sortable:true },
-                { field: 'TotalHire', title: '招聘人数', width: 80,sortable:true },
-                { field: 'Tag', title: '职位标签', width: 80,sortable:true },
-                { field: 'PK_App_Customer_CustomerName', title: '发布人', width: 80,sortable:true },
-                { field: 'SwitchBtnRecommend', title: '推荐', width: 35, align:'center',formatter: function (value) {return SwitchBtnFormatter(value)} }
+                { field: 'Id', title: '主键', width: 80, hidden: true },
+                { field: 'Title', title: '职位名称', width: 160, sortable: false },
+                { field: 'Position', title: '职位类型', width: 80, sortable: false },
+                { field: 'Country', title: '国家', width: 80, sortable: false },
+                { field: 'Sex', title: '性别', width: 80, sortable: false },
+                { field: 'AgeLimit', title: '年龄要求', width: 80, sortable: false },
+                { field: 'YearSalary', title: '年收入', width: 80, sortable: false },
+                { field: 'TotalHire', title: '招聘人数', width: 80, sortable: false },
+                { field: 'Tag', title: '职位标签', width: 80, sortable: false },
+                { field: 'TotalServiceMoney', title: '总服务费', width: 80, sortable: false },
+                { field: 'PublishDate', title: '发布时间', width: 80, sortable: false },
+                { field: 'ReqType', title: '类型', width: 80, hidden: true },
             ]]
         });
         $("#btnCreate").click(function () {
-            window.parent.addTab("新增需求", "@Url.Action("Create")", "fa fa-plus");
+            var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+            window.parent.addTab("新增职位", "@Url.Action("Create")", "fa fa-plus", menuName);
         });
         $("#btnEdit").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                window.parent.addTab("修改需求", "@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-pencil");
+                var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+                window.parent.addTab("修改职位", "@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-pencil", menuName);
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                window.parent.addTab("查看需求", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+                var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+                window.parent.addTab("查看职位", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
          });
         $("#btnQuery").click(function () {
