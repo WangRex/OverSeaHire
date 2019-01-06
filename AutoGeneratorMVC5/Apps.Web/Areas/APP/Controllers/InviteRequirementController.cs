@@ -25,11 +25,11 @@ namespace Apps.Web.Areas.APP.Controllers
         [Dependency]
         public App_CustomerBLL _App_CustomerBLL { get; set; }
         [Dependency]
-        public App_CountryBLL _App_CountryBLL { get; set; }
+        public App_CountryBLL app_CountryBLL { get; set; }
         [Dependency]
         public SysAreasBLL sysAreasBLL { get; set; }
         [Dependency]
-        public App_PositionBLL _App_PositionBLL { get; set; }
+        public App_PositionBLL app_PositionBLL { get; set; }
         [Dependency]
         public SysUserBLL sysUserBLL { get; set; }
         [Dependency]
@@ -69,15 +69,27 @@ namespace Apps.Web.Areas.APP.Controllers
             }
             var queryData = m_BLL.GetInviteRequirementList(ref pager, requirementQuery);
             List<App_RequirementModel> list = m_BLL.CreateModelList(ref queryData);
+            List<RequirementInfoVm> requirementInfoVms = new List<RequirementInfoVm>();
             foreach (var Item in list)
             {
-                Item.PK_App_Position_Name = _App_PositionBLL.GetNames(Item.PK_App_Position_Name);
-                Item.EnumWorkLimitDegree = enumDictionaryBLL.GetDicName("App_Requirement.EnumWorkLimitDegree", Item.EnumWorkLimitDegree);
-                Item.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(Item.PK_App_Customer_CustomerName);
-                Item.PK_App_Country_Name = _App_CountryBLL.GetName(Item.PK_App_Country_Name);
+                requirementInfoVms.Add(new RequirementInfoVm()
+                {
+                    Id = Item.Id,
+                    Title = Item.Title,
+                    Position = app_PositionBLL.GetNames(Item.PK_App_Position_Name),
+                    Country = app_CountryBLL.GetName(Item.PK_App_Country_Name),
+                    Sex = Item.WorkLimitSex,
+                    AgeLimit = Item.WorkLimitAgeLow + "-" + Item.WorkLimitAgeHigh,
+                    YearSalary = Utils.ObjToDecimal(Item.SalaryLow, 0) / 10000 + "万-" + Utils.ObjToDecimal(Item.SalaryHigh, 0) / 10000 + "万",
+                    TotalHire = Item.TotalHire,
+                    Tag = Item.Tag,
+                    TotalServiceMoney = Utils.ObjToDecimal(Item.TotalServiceMoney, 0) / 10000 + "万",
+                    PublishDate = Item.PublishDate,
+                    ReqType = Item.ReqType,
+                });
             }
-            GridRows<App_RequirementModel> grs = new GridRows<App_RequirementModel>();
-            grs.rows = list;
+            GridRows<RequirementInfoVm> grs = new GridRows<RequirementInfoVm>();
+            grs.rows = requirementInfoVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }
@@ -88,12 +100,23 @@ namespace Apps.Web.Areas.APP.Controllers
         public ActionResult Details(string id)
         {
             App_RequirementModel entity = m_BLL.GetById(id);
-            entity.PK_App_Position_Name = _App_PositionBLL.GetNames(entity.PK_App_Position_Name);
-            entity.WorkLimitSex = enumDictionaryBLL.GetDicName("App_Requirement.WorkLimitSex", entity.WorkLimitSex);
-            entity.EnumWorkLimitDegree = enumDictionaryBLL.GetDicName("App_Requirement.EnumWorkLimitDegree", entity.EnumWorkLimitDegree);
-            entity.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(entity.PK_App_Customer_CustomerName);
-            entity.PK_App_Country_Name = _App_CountryBLL.GetName(entity.PK_App_Country_Name);
-            return View(entity);
+            RequirementDetailsVm requirementDetailsVm = new RequirementDetailsVm();
+            requirementDetailsVm.Id = entity.Id;
+            requirementDetailsVm.Title = entity.Title;
+            requirementDetailsVm.Position = app_PositionBLL.GetNames(entity.PK_App_Position_Name);
+            requirementDetailsVm.Country = app_CountryBLL.GetName(entity.PK_App_Country_Name);
+            requirementDetailsVm.Sex = entity.WorkLimitSex;
+            requirementDetailsVm.AgeLimit = entity.WorkLimitAgeLow + "-" + entity.WorkLimitAgeHigh;
+            requirementDetailsVm.YearSalary = Utils.ObjToDecimal(entity.SalaryLow, 0) / 10000 + "万-" + Utils.ObjToDecimal(entity.SalaryHigh, 0) / 10000 + "万";
+            requirementDetailsVm.TotalHire = entity.TotalHire;
+            requirementDetailsVm.Tag = entity.Tag;
+            requirementDetailsVm.TotalServiceMoney = entity.TotalServiceMoney;
+            requirementDetailsVm.PublishDate = entity.PublishDate;
+            requirementDetailsVm.Description = entity.Description;
+            requirementDetailsVm.PromiseMoney = entity.PromiseMoney;
+            requirementDetailsVm.ServiceTailMoney = entity.ServiceTailMoney;
+            requirementDetailsVm.ServiceMoney = entity.ServiceMoney;
+            return View(requirementDetailsVm);
         }
         #endregion
 
@@ -102,11 +125,11 @@ namespace Apps.Web.Areas.APP.Controllers
         public ActionResult IndexResume(string id)
         {
             App_RequirementModel entity = m_BLL.GetById(id);
-            entity.PK_App_Position_Name = _App_PositionBLL.GetName(entity.PK_App_Position_Name);
+            entity.PK_App_Position_Name = app_PositionBLL.GetName(entity.PK_App_Position_Name);
             entity.WorkLimitSex = enumDictionaryBLL.GetDicName("App_Requirement.WorkLimitSex", entity.WorkLimitSex);
             entity.EnumWorkLimitDegree = enumDictionaryBLL.GetDicName("App_Requirement.EnumWorkLimitDegree", entity.EnumWorkLimitDegree);
             entity.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(entity.PK_App_Customer_CustomerName);
-            entity.PK_App_Country_Name = _App_CountryBLL.GetName(entity.PK_App_Country_Name);
+            entity.PK_App_Country_Name = app_CountryBLL.GetName(entity.PK_App_Country_Name);
             ViewBag.ReqId = id;
             return View(entity);
         }

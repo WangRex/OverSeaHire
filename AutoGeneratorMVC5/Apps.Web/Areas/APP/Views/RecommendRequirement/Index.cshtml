@@ -8,26 +8,78 @@
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
+<style>
+    .saveBtn {
+        position: absolute;
+        height: 28px;
+        background-color: rgb(250, 250, 250);
+        padding-top: 4px;
+        padding-left: 5px;
+        border-bottom: 1px solid;
+        width: 577px;
+        z-index: 9999;
+    }
+
+    .mvctool label {
+        font-size: larger;
+        font-weight: bolder;
+    }
+</style>
 <div class="mvctool">
     <div style="float:left;">
-        标 题: <input id="Title" type="text" style="width:120px;" />
-        性 别: <input id="Sex" type="text" style="width:40px;" />
-        国 家: <input id="Country" type="text" style="width:120px;" />
-        年 龄: <input id="AgeLow" type="text" style="width:30px;" />~<input id="AgeHigh" type="text" style="width:30px;" />
-        薪 资: <input id="SallaryLow" type="text" style="width:60px;" />~<input id="SallaryHigh" type="text" style="width:60px;" />
-        标 签: <input id="Tag" type="text" style="width:60px;" />
+        <input type="hidden" id="PositionId" />
+        <label>
+            标题:
+        </label><input id="Title" type="text" style="width:120px;" />
+        <label>
+            工 种:
+        </label><input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
+        <label>
+            性 别:
+        </label><input id="Sex" type="text" style="width:40px;" />
+        <label>
+            国 家:
+        </label><input id="Country" type="text" style="width:120px;" />
+        <label>
+            年 龄:
+        </label><input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
+        <label>
+            薪 资:
+        </label><input id="SallaryLow" type="text" style="width:60px;" />~<input id="SallaryHigh" type="text" style="width:60px;" />
+        <label>
+            标 签:
+        </label><input id="Tag" type="text" style="width:60px;" />
     </div>
     <div style="float:left;">
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
-        @Html.ToolButton("btnDetails", "fa fa-list", "查看详情", false)
+        @Html.ToolButton("btnDetails", "fa fa-list", "查看详情", true)
+        @Html.ToolButton("btnApplyJob", "fa fa-pencil", "送人", ref perm, "ApplyJob", false)
     </div>
 </div>
 <table id="List"></table>
-
+<div id="positiontree" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false" style="overflow-y:scroll">
+    <div class="saveBtn">
+        @Html.ToolButton("btnSaveTree", "fa fa-save", Resource.Save, true)
+        @Html.ToolButton("btnReturnTree", "fa fa-reply", Resource.Reply, false)
+    </div>
+    <div style="position:relative;top:40px;"><ul id="tt" class="easyui-tree"></ul></div>
+</div>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
 <script type="text/javascript">
+    var treeData = {};
+    var countryCombo = [];
     $(function () {
+        var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
+        globalUtils.globalAjax(url, {}, function (data) {
+            countryCombo = data.Data;
+            countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
+            $('#Country').combobox({
+                valueField: 'Id',
+                textField: 'Name',
+                data: countryCombo
+            });
+        }, "get");
         $('#List').datagrid({
             url: '@Url.Action("GetRecommendReqList")',
             width:SetGridWidthSub(10),
@@ -44,36 +96,79 @@
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
             columns: [[
-                { field: 'Id', title: '主键', width: 80,hidden:true },
-                { field: 'Title', title: '标题', width: 160,sortable:true },
-                { field: 'SubTitle', title: '副标题', width: 80,sortable:true },
-                { field: 'PK_App_Position_Name', title: '职位类型', width: 80,sortable:true },
-                { field: 'PK_App_Country_Name', title: '国家', width: 80,sortable:true },
-                { field: 'WorkLimitSex', title: '工作要求性别', width: 80,sortable:true },
-                { field: 'SalaryLow', title: '报酬(最低)', width: 80,sortable:true },
-                { field: 'SalaryHigh', title: '报酬(最高)', width: 80,sortable:true },
-                { field: 'TotalServiceMoney', title: '总服务费', width: 80,sortable:true },
-                { field: 'PublishDate', title: '发布时间', width: 80,sortable:true },
-                { field: 'TotalHire', title: '招聘人数', width: 80,sortable:true },
-                { field: 'Tag', title: '职位标签', width: 80,sortable:true },
-                { field: 'PK_App_Customer_CustomerName', title: '发布人', width: 80,sortable:true },
-                { field: 'SwitchBtnRecommend', title: '推荐', width: 35, align:'center',formatter: function (value) {return SwitchBtnFormatter(value)} }
+                { field: 'Id', title: '主键', width: 80, hidden: true },
+                { field: 'Title', title: '职位名称', width: 160, sortable: false },
+                { field: 'Position', title: '职位类型', width: 80, sortable: false },
+                { field: 'Country', title: '国家', width: 80, sortable: false },
+                { field: 'Sex', title: '性别', width: 80, sortable: false },
+                { field: 'AgeLimit', title: '年龄要求', width: 80, sortable: false },
+                { field: 'YearSalary', title: '年收入', width: 80, sortable: false },
+                { field: 'TotalHire', title: '招聘人数', width: 80, sortable: false },
+                { field: 'Tag', title: '职位标签', width: 80, sortable: false },
+                { field: 'TotalServiceMoney', title: '总服务费', width: 80, sortable: false },
+                { field: 'PublishDate', title: '发布时间', width: 80, sortable: false },
+                { field: 'ReqType', title: '类型', width: 80, hidden: true },
+                {
+                    field: 'Ope', title: '操作', width: 80, formatter: function (value, row) {
+                        var btn = '<a onclick="showDetails(\'' + row.Id + '\',\'' + row.Title + '\')" href="javascript:void(0)">&nbsp;查看详情</a>';
+                        return btn;
+                    }
+                },
             ]]
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                window.parent.addTab("查看需求", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+                var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+                window.parent.addTab("查看职位" + row.Title, "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
          });
         $("#btnQuery").click(function () {
             QueryList();
         });
+        $("#btnReturnTree").click(function () {
+            $("#positiontree").window('close');
+        });
+        $("#btnSaveTree").click(function () {
+            var nodes = $('#tt').tree('getChecked');	// get checked nodes
+            var ids = '';
+            var texts = '';
+            nodes.forEach(function (value, index, array) {
+                ids += ',' + value.id;
+                texts += ',' + value.text;
+            })
+            if (ids != '') {
+                ids = ids.substring(1);
+                texts = texts.substring(1);
+            }
+            $("#PositionId").val(ids);
+            $("#positiontreeinput").val(texts);
+            $("#positiontree").window('close');
+        });
+        $("#positiontreeinput").click(function () {
+            if (treeData.length) {
+                initPosTree(treeData);
+            } else {
+                globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
+                    treeData = data;
+                    initPosTree(treeData);
+                }, "post");
+            }
+        });
+        $("#btnApplyJob").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("IndexResume")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '推荐人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
     });
-    //ifram 返回
-    function frameReturnByClose() {
-        $("#modalwindow").window('close');
+    //查看详情
+    function showDetails(rowId, rowTitle) {
+        var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+        window.parent.addTab("查看职位" + rowTitle, "@Url.Action("Details")?id=" + rowId + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
     }
+    //ifram 返回
     function frameReturnByReload(flag) {
         if (flag)
             $("#List").datagrid('load');
@@ -83,17 +178,54 @@
     function frameReturnByMes(mes) {
         $.messageBox5s('@Resource.Tip', mes);
     }
+    function initPosTree(treeData) {
+        $('#tt').tree({
+            data: treeData,
+            animate: true,
+            checkbox: true,
+            onlyLeafCheck: true,
+            onLoadSuccess: function (node, data) {
+                var ids = $("#PositionId").val();
+                if (ids != '') {
+                    var idArr = ids.split(",");
+                    for (var i = 0; i < idArr.length; i++) {
+                        // find a node and then select it
+                        var node = $('#tt').tree('find', idArr[i]);
+                        $('#tt').tree('check', node.target);
+                    }
+                }
+            }
+        });
+        $("#positiontree").window({
+            title: '职位',
+            width: 600,
+            height: 400,
+            top: 350,
+            iconCls: 'fa fa-pencil'
+        }).window('open');
+    }
     function QueryList() {
         var Title = $("#Title").val();
         var Sex = $("#Sex").val();
-        var Country = $("#Country").val();
+        var Country = $('#Country').combobox('getValue');
         var AgeLow = $("#AgeLow").val();
         var AgeHigh = $("#AgeHigh").val();
         var SallaryLow = $("#SallaryLow").val();
         var SallaryHigh = $("#SallaryHigh").val();
         var Tag = $("#Tag").val();
-        var data = { Title: Title, Sex: Sex, Country: Country, AgeLow: AgeLow, AgeHigh: AgeHigh, SallaryLow: SallaryLow, SallaryHigh: SallaryHigh, Tag: Tag};
+        var PositionId = $("#PositionId").val();
+        var data = {
+            Title: Title,
+            Sex: Sex,
+            Country: Country,
+            AgeLow: AgeLow,
+            AgeHigh: AgeHigh,
+            SallaryLow: SallaryLow,
+            SallaryHigh: SallaryHigh,
+            Tag: Tag,
+            PositionId: PositionId,
+        };
         $("#List").datagrid("load", data);
-    }
+    };
 </script>
 

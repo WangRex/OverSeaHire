@@ -1,4 +1,4 @@
-﻿@model Apps.Models.App.App_RequirementModel
+﻿@model Apps.Models.App.RequirementDetailsVm
 @using Apps.Web.Core;
 @using Apps.Common;
 @using Apps.Models.App;
@@ -10,229 +10,63 @@
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
     List<permModel> perm = null;
 }
-
+<link href="~/Content/CustomStyle.css" />
 <script type="text/javascript">
     $(function () {
         $("#btnReturn").click(function () {
             frameReturnByClose();
         });
-        $("#btnReqResume").click(function () {
+        $("#btnApplyJob").click(function () {
             var rowId = "@Model.Id";
             $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("IndexResume")?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
-            $("#modalwindow").window({ title: '应聘人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+            $("#modalwindow").window({ title: '推荐人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
         });
     });
     //ifram 返回
     function frameReturnByClose() {
-        window.parent.closeTab("查看需求", "应聘的职位", "app/ApplyedRequirement", "fa fa-money");
+        var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+        var ptitle = window.parent.globalTabObj[menuName];
+        window.parent.closeTab(menuName, ptitle, "app/Requirement", "fa fa-money");
     }
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
     @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
-    @Html.ToolButton("btnReqResume", "fa fa-list", "查看简历", false)
+    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "送人", false)
 </div>
-@using (Html.BeginForm())
-{
-    <table class="formtable">
-        <tbody>
-            @if (Session["IdFlag"].ToString() == "1")
-            {
-                <tr>
-                    <th>
-                        @Html.LabelFor(model => model.Id)：
-                    </th>
-                    <td>
-                        @Model.Id
-                    </td>
-                    @if (Session["IdFlag"].ToString() == "1" || Session["ohadmin"].ToString() == "1")
-                    {
 
-                        <th>
-                            @Html.LabelFor(model => model.SwitchBtnOpen)：
-                        </th>
-                        <td>
-                            @Model.SwitchBtnOpen
-                        </td>
-                    }
-                </tr>
-            }
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Title)：
-                </th>
-                <td>
-                    @Model.Title
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.SubTitle)：
-                </th>
-                <td>
-                    @Model.SubTitle
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.PK_App_Position_Name)：
-                </th>
-                <td>
-                    @Model.PK_App_Position_Name
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.WorkPlace)：
-                </th>
-                <td>
-                    @Model.WorkPlace
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.WorkLimitSex)：
-                </th>
-                <td>
-                    @Model.WorkLimitSex
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.WorkLimitAgeLow)：
-                </th>
-                <td>
-                    @Model.WorkLimitAgeLow
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.WorkLimitAgeHigh)：
-                </th>
-                <td>
-                    @Model.WorkLimitAgeHigh
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.EnumWorkLimitDegree)：
-                </th>
-                <td>
-                    @Model.EnumWorkLimitDegree
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.SalaryLow)：
-                </th>
-                <td>
-                    @Model.SalaryLow
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.SalaryHigh)：
-                </th>
-                <td>
-                    @Model.SalaryHigh
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.PromiseMoney)：
-                </th>
-                <td>
-                    @Model.PromiseMoney
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.ServiceMoney)：
-                </th>
-                <td>
-                    @Model.ServiceMoney
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.ServiceTailMoney)：
-                </th>
-                <td>
-                    @Model.ServiceTailMoney
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.TotalServiceMoney)：
-                </th>
-                <td>
-                    @Model.TotalServiceMoney
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.PublishDate)：
-                </th>
-                <td>
-                    @Model.PublishDate
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.TotalHire)：
-                </th>
-                <td>
-                    @Model.TotalHire
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Tag)：
-                </th>
-                <td>
-                    @Model.Tag
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.PK_App_Customer_CustomerName)：
-                </th>
-                <td>
-                    @Model.PK_App_Customer_CustomerName
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.Description)：
-                </th>
-                <td>
-                    @Model.Description
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.SwitchBtnRecommend)：
-                </th>
-                <td>
-                    @Model.SwitchBtnRecommend
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.CompanyName)：
-                </th>
-                <td>
-                    @Model.CompanyName
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.PK_App_Country_Name)：
-                </th>
-                <td>
-                    @Model.PK_App_Country_Name
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.TotalYear)：
-                </th>
-                <td>
-                    @Model.TotalYear
-                </td>
-                <th>
-                    @Html.LabelFor(model => model.TransactProvince)：
-                </th>
-                <td>
-                    @Model.TransactProvince
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.ApplyCount)：
-                </th>
-                <td>
-                    @Model.ApplyCount
-                </td>
-            </tr>
-        </tbody>
-    </table>
-}
+<div style="top:40px;position:fixed;width:100%">
+    <div class="row">
+        <div class="col-15 textalignright mr10">@Model.Title</div>
+        <div class="col-15 textalignleft ml10">@Model.YearSalary</div>
+        <div class="col-15 textalignright mr10">工作地点</div>
+        <div class="col-15 textalignleft ml10">@Model.Country</div>
+        <div class="col-15 textalignright mr10">性别要求</div>
+        <div class="col-15 textalignleft ml10">@Model.Sex</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">年龄要求</div>
+        <div class="col-15 textalignleft ml10">@Model.AgeLimit</div>
+        <div class="col-15 textalignright mr10">工种要求</div>
+        <div class="col-15 textalignleft ml10">@Model.Position</div>
+        <div class="col-15 textalignright mr10">职位描述</div>
+        <div class="col-15 textalignleft ml10">@Model.Tag</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">保证金</div>
+        <div class="col-15 textalignleft ml10">@Model.PromiseMoney</div>
+        <div class="col-15 textalignright mr10">服务费</div>
+        <div class="col-15 textalignleft ml10">@Model.ServiceMoney</div>
+        <div class="col-15 textalignright mr10">服务费尾款</div>
+        <div class="col-15 textalignleft ml10">@Model.ServiceTailMoney</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">总服务费</div>
+        <div class="col-15 textalignleft ml10">@Model.TotalServiceMoney</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">说明</div>
+        <div class="col-15 textalignleft ml10">@Html.Raw(@Model.Description)</div>
+    </div>
+
+</div>

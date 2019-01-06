@@ -14,16 +14,16 @@
 <script type="text/javascript">
     $(function () {
         $("#btnReturn").click(function () {
-            textalignrightameReturnByClose();
+            frameReturnByClose();
         });
-        $("#btnApply").click(function () {
+        $("#btnApplyJob").click(function () {
             var rowId = "@Model.Id";
-            $("#modalwindow").html("<itextalignrightame width='100%' height='99%'  textalignrightameborder='0' src='@Url.Action("IndexCustomerResume")?id=" + rowId + "&Ieguid=" + GetGuid() + "'></itextalignrightame>");
+            $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("IndexCustomerResume")?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
             $("#modalwindow").window({ title: '推荐人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
         });
     });
-    //itextalignrightam 返回
-    function textalignrightameReturnByClose() {
+    //ifram 返回
+    function frameReturnByClose() {
         var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
         var ptitle = window.parent.globalTabObj[menuName];
         window.parent.closeTab(menuName, ptitle, "app/Requirement", "fa fa-money");
@@ -32,57 +32,41 @@
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
     @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
-    @Html.ToolButton("btnApply", "fa fa-pencil", "送人", false)
+    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "送人", false)
 </div>
 
 <div style="top:40px;position:fixed;width:100%">
     <div class="row">
-        <div class="col-40 textalignright mr20">@Model.Title</div>
-        <div class="col-40 textalignleft ml20">@Model.YearSalary</div>
+        <div class="col-15 textalignright mr10">@Model.Title</div>
+        <div class="col-15 textalignleft ml10">@Model.YearSalary</div>
+        <div class="col-15 textalignright mr10">工作地点</div>
+        <div class="col-15 textalignleft ml10">@Model.Country</div>
+        <div class="col-15 textalignright mr10">性别要求</div>
+        <div class="col-15 textalignleft ml10">@Model.Sex</div>
     </div>
     <div class="row">
-        <div class="col-40 textalignright">工作地点</div>
-        <div class="col-40 textalignleft">@Model.Country</div>
+        <div class="col-15 textalignright mr10">年龄要求</div>
+        <div class="col-15 textalignleft ml10">@Model.AgeLimit</div>
+        <div class="col-15 textalignright mr10">工种要求</div>
+        <div class="col-15 textalignleft ml10">@Model.Position</div>
+        <div class="col-15 textalignright mr10">职位描述</div>
+        <div class="col-15 textalignleft ml10">@Model.Tag</div>
     </div>
     <div class="row">
-        <div class="col-40 textalignright">性别要求</div>
-        <div class="col-40 textalignleft">@Model.Sex</div>
+        <div class="col-15 textalignright mr10">保证金</div>
+        <div class="col-15 textalignleft ml10">@Model.PromiseMoney</div>
+        <div class="col-15 textalignright mr10">服务费</div>
+        <div class="col-15 textalignleft ml10">@Model.ServiceMoney</div>
+        <div class="col-15 textalignright mr10">服务费尾款</div>
+        <div class="col-15 textalignleft ml10">@Model.ServiceTailMoney</div>
     </div>
     <div class="row">
-        <div class="col-40 textalignright">年龄要求</div>
-        <div class="col-40 textalignleft">@Model.AgeLimit</div>
+        <div class="col-15 textalignright mr10">总服务费</div>
+        <div class="col-15 textalignleft ml10">@Model.TotalServiceMoney</div>
     </div>
     <div class="row">
-        <div class="col-40 textalignright">工种要求</div>
-        <div class="col-40 textalignleft">@Model.Position</div>
-    </div>
-    <div class="row">
-        <div class="col-40 textalignright">职位描述</div>
-        <div class="col-40 textalignleft">@Model.Tag</div>
-    </div>
-    <div class="row">
-        <div class="col-40 textalignright">说明</div>
-        <div class="col-40 textalignleft">@Html.Raw(@Model.Description)</div>
-    </div>
-    <div class="row">
-        <div class="col-40 textalignright">费用说明</div>
-        <div class="col-40 textalignleft"></div>
-    </div>
-    <div class="row">
-        <div class="col-40 textalignright">保证金</div>
-        <div class="col-40 textalignleft">@Model.PromiseMoney</div>
-    </div>
-    <div class="row">
-        <div class="col-40 textalignright">服务费</div>
-        <div class="col-40 textalignleft">@Model.ServiceMoney</div>
-    </div>
-    <div class="row">
-        <div class="col-40 textalignright">服务费尾款</div>
-        <div class="col-40 textalignleft">@Model.ServiceTailMoney</div>
-    </div>
-    <div class="row">
-        <div class="col-40 textalignright">总服务费</div>
-        <div class="col-40 textalignleft">@Model.TotalServiceMoney</div>
+        <div class="col-15 textalignright mr10">说明</div>
+        <div class="col-15 textalignleft ml10">@Html.Raw(@Model.Description)</div>
     </div>
 
 </div>
