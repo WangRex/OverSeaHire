@@ -664,8 +664,16 @@ namespace Apps.BLL.App
 
         private string CrtApplyJob(ApplyJobPost applyJobPost, out string ErrorMsg, string customerId, App_Requirement Req)
         {
+            //先判断是否有未完成的应聘
+            App_ApplyJob applyJob = m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == customerId && EF.PK_App_Requirement_Title == Req.Id && EF.EnumApplyStatus == "0");
+            if (null != applyJob)
+            {
+                ErrorMsg = "用户已经有未完成应聘,不可重复应聘";
+                sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
+                return null;
+            }
             var now = ResultHelper.NowTime;
-            App_ApplyJob applyJob = new App_ApplyJob();
+            applyJob = new App_ApplyJob();
             applyJob.Id = ResultHelper.NewId;
             applyJob.CreateTime = now;
             applyJob.CreateUserName = applyJobPost.UserId;
@@ -674,7 +682,8 @@ namespace Apps.BLL.App
             applyJob.PK_App_Requirement_Title = Req.Id;
             applyJob.PK_App_Customer_CustomerName = customerId;
             applyJob.EnumApplyStatus = "0";
-            applyJob.CurrentStep = "2";
+            //后台发起的应聘，直接步骤是1，需要雇主同意，步骤数才到2。
+            applyJob.CurrentStep = "1";
             applyJob.PromiseMoney = Utils.ObjToDecimal(Req.PromiseMoney, 0);
             applyJob.ServiceMoney = Utils.ObjToDecimal(Req.ServiceMoney, 0);
             applyJob.TailMoney = Utils.ObjToDecimal(Req.ServiceTailMoney, 0);
@@ -692,23 +701,8 @@ namespace Apps.BLL.App
                 applyJobRecord.PK_App_Customer_CustomerName = customerId;
                 applyJobRecord.Step = "1";
                 applyJobRecord.EnumApplyStatus = "1";
-                applyJobRecord.Result = "已完成";
-                applyJobRecord.Content = "发起应聘";
-                applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
-                applyJobRecordRepository.Create(applyJobRecord);
-                //添加应聘记录--待支付保证金进行中
-                applyJobRecord = new App_ApplyJobRecord();
-                applyJobRecord.Id = ResultHelper.NewId;
-                applyJobRecord.CreateTime = now;
-                applyJobRecord.CreateUserName = applyJobPost.UserId;
-                applyJobRecord.ModificationTime = now;
-                applyJobRecord.ModificationUserName = applyJobPost.UserId;
-                applyJobRecord.PK_App_ApplyJob_Id = applyJob.Id;
-                applyJobRecord.PK_App_Customer_CustomerName = customerId;
-                applyJobRecord.Step = "2";
-                applyJobRecord.EnumApplyStatus = "2";
                 applyJobRecord.Result = "进行中";
-                applyJobRecord.Content = "支付保证金";
+                applyJobRecord.Content = "发起应聘";
                 applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
                 applyJobRecordRepository.Create(applyJobRecord);
                 Req.ApplyCount++;

@@ -1169,6 +1169,7 @@ namespace Apps.BLL.App
         public List<App_RequirementModel> GetRequirementList(ref GridPager pager, RequirementQuery requirementQuery)
         {
             IQueryable<App_Requirement> queryData = m_Rep.GetList();
+            string strReqIds = null;
             //获取当前登录人所辖属的所有工人列表
             IQueryable<App_Customer> queryDataCustomer = customerRepository.GetList(EF => EF.ParentId != null);
             if (!requirementQuery.AdminFlag)
@@ -1182,10 +1183,10 @@ namespace Apps.BLL.App
             if ("Applyed".Equals(requirementQuery.QueryFlag))
             {
                 //获取所有的发起申请的工人主键集合
-                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0").ToList();
+                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0" && EF.CurrentStep == "1").ToList();
+                strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+                queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
             }
-            string strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
-            queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
             if (!string.IsNullOrWhiteSpace(requirementQuery.Title))
             {
                 queryData = queryData.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title));
@@ -1243,6 +1244,10 @@ namespace Apps.BLL.App
             }
             //获取需求信息
             var req = m_Rep.GetById(customerResumeQuery.RequirementId);
+            //排除已经在面试中的用户
+            var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0");
+            string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
+            queryData = queryData.Where(EF => !strCustomerIds.Contains(EF.Id));
             #region 如果入参为空，则默认使用需求信息
             if (string.IsNullOrEmpty(customerResumeQuery.JobIntension))
             {
@@ -1303,7 +1308,7 @@ namespace Apps.BLL.App
             if ("Applyed" == customerResumeQuery.QueryFlag)
             {
                 //获取当前需求对应的工人列表
-                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0" && EF.CurrentStep == "2");
+                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0" && EF.CurrentStep == "1");
                 string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
                 queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
             }
@@ -1485,8 +1490,19 @@ namespace Apps.BLL.App
             var customerResume = customerRepository.GetById(strCustomerId);
             var arrJobIntension = customerResume.JobIntension.Split(',');
             var requirements = m_Rep.FindList(EF => EF.SwitchBtnOpen == "1").ToList();
+            var applyJobList = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
             //这里包括了这个简历，所关联的所有职位，包括应聘的，系统推荐的，雇主面试邀请 ，办理中的职位
-            //获取应聘的需求列表
+            //获取应聘的需求列表（就是发起申请的，申请里状态是1的那些）
+            var applyingJobList = applyJobList.Where(EF => EF.EnumApplyStatus == "0" && EF.CurrentStep == "1");
+            string strReqIds = string.Join(",", applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+            var applyingJobReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
+            foreach (var applyingJobReq in applyingJobReqList)
+            {
+                App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                LinqHelper.ModelTrans(applyingJobReq, app_RequirementModel);
+                app_RequirementModel.ReqType = "1";
+                listReq.Add(app_RequirementModel);
+            }
             //系统推荐的
             var recommendReqList = requirements.Where(EF =>
                         EF.WorkLimitAgeLow <= customerResume.Age
@@ -1502,7 +1518,7 @@ namespace Apps.BLL.App
             }
             //雇主面试邀请
             var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId);
-            string strReqIds = string.Join(",", inviteList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+            strReqIds = string.Join(",", inviteList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
             var inviteReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
             foreach (var inviteReq in inviteReqList)
             {
@@ -1512,7 +1528,6 @@ namespace Apps.BLL.App
                 listReq.Add(app_RequirementModel);
             }
             //办理中的职位
-            var applyJobList = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
             strReqIds = string.Join(",", applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
             var applyJobReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
             foreach (var applyJobReq in applyJobReqList)
