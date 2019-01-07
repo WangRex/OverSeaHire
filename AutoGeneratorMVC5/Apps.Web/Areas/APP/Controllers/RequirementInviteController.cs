@@ -13,6 +13,7 @@ using Apps.BLL.Sys;
 
 namespace Apps.Web.Areas.App.Controllers
 {
+    //雇主发起的邀请，用来记录邀请职位
     public class RequirementInviteController : BaseController
     {
         #region BLLs

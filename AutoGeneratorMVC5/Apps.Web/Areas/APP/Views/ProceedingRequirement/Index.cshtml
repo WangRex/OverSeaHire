@@ -1,0 +1,36 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "App_Requirement";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <div style="float:left;">
+        @*将查询条件作为部分页面，并传递参数*@
+        @Html.Partial("~/Views/Shared/App/_PartialReqQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetProceedingReqList") + "?QueryFlag=Proceeding" } })
+    </div>
+    <div style="float:left;">
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+        @Html.ToolButton("btnDetails", "fa fa-list", "查看详情", true)
+        @Html.ToolButton("btnRelateResume", "fa fa-list", "查看相关简历", ref perm, "RelateResume", false)
+    </div>
+</div>
+<table id="List"></table>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    $(function () {
+        $("#btnRelateResume").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("IndexResume")?id=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
+                $("#modalwindow").window({ title: '简历列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+    });
+</script>
+

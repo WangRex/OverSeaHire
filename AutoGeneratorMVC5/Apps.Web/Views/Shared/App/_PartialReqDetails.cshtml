@@ -1,0 +1,47 @@
+﻿@model Apps.Models.App.RequirementDetailsVm
+
+<link href="~/Content/CustomStyle.css" />
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div style="top:40px;position:fixed;width:100%">
+    <div class="row">
+        <div class="col-15 textalignright mr10">@Model.Title</div>
+        <div class="col-15 textalignleft ml10">@Model.YearSalary</div>
+        <div class="col-15 textalignright mr10">工作地点</div>
+        <div class="col-15 textalignleft ml10">@Model.Country</div>
+        <div class="col-15 textalignright mr10">性别要求</div>
+        <div class="col-15 textalignleft ml10">@Model.Sex</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">年龄要求</div>
+        <div class="col-15 textalignleft ml10">@Model.AgeLimit</div>
+        <div class="col-15 textalignright mr10">工种要求</div>
+        <div class="col-15 textalignleft ml10">@Model.Position</div>
+        <div class="col-15 textalignright mr10">职位描述</div>
+        <div class="col-15 textalignleft ml10">@Model.Tag</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">保证金</div>
+        <div class="col-15 textalignleft ml10">@Model.PromiseMoney</div>
+        <div class="col-15 textalignright mr10">服务费</div>
+        <div class="col-15 textalignleft ml10">@Model.ServiceMoney</div>
+        <div class="col-15 textalignright mr10">服务费尾款</div>
+        <div class="col-15 textalignleft ml10">@Model.ServiceTailMoney</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">总服务费</div>
+        <div class="col-15 textalignleft ml10">@Model.TotalServiceMoney</div>
+    </div>
+    <div class="row">
+        <div class="col-15 textalignright mr10">说明</div>
+        <div class="col-15 textalignleft ml10">@Html.Raw(@Model.Description)</div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function frameReturnByClose() {
+        var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+        var ptitle = window.parent.globalTabObj[menuName];
+        window.parent.closeTab(menuName, ptitle, "app/Requirement", "fa fa-money");
+    }
+</script>
