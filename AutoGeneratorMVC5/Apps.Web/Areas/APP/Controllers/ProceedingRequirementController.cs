@@ -36,6 +36,10 @@ namespace Apps.Web.Areas.APP.Controllers
         public SysRoleBLL sysRoleBLL { get; set; }
         [Dependency]
         public App_ApplyJobBLL app_ApplyJobBLL { get; set; }
+        [Dependency]
+        public App_ApplyJobRecordBLL app_ApplyJobRecordBLL { get; set; }
+        [Dependency]
+        public App_ApplyJobStepBLL app_ApplyJobStepBLL { get; set; }
         #endregion
 
         #region 获取符合当前账号下工人工种需求的职位列表
@@ -153,40 +157,56 @@ namespace Apps.Web.Areas.APP.Controllers
             customerResumeQuery.QueryFlag = "Proceeding";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
+            List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
             foreach (var Item in list)
             {
-                Item.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", Item.EnumCustomerLevel);
-                Item.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", Item.EnumCustomerType);
-                Item.OwnerName = _App_CustomerBLL.GetCustomerName(Item.ParentId);
+                CustomerResumeVm customerResumeVm = new CustomerResumeVm();
+                customerResumeVm.Id = Item.Id;
+                customerResumeVm.CustomerName = Item.CustomerName;
+                customerResumeVm.Sex = Item.Sex;
+                customerResumeVm.Age = Item.Age;
+                customerResumeVm.JobIntensionNames = Item.JobIntensionNames;
+                customerResumeVm.AbroadExp = Item.AbroadExp;
+                customerResumeVm.EnumDriverLicence = Item.EnumDriverLicence;
+                customerResumeVm.Phone = Item.Phone;
+                customerResumeVm.OwnerName = Item.OwnerName;
+                customerResumeVm.BusinessStatus = "暂无";
+                customerResumeVm.ApplyJobId = "";
+                //获取当前用户的应聘申请
+                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && EF.EnumApplyStatus == "0");
+                if (null != applyJob)
+                {
+                    customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
+                    customerResumeVm.ApplyJobId = applyJob.Id;
+                }
+                customerResumeVms.Add(customerResumeVm);
             }
-            GridRows<App_CustomerModel> grs = new GridRows<App_CustomerModel>();
-            grs.rows = list;
+            GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
+            grs.rows = customerResumeVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }
         #endregion
 
-        #region 发起应聘申请
+        #region 获取应聘申请记录
         [HttpPost]
-        [SupportFilter(ActionName = "ApplyJob")]
-        public JsonResult ApplyJob(string ReqId, string CustomerId)
+        public JsonResult GetApplyJobRecord(string ApplyJobId)
         {
-            ApplyJobPost applyJobPost = new ApplyJobPost();
-            applyJobPost.CustomerId = CustomerId;
-            applyJobPost.RequirementId = ReqId;
-            applyJobPost.UserId = GetUserId();
             try
             {
                 string ErrorMsg = "";
-                var applyJobId = app_ApplyJobBLL.CreateApplyJob(applyJobPost, ref ErrorMsg);
-                if (null != applyJobId)
+                var applyJob = app_ApplyJobBLL.m_Rep.GetById(ApplyJobId);
+                if (null != applyJob)
                 {
+                    var applyJobRecord = app_ApplyJobRecordBLL.m_Rep.FindList(EF => EF.PK_App_ApplyJob_Id == applyJob.Id).ToList();
+                    ErrorMsg = "获取应聘申请记录成功";
                     return Json(
-                        ResponseHelper.IsSuccess_Msg_Data_HttpCode("应聘成功", applyJobId, 1)
+                        ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, applyJobRecord, applyJobRecord.Count)
                     );
                 }
                 else
                 {
+                    ErrorMsg = "获取应聘申请记录为空";
                     return Json(
                        ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
                        );
