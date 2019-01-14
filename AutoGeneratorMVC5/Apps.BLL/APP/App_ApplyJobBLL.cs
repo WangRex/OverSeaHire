@@ -672,6 +672,8 @@ namespace Apps.BLL.App
                 sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
                 return null;
             }
+
+            var customer = customerRepository.GetById(customerId);
             var now = ResultHelper.NowTime;
             applyJob = new App_ApplyJob();
             applyJob.Id = ResultHelper.NewId;
@@ -707,16 +709,10 @@ namespace Apps.BLL.App
                 applyJobRecordRepository.Create(applyJobRecord);
                 Req.ApplyCount++;
                 requirementRepository.Edit(Req);
-                //如果从消息点过来的，则需要更新消息的状态
-                var sysMessage = sysMessageRepository.Find(EF => EF.PK_App_Customer_CustomerName == customerId && EF.BusinessID == Req.Id);
-                if (null != sysMessage)
-                {
-                    sysMessage.ModificationTime = now;
-                    sysMessage.ModificationUserName = applyJobPost.UserId;
-                    sysMessage.SwitchBtnButton = "0";
-                    sysMessage.ShowMessage = "已接受";
-                    sysMessageRepository.Edit(sysMessage);
-                }
+                //应聘申请成功后，进行消息推送
+                //工人消息推送
+                sysMessageRepository.CrtSysMessage(applyJobPost.UserId, customerId, applyJob.Id, "应聘申请提醒", "你的应聘申请已提交成功", "1", "0", "待审批");
+                sysMessageRepository.CrtSysMessage(applyJobPost.UserId, Req.PK_App_Customer_CustomerName, applyJob.Id, "待审批提醒", customer.CustomerName + "应聘了您的职位，点击查看详情", "1", "0", "待审批");
                 ErrorMsg = "申请成功";
                 sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
                 return applyJob.Id;

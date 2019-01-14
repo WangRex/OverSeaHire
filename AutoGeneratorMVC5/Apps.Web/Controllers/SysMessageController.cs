@@ -15,15 +15,19 @@ namespace Apps.Web.Controllers
     {
         #region BLLs
         [Dependency]
-        public ISysMessageBLL m_BLL { get; set; }
+        public SysMessageBLL m_BLL { get; set; }
         [Dependency]
         public EnumDictionaryBLL enumDictionaryBLL { get; set; }
         [Dependency]
-        public App_CustomerBLL _App_CustomerBLL{ get; set; }
+        public App_CustomerBLL _App_CustomerBLL { get; set; }
+        [Dependency]
+        public SysUserBLL sysUserBLL { get; set; }
+        [Dependency]
+        public SysRoleBLL sysRoleBLL { get; set; }
         #endregion
 
         ValidationErrors errors = new ValidationErrors();
-        
+
         #region 列表
         [SupportFilter]
         public ActionResult Index()
@@ -31,15 +35,28 @@ namespace Apps.Web.Controllers
             return View();
         }
         [HttpPost]
-       [SupportFilter(ActionName="Index")]
-        public JsonResult GetList(GridPager pager, string queryStr)
+        [SupportFilter(ActionName = "Index")]
+        public JsonResult GetList(GridPager pager, SysMessageQuery sysMessageQuery)
         {
-            List<SysMessageModel> list = m_BLL.GetList(ref pager, queryStr);
-foreach (var Item in list)
-{
-Item.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(Item.PK_App_Customer_CustomerName);
-}
-            GridRows<SysMessageModel> grs = new GridRows<SysMessageModel>();
+            var account = GetAccount();
+            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
+            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
+            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
+            if (ohadmin || admin)
+            {
+                sysMessageQuery.AdminFlag = true;
+            }
+            else
+            {
+                //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
+                sysMessageQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
+            }
+            List<SysMessageVm> list = m_BLL.GetSysMessageVms(ref pager, sysMessageQuery);
+            foreach (var Item in list)
+            {
+                Item.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(Item.PK_App_Customer_CustomerName);
+            }
+            GridRows<SysMessageVm> grs = new GridRows<SysMessageVm>();
             grs.rows = list;
             grs.total = pager.totalRows;
             return Json(grs);
@@ -50,7 +67,7 @@ Item.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(Item.PK_App
         [SupportFilter]
         public ActionResult Create()
         {
-ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
+            ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
             return View();
         }
 
@@ -65,13 +82,14 @@ ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.Fin
             if (model != null && ModelState.IsValid)
             {
 
-            if (model.SwitchBtnRead == null)
-            {
-                model.SwitchBtnRead = "0";
-            }
-            else            {
-                model.SwitchBtnRead = "1";
-            }
+                if (model.SwitchBtnRead == null)
+                {
+                    model.SwitchBtnRead = "0";
+                }
+                else
+                {
+                    model.SwitchBtnRead = "1";
+                }
                 if (m_BLL.Create(ref errors, model))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "创建", "SysMessage");
@@ -102,7 +120,7 @@ ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.Fin
         public ActionResult Edit(string id)
         {
             SysMessageModel entity = m_BLL.GetById(id);
-ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
+            ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
             return View(entity);
         }
 
@@ -113,16 +131,16 @@ ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.Fin
             if (model != null && ModelState.IsValid)
             {
 
-            model.ModificationUserName = GetUserId();
-            model.ModificationTime = ResultHelper.NowTime;
-            if (model.SwitchBtnRead == null)
-            {
-                model.SwitchBtnRead = "0";
-            }
-            else
-            {
-                model.SwitchBtnRead = "1";
-            }
+                model.ModificationUserName = GetUserId();
+                model.ModificationTime = ResultHelper.NowTime;
+                if (model.SwitchBtnRead == null)
+                {
+                    model.SwitchBtnRead = "0";
+                }
+                else
+                {
+                    model.SwitchBtnRead = "1";
+                }
                 if (m_BLL.Edit(ref errors, model))
                 {
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "修改", "SysMessage");
@@ -153,7 +171,7 @@ ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.Fin
         public ActionResult Details(string id)
         {
             SysMessageModel entity = m_BLL.GetById(id);
-             entity.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(entity.PK_App_Customer_CustomerName);
+            entity.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(entity.PK_App_Customer_CustomerName);
             return View(entity);
         }
 

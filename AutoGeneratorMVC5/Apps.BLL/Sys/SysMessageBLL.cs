@@ -5,6 +5,7 @@ using Apps.Models.Sys;
 using Microsoft.Practices.Unity;
 using Apps.DAL.Sys;
 using Apps.DAL.App;
+using Apps.Models;
 
 namespace Apps.BLL.Sys
 {
@@ -110,6 +111,60 @@ namespace Apps.BLL.Sys
             ErrorMsg = "获取消息成功";
             sysLog.WriteServiceLog(UserId, "SysMessageId:" + SysMessageId + ",ErrorMsg:" + ErrorMsg, "结束", "GetSysMessage", "SysMessageBLL");
             return sysMessageVm;
+        }
+        #endregion
+
+        #region 【后台】获取消息列表
+        /// <summary>
+        /// 【后台】获取消息列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="sysMessageQuery"></param>
+        /// <returns></returns>
+        public List<SysMessageVm> GetSysMessageVms(ref GridPager pager, SysMessageQuery sysMessageQuery)
+        {
+            sysLog.WriteServiceLog(sysMessageQuery.UserId, sysMessageQuery.ToString(), "开始", "GetSysMessageVms", "SysMessageBLL");
+            List<SysMessageVm> sysMessageVms = new List<SysMessageVm>();
+            //获取当前登录人所辖属的所有工人列表
+            IQueryable<App_Customer> queryData = customerRepository.GetList(EF => EF.ParentId != null);
+            if (!sysMessageQuery.AdminFlag)
+            {
+                queryData = queryData.Where(EF => EF.ParentId == sysMessageQuery.CustomerId);
+            }
+            //获取所有的用户主键集合
+            var arrCustomerId = queryData.Select(EF => EF.Id).ToArray();
+            var sysMessages = m_Rep.FindList(EF => arrCustomerId.Contains(EF.PK_App_Customer_CustomerName)).ToList();
+            if (!string.IsNullOrEmpty(sysMessageQuery.EnumMessageType))
+            {
+                sysMessages = sysMessages.Where(EF => EF.EnumMessageType == sysMessageQuery.EnumMessageType).ToList();
+            }
+            if (!string.IsNullOrEmpty(sysMessageQuery.SwitchBtnRead))
+            {
+                sysMessages = sysMessages.Where(EF => EF.SwitchBtnRead == sysMessageQuery.SwitchBtnRead).ToList();
+            }
+            pager.totalRows = sysMessages.Count;
+            if (pager.page > 0)
+            {
+                sysMessages = sysMessages.Skip((pager.page - 1) * pager.rows).Take(pager.rows).ToList();
+            }
+            sysMessageVms = sysMessages.Select(EF => new SysMessageVm
+            {
+                Id = EF.Id,
+                CreateTime = EF.CreateTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                BusinessTable = EF.BusinessTable,
+                BusinessID = EF.BusinessID,
+                PK_App_Customer_CustomerName = EF.PK_App_Customer_CustomerName,
+                App_Customer_CustomerName = customerRepository.GetCustomerName(EF.PK_App_Customer_CustomerName),
+                SwitchBtnRead = EF.SwitchBtnRead,
+                Title = EF.Title,
+                Content = EF.Content,
+                EnumMessageType = EF.EnumMessageType,
+                SwitchBtnButton = EF.SwitchBtnButton,
+                ShowMessage = EF.ShowMessage,
+                WorkerId = EF.WorkerId,
+            }).ToList();
+            sysLog.WriteServiceLog(sysMessageQuery.UserId, sysMessageQuery.ToString(), "结束", "GetSysMessageVms", "SysMessageBLL");
+            return sysMessageVms;
         }
         #endregion
     }

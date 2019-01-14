@@ -86,7 +86,8 @@
                     arrCustomerId.push(value.Id);
                 });
                  globalUtils.globalAjax("@Url.Action("CreateApplyJobs")", { RequirementId: ReqId, CustomerId: arrCustomerId.toString() }, function (result) {
-                    $.messageBox5s('@Resource.Tip', result.Message);
+                     $.messageBox5s('@Resource.Tip', result.Message);
+                     queryList();
                 }, "post");
             }
         });

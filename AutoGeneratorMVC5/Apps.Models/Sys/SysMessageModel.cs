@@ -133,5 +133,22 @@ namespace Apps.Models.Sys
 
     }
     #endregion
+
+    #region 消息列表查询
+    public class SysMessageQuery
+    {
+        public string UserId { get; set; }
+        public bool AdminFlag { get; set; }
+        public string CustomerId { get; set; }
+        public string EnumMessageType { get; set; }
+        public string SwitchBtnRead { get; set; }
+        public override string ToString()
+        {
+            return "UserId:" + UserId + ",AdminFlag:" + AdminFlag
+                 + ",CustomerId:" + CustomerId + ",EnumMessageType:" + EnumMessageType
+                 + ",EnumMessageType:" + EnumMessageType;
+        }
+    }
+    #endregion
 }
 

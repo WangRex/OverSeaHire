@@ -396,6 +396,7 @@
     <Compile Include="Sys\SysConfigRepository.cs" />
     <Compile Include="Sys\SysExceptionRepository.cs" />
     <Compile Include="Sys\SysLogRepository.cs" />
+    <Compile Include="Sys\SysMessageRepository.cs" />
     <Compile Include="Sys\SysModuleOperateRepository.cs" />
     <Compile Include="Sys\SysModuleRepository.cs" />
     <Compile Include="Sys\SysPositionRepository.cs" />

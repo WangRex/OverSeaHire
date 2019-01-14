@@ -27,9 +27,10 @@
     @Scripts.Render("~/" + info + "/Home/ConfigJs")
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/GlobalUtils.js"></script>
     <link href="~/Content/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
 
-    
+
 
     @if (menu.Contains("tree"))
     {
@@ -151,6 +152,9 @@
                         </script>
                     }
                 </td>
+                <td style="width: 40px;">
+                    <a title="未读消息" class="l-btn-text fa fa-bell-o  fa-lg bannerbtn" href="#"><span id="MessageCount" class="color-red">10</span></a>
+                </td>
                 <td style="width: 80px;">
                     <a title="切换主题" id="SetThemes" class="l-btn-text fa fa-cogs fa-lg bannerbtn" href="#"> </a>
                 </td>
@@ -252,6 +256,18 @@
         </div>
 
     </div>
+    <script>
+        $(function () {
+            function refresh_SysMessageCount() {
+                globalUtils.globalAjax("/SysMessage/GetList", { page: 0, SwitchBtnRead: "0" }, function (result) {
+                    $("#MessageCount").html(result.total);
+                }, "post");
+            }
+            //定时更新
+            window.setInterval(refresh_SysMessageCount, 5000);
+        });
+    </script>
+
 
 </body>
 
