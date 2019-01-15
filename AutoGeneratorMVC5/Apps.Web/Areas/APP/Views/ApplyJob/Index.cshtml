@@ -17,6 +17,7 @@
     @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
     @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
     @Html.ToolButton("btnRecord", "fa fa-list", "审批记录", ref perm, "Details", true)
+    @Html.ToolButton("btnRejectApplyJob", "fa fa-remove", "拒绝", ref perm, "RejectApplyJob", false)
 </div>
 <table id="List"></table>
 
@@ -46,7 +47,8 @@
                 { field: 'App_Customer_CustomerName', title: '应聘人', width: 80,sortable:true },
                 { field: 'PK_App_Customer_CustomerName', title: '应聘人', width: 80, sortable: true, hidden: true  },
                 { field: 'CurrentStep', title: '当前步骤', width: 80,sortable:true },
-                { field: 'EnumApplyStatus', title: '应聘状态', width: 80,sortable:true },
+                { field: 'EnumApplyStatus', title: '应聘状态', width: 80, hidden:true },
+                { field: 'ApplyStatus', title: '应聘状态', width: 80,sortable:true },
                 { field: 'PromiseMoney', title: '保证金', width: 80,sortable:true },
                 { field: 'EnumPromisePayWay', title: '保证金支付方式', width: 80,sortable:true },
                 { field: 'ServiceMoney', title: '服务费', width: 80,sortable:true },
@@ -123,6 +125,23 @@
             if (row != null) {
                 $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/App/ApplyJobRecord?CustomerId=" + row.PK_App_Customer_CustomerName + "&ApplyJobId=" + row.Id + "&Ieguid=" + GetGuid() + "'></iframe>");
                 $("#modalwindow").window({ title: '审批记录', width: 1000, height: 700, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+        });
+        $("#btnRejectApplyJob").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                if (row.EnumApplyStatus != "0") {
+                    $.messageBox5s('@Resource.Tip', "当前状态不可拒绝！");
+                    return;
+                }
+                $.messager.confirm('@Resource.Tip', '确定要拒绝当前申请吗?', function (r) {
+                    if (r) {
+                        globalUtils.globalAjax("@Url.Action("RejectApplyJob")", { applyJobId: row.Id }, function (result) {
+                            $.messageBox5s('@Resource.Tip', result.Message);
+                            QueryList();
+                        }, "post");
+                    }
+                });
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
         });
     });

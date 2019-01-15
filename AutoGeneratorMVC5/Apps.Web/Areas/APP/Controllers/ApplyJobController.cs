@@ -9,6 +9,8 @@ using Apps.IBLL.App;
 using Apps.BLL.App;
 using Apps.BLL.Sys;
 using Apps.Models;
+using Apps.DAL.Sys;
+using System;
 
 namespace Apps.Web.Areas.App.Controllers
 {
@@ -29,6 +31,8 @@ namespace Apps.Web.Areas.App.Controllers
         public App_ApplyJobRecordBLL applyJobRecordBLL { get; set; }
         [Dependency]
         public SysMessageBLL sysMessageBLL { get; set; }
+        [Dependency]
+        public SysMessageRepository sysMessageRepository { get; set; }
         #endregion
 
         ValidationErrors errors = new ValidationErrors();
@@ -52,7 +56,7 @@ namespace Apps.Web.Areas.App.Controllers
                 {
                     Item.App_Customer_CustomerName = customer.CustomerName;
                 }
-                Item.EnumApplyStatus = enumDictionaryBLL.GetDicName("App_ApplyJob.EnumApplyStatus", Item.EnumApplyStatus);
+                Item.ApplyStatus = enumDictionaryBLL.GetDicName("App_ApplyJob.EnumApplyStatus", Item.EnumApplyStatus);
                 Item.EnumPromisePayWay = enumDictionaryBLL.GetDicName("App.EnumPayWay", Item.EnumPromisePayWay);
                 Item.EnumServicePayWay = enumDictionaryBLL.GetDicName("App.EnumPayWay", Item.EnumServicePayWay);
                 Item.EnumTailPayWay = enumDictionaryBLL.GetDicName("App.EnumPayWay", Item.EnumTailPayWay);
@@ -349,6 +353,43 @@ namespace Apps.Web.Areas.App.Controllers
             }
 
 
+        }
+        #endregion
+
+        #region 拒绝应聘申请
+        /// <summary>
+        /// 拒绝应聘申请
+        /// </summary>
+        /// <param name="applyJobId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [SupportFilter]
+        public JsonResult RejectApplyJob(string applyJobId)
+        {
+            LogHandler.WriteServiceLog(GetUserId(), "applyJobId:" + applyJobId, "开始", "RejectApplyJob", "App_ApplyJob");
+            var now = ResultHelper.NowTime;
+            //首先更新申请主信息
+            App_ApplyJobModel entity = m_BLL.GetById(applyJobId);
+            entity.ModificationTime = now;
+            entity.ModificationUserName = GetUserId();
+            entity.EnumApplyStatus = "4";
+            try
+            {
+                m_BLL.Edit(ref errors, entity);
+                var account = GetAccount();
+                sysMessageRepository.CrtSysMessage(account.Id, entity.PK_App_Customer_CustomerName, applyJobId, "应聘申请提醒", "非常遗憾，您的面试申请被驳回，请选择其他职位或重新提交", "1", "0", "");
+                LogHandler.WriteServiceLog(GetUserId(), "applyJobId:" + applyJobId + ",ErrorMsg:拒绝成功", "结束", "RejectApplyJob", "App_ApplyJob");
+                return Json(
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode("拒绝申请成功", true, 1)
+                    );
+            }
+            catch (Exception ex)
+            {
+                LogHandler.WriteServiceLog(GetUserId(), "applyJobId:" + applyJobId + ",ErrorMsg:拒绝请求失败," + ex.Message, "结束", "RejectApplyJob", "App_ApplyJob");
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode("拒绝申请失败", false, 1)
+                    );
+            }
         }
         #endregion
     }

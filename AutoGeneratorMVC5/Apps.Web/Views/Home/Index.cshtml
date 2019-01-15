@@ -29,7 +29,12 @@
     <script src="~/signalr/hubs"></script>
     <script src="~/Scripts/GlobalUtils.js"></script>
     <link href="~/Content/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
-
+    <style>
+        #MessageCount {
+            margin-left: 5px;
+            font-size: smaller;
+        }
+    </style>
 
 
     @if (menu.Contains("tree"))
@@ -153,7 +158,7 @@
                     }
                 </td>
                 <td style="width: 40px;">
-                    <a title="未读消息" class="l-btn-text fa fa-bell-o  fa-lg bannerbtn" href="#"><span id="MessageCount" class="color-red">10</span></a>
+                    <a title="未读消息" class="l-btn-text fa fa-bell-o  fa-lg bannerbtn" href="#"><span id="MessageCount" class="color-red"></span></a>
                 </td>
                 <td style="width: 80px;">
                     <a title="切换主题" id="SetThemes" class="l-btn-text fa fa-cogs fa-lg bannerbtn" href="#"> </a>
@@ -266,6 +271,12 @@
             //定时更新
             window.setInterval(refresh_SysMessageCount, 5000);
         });
+        function changeColor() {
+            var color = "#FFC|#DE990A|#F93|#FC0|#F96|#CC6";
+            color = color.split("|");
+            document.getElementById("MessageCount").style.color = color[parseInt(Math.random() * color.length)];
+        }
+        setInterval(changeColor, 200);
     </script>
 
 

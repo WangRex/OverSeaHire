@@ -145,7 +145,7 @@ namespace Apps.BLL.Sys
             pager.totalRows = sysMessages.Count;
             if (pager.page > 0)
             {
-                sysMessages = sysMessages.Skip((pager.page - 1) * pager.rows).Take(pager.rows).ToList();
+                sysMessages = sysMessages.OrderByDescending(EF => EF.CreateTime).Skip((pager.page - 1) * pager.rows).Take(pager.rows).ToList();
             }
             sysMessageVms = sysMessages.Select(EF => new SysMessageVm
             {

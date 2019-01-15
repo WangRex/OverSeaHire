@@ -712,7 +712,7 @@ namespace Apps.BLL.App
                 //应聘申请成功后，进行消息推送
                 //工人消息推送
                 sysMessageRepository.CrtSysMessage(applyJobPost.UserId, customerId, applyJob.Id, "应聘申请提醒", "你的应聘申请已提交成功", "1", "0", "待审批");
-                sysMessageRepository.CrtSysMessage(applyJobPost.UserId, Req.PK_App_Customer_CustomerName, applyJob.Id, "待审批提醒", customer.CustomerName + "应聘了您的职位，点击查看详情", "1", "0", "待审批");
+                sysMessageRepository.CrtSysMessage(applyJobPost.UserId, Req.PK_App_Customer_CustomerName, applyJob.Id, "待审批提醒", customer.CustomerName + "应聘了您的职位，点击查看详情", "1", "1", "待审批");
                 ErrorMsg = "申请成功";
                 sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
                 return applyJob.Id;

@@ -50,7 +50,10 @@ namespace Apps.Models.App
 
         [Display(Name = "应聘状态")]
         public override string EnumApplyStatus { get; set; }
-
+        /// <summary>
+        /// 应聘状态
+        /// </summary>
+        public string ApplyStatus { get; set; }
         [Display(Name = "保证金")]
         public override decimal PromiseMoney { get; set; }
 
