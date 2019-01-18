@@ -1587,6 +1587,31 @@ namespace Apps.BLL.App
             return listReq;
         }
         #endregion
+
+        #region 【后台】给符合条件工人推送消息
+        /// <summary>
+        /// 【后台】给符合条件工人推送消息
+        /// </summary>
+        /// <param name="ReqId"></param>
+        /// <returns></returns>
+        public void SendMessageToWorker(string UserId, string ReqId)
+        {
+            //获取当前登录人所辖属的所有工人列表
+            IQueryable<App_Customer> queryData = customerRepository.GetList();
+            //获取需求信息
+            var req = m_Rep.GetById(ReqId);
+            var list = queryData.Where(EF => EF.Sex == req.WorkLimitSex
+                                            && EF.Age >= req.WorkLimitAgeLow
+                                            && EF.Age <= req.WorkLimitAgeHigh).ToList();
+            var arrJobIntension = req.PK_App_Position_Name.Split(',');
+            list = list.Where(EF => EF.JobIntension != null && EF.JobIntension.Split(',').Intersect(arrJobIntension).Count() > 0).ToList();
+            foreach (var item in list)
+            {
+                //推送消息给工人，工人可以同意或者拒绝
+                sysMessageRepository.CrtSysMessage(UserId, item.Id, req.Id, "职位匹配提醒", "根据您的求职意向，平台为您推荐了以下职位，点击查看详情", "1", "1", "");
+            }
+        }
+        #endregion
     }
 }
 

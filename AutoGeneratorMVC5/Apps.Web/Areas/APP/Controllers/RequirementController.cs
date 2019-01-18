@@ -176,6 +176,7 @@ namespace Apps.Web.Areas.App.Controllers
         [ValidateInput(false)]
         public JsonResult Edit(App_RequirementModel model)
         {
+            string UserId = GetUserId();
             var now = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
@@ -201,13 +202,15 @@ namespace Apps.Web.Areas.App.Controllers
                 }
                 if (m_BLL.Edit(ref errors, model))
                 {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "修改", "App_Requirement");
+                    //如果审核通过了，直接给符合条件的工人推送消息
+                    m_BLL.SendMessageToWorker(UserId, model.Id);
+                    LogHandler.WriteServiceLog(UserId, "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "修改", "App_Requirement");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime + "," + ErrorCol, "失败", "修改", "App_Requirement");
+                    LogHandler.WriteServiceLog(UserId, "Id" + model.Id + ",CreateTime" + model.CreateTime + "," + ErrorCol, "失败", "修改", "App_Requirement");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }
