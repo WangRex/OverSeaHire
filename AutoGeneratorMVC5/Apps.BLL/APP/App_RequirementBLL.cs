@@ -925,15 +925,42 @@ namespace Apps.BLL.App
             List<ApplyJobUserVm> applyJobUserVms = new List<ApplyJobUserVm>();
             var now = ResultHelper.NowTime;
             //如果未登录，或者登陆了，没有发布过职位，则需要显示所有人
-            //获取当前账号发布的所有需求
-            var app_Requirements = m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == recommendUserSearchForm.EmployerId && EF.SwitchBtnOpen == "1").ToList();
-            string PosIds = string.Join(",", app_Requirements.Select(EF => EF.PK_App_Position_Name).Distinct().ToArray());
-            var PosIdList = app_PositionBLL.GetParentIds(PosIds);
-            var positionTreeVms = app_PositionBLL.GetAppPositions(string.Join(",", PosIdList), ref ErrorMsg);
-            employerHomePage.positionTreeVms = positionTreeVms;
-            foreach (var item in app_Requirements)
+            if (string.IsNullOrEmpty(recommendUserSearchForm.EmployerId))
             {
-                applyJobUserVms.AddRange(GetRecommenUsers(item));
+                var workMates = customerRepository.FindList().ToList();
+                foreach (var customerWorkmate in workMates)
+                {
+                    ApplyJobUserVm applyJobUserVm = new ApplyJobUserVm();
+                    applyJobUserVm.CustomerId = customerWorkmate.Id;
+                    applyJobUserVm.CustomerName = customerWorkmate.CustomerName;
+                    applyJobUserVm.Photo = customerWorkmate.CustomerPhoto;
+                    applyJobUserVm.CreateTime = customerWorkmate.CreateTime;
+                    applyJobUserVm.Age = customerWorkmate.Age;
+                    applyJobUserVm.BirthPlace = customerWorkmate.BirthPlace;
+                    applyJobUserVm.Sex = customerWorkmate.Sex;
+                    applyJobUserVm.AbroadExp = enumDictionary.GetDicName("App_CustomerJobIntension.AbroadExp", customerWorkmate.AbroadExp);
+                    applyJobUserVm.EnumDriverLicence = customerWorkmate.EnumDriverLicence;
+                    applyJobUserVm.DriverLicence = enumDictionary.GetDicName("App_CustomerWorkmate.EnumDriverLicence", customerWorkmate.EnumDriverLicence);
+                    applyJobUserVm.JobIntension = customerWorkmate.JobIntension;
+                    applyJobUserVm.JobIntensionName = app_PositionBLL.GetNames(customerWorkmate.JobIntension);
+                    applyJobUserVm.SwitchBtnRecommend = customerWorkmate.SwitchBtnRecommend;
+                    applyJobUserVm.VideoPath = customerWorkmate.VideoPath;
+                    applyJobUserVm.EnumCustomerLevel = customerWorkmate.EnumCustomerLevel;
+                    applyJobUserVms.Add(applyJobUserVm);
+                }
+            }
+            else
+            {
+                //获取当前账号发布的所有需求
+                var app_Requirements = m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == recommendUserSearchForm.EmployerId && EF.SwitchBtnOpen == "1").ToList();
+                string PosIds = string.Join(",", app_Requirements.Select(EF => EF.PK_App_Position_Name).Distinct().ToArray());
+                var PosIdList = app_PositionBLL.GetParentIds(PosIds);
+                var positionTreeVms = app_PositionBLL.GetAppPositions(string.Join(",", PosIdList), ref ErrorMsg);
+                employerHomePage.positionTreeVms = positionTreeVms;
+                foreach (var item in app_Requirements)
+                {
+                    applyJobUserVms.AddRange(GetRecommenUsers(item));
+                }
             }
             //判断输入框是否为空
             if (!string.IsNullOrEmpty(recommendUserSearchForm.QueryStr))
