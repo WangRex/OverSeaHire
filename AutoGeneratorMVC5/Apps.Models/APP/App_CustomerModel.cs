@@ -603,7 +603,9 @@ namespace Apps.Models.App
         public int Age { get; set; }
         public string JobIntensionNames { get; set; }
         public string AbroadExp { get; set; }
+        public string AbroadExpName { get; set; }
         public string EnumDriverLicence { get; set; }
+        public string DriverLicence { get; set; }
         public string Phone { get; set; }
         public string OwnerName { get; set; }
         public string BusinessStatus { get; set; }

@@ -1109,6 +1109,7 @@
     <Content Include="Views\SysFeedback\Index.cshtml" />
     <Content Include="Views\Shared\App\_PartialReqQuery.cshtml" />
     <Content Include="Views\Shared\App\_PartialReqDetails.cshtml" />
+    <Content Include="Views\Shared\App\_PartialResumeQuery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Apps.BLL\Apps.BLL.csproj">

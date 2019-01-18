@@ -10,10 +10,8 @@
 }
 <div class="mvctool">
     <div style="float:left;">
-        <label>姓 名: </label><input id="CustomerName" type="text" style="width:120px;" />
-        性 别: <input id="Sex" type="text" style="width:40px;" />
-        手机号: <input id="CustomerPhone" type="text" style="width:120px;" />
-        年龄: <input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
+        @*将查询条件作为部分页面，并传递参数*@
+        @Html.Partial("~/Views/Shared/App/_PartialResumeQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetCustomerResumeList") + "?RequirementId=" + @ViewBag.ReqId }, { "ReqId", @ViewBag.ReqId } })
     </div>
     <div style="float:left;">
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -42,30 +40,19 @@
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
             columns: [[
-                { field: 'Id', title: '主键', width: 80,hidden:true },
-                { field: 'OwnerName', title: '拥有人姓名', width: 80,sortable:true },
-                { field: 'CustomerName', title: '工友姓名', width: 80,sortable:true },
-                { field: 'Sex', title: '性别', width: 80,sortable:true },
-                { field: 'Phone', title: '电话', width: 80,sortable:true },
-                { field: 'Age', title: '年龄', width: 80,sortable:true },
-                {
-                    field: 'CustomerPhoto', title: '照片', width: 80, formatter: function (value) {
-                        if (value) {
-                            return '<img width="80px;" src="' + value + '" />';
-                        } else {
-                            return "暂无图片";
-                        }
-                    }},
-                { field: 'BirthDay', title: '生日', width: 80, sortable: true },
+                { field: 'Id', title: '主键', width: 80, checkbox: true },
+                { field: 'CustomerName', title: '姓名', width: 80, sortable: true },
+                { field: 'Sex', title: '性别', width: 80, sortable: true },
+                { field: 'Age', title: '年龄', width: 80, sortable: true },
+                { field: 'JobIntensionNames', title: '工种', width: 80, sortable: true },
+                { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
+                { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
                 {
                     field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
                         var btn = '<a class="fa fa-save" onclick="ApplyJob(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;报名</a>';
                         return btn;
                     } }
             ]]
-        });
-        $("#btnQuery").click(function () {
-            queryList();
         });
     });
     function ApplyJob(CustomerId, ReqId) {
@@ -77,13 +64,5 @@
                 }, "post");
             }
         });
-    }
-    function queryList() {
-        var CustomerName = $("#CustomerName").val();
-        var Sex = $("#Sex").val();
-        var CustomerPhone = $("#CustomerPhone").val();
-        var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
-        var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
-        $("#List").datagrid("load", { CustomerName: CustomerName, Sex: Sex, CustomerPhone: CustomerPhone, WorkLimitAgeLow: WorkLimitAgeLow, WorkLimitAgeHigh: WorkLimitAgeHigh });
     }
 </script>

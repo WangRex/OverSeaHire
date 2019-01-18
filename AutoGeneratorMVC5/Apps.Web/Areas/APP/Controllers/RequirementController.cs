@@ -32,6 +32,8 @@ namespace Apps.Web.Areas.App.Controllers
         public SysRoleBLL sysRoleBLL { get; set; }
         [Dependency]
         public App_ApplyJobBLL app_ApplyJobBLL { get; set; }
+        [Dependency]
+        public App_ApplyJobStepBLL app_ApplyJobStepBLL { get; set; }
         #endregion
 
         ValidationErrors errors = new ValidationErrors();
@@ -327,14 +329,34 @@ namespace Apps.Web.Areas.App.Controllers
             }
             var queryData = m_BLL.GetResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
+            List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
             foreach (var Item in list)
             {
-                Item.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", Item.EnumCustomerLevel);
-                Item.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", Item.EnumCustomerType);
-                Item.OwnerName = _App_CustomerBLL.GetCustomerName(Item.ParentId);
+                CustomerResumeVm customerResumeVm = new CustomerResumeVm();
+                customerResumeVm.Id = Item.Id;
+                customerResumeVm.CustomerName = Item.CustomerName;
+                customerResumeVm.Sex = Item.Sex;
+                customerResumeVm.Age = Item.Age;
+                customerResumeVm.JobIntensionNames = app_PositionBLL.GetNames(Item.JobIntension);
+                customerResumeVm.AbroadExp = Item.AbroadExp;
+                customerResumeVm.AbroadExpName = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.AbroadExp", Item.AbroadExp);
+                customerResumeVm.EnumDriverLicence = Item.EnumDriverLicence;
+                customerResumeVm.DriverLicence = enumDictionaryBLL.GetDicName("App_CustomerWorkmate.EnumDriverLicence", Item.EnumDriverLicence);
+                customerResumeVm.Phone = Item.Phone;
+                customerResumeVm.OwnerName = Item.OwnerName;
+                customerResumeVm.BusinessStatus = "暂无";
+                customerResumeVm.ApplyJobId = "";
+                //获取当前用户的应聘申请
+                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && EF.EnumApplyStatus == "0");
+                if (null != applyJob)
+                {
+                    customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
+                    customerResumeVm.ApplyJobId = applyJob.Id;
+                }
+                customerResumeVms.Add(customerResumeVm);
             }
-            GridRows<App_CustomerModel> grs = new GridRows<App_CustomerModel>();
-            grs.rows = list;
+            GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
+            grs.rows = customerResumeVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }

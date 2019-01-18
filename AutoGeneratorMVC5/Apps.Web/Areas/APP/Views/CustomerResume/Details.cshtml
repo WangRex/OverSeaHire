@@ -56,7 +56,12 @@
     });
     //ifram 返回
     function frameReturnByClose() {
-        window.parent.closeTab("简历详情", "简历管理", "app/CustomerResume", "fa fa-child");
+        var flagWin = '@ViewBag.flagWin';
+        if (flagWin == "window") {
+            window.parent.frameReturnByClose();
+        } else {
+            window.parent.closeTab("简历详情", "简历管理", "app/CustomerResume", "fa fa-child");
+        }
     }
     function initTable() {
         globalUtils.globalAjax("@Url.Action("EditInit")", {id: "@Model.Id"}, function (data) {

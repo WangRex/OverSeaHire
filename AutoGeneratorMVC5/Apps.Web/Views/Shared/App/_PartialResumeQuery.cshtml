@@ -1,0 +1,191 @@
+﻿@using Apps.Web.Core;
+@using Apps.Locale;
+
+<style>
+    .saveBtn {
+        position: absolute;
+        height: 28px;
+        background-color: rgb(250, 250, 250);
+        padding-top: 4px;
+        padding-left: 5px;
+        border-bottom: 1px solid;
+        width: 577px;
+        z-index: 9999;
+    }
+
+    .mvctool label {
+        font-size: larger;
+        font-weight: bolder;
+    }
+</style>
+
+<input type="hidden" id="PositionId" />
+<label>
+    姓名:
+</label><input id="CustomerName" type="text" style="width:120px;" />
+<label>
+    职位类型:
+</label><input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
+<label>
+    性 别:
+</label><input id="Sex" type="text" style="width:40px;" />
+<label>
+    年 龄:
+</label><input id="AgeLow" type="text" style="width:30px;" />~<input id="AgeHigh" type="text" style="width:30px;" />
+<div id="positiontree" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false" style="overflow-y:scroll">
+    <div class="saveBtn">
+        @Html.ToolButton("btnSaveTree", "fa fa-save", Resource.Save, true)
+        @Html.ToolButton("btnReturnTree", "fa fa-reply", Resource.Reply, false)
+    </div>
+    <div style="position:relative;top:40px;"><ul id="tt" class="easyui-tree"></ul></div>
+</div>
+<!--需求查询模板-->
+<script type="text/javascript">
+    var treeData = {};
+    var countryCombo = [];
+    var gridurl = '@Html.ViewData["url"]';
+    var ReqId = '@Html.ViewData["ReqId"]';
+    $(function () {
+        var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
+        globalUtils.globalAjax(url, {}, function (data) {
+            countryCombo = data.Data;
+            countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
+            $('#Country').combobox({
+                valueField: 'Id',
+                textField: 'Name',
+                data: countryCombo
+            });
+        }, "get");
+        $('#List').datagrid({
+            url: gridurl,
+            width: SetGridWidthSub(10),
+            method: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '主键', width: 80, checkbox: true },
+                { field: 'CustomerName', title: '姓名', width: 80, sortable: true },
+                { field: 'Sex', title: '性别', width: 80, sortable: true },
+                { field: 'Age', title: '年龄', width: 80, sortable: true },
+                { field: 'JobIntensionNames', title: '工种', width: 80, sortable: true },
+                { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
+                { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
+            ]]
+        });
+        $("#btnDetails").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/App/CustomerResume/Details?id=" + row.Id + "&Ieguid=" + GetGuid() + "&flagWin=window'></iframe>");
+                $("#modalwindow").window({ title: "查看职位" + row.CustomerName, width: 800, height: 600, iconCls: 'fa fa-pencil' }).window('open');
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+         });
+        $("#btnQuery").click(function () {
+            QueryList();
+        });
+        $("#btnReturnTree").click(function () {
+            $("#positiontree").window('close');
+        });
+        $("#btnSaveTree").click(function () {
+            var nodes = $('#tt').tree('getChecked');	// get checked nodes
+            var ids = '';
+            var texts = '';
+            nodes.forEach(function (value, index, array) {
+                ids += ',' + value.id;
+                texts += ',' + value.text;
+            })
+            if (ids != '') {
+                ids = ids.substring(1);
+                texts = texts.substring(1);
+            }
+            $("#PositionId").val(ids);
+            $("#positiontreeinput").val(texts);
+            $("#positiontree").window('close');
+        });
+        $("#positiontreeinput").click(function () {
+            if (treeData.length) {
+                initPosTree(treeData);
+            } else {
+                globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
+                    treeData = data;
+                    initPosTree(treeData);
+                }, "post");
+            }
+        });
+        $("#btnSave").click(function () {
+            var rows = $('#List').datagrid('getSelections');
+            if (rows.length == 0) {
+                $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords');
+            } else {
+                var arrCustomerId = new Array();
+                $.each(rows, function (idx, value) {
+                    arrCustomerId.push(value.Id);
+                });
+                 globalUtils.globalAjax("@Url.Action("CreateApplyJobs")", { RequirementId: ReqId, CustomerId: arrCustomerId.toString() }, function (result) {
+                     $.messageBox5s('@Resource.Tip', result.Message);
+                     QueryList();
+                }, "post");
+            }
+        });
+    });
+    function frameReturnByClose() {
+        $("#modalwindow").window('close');
+    }
+    function ApplyJob(CustomerId, ReqId) {
+        $.messager.confirm('@Resource.Tip', '确定要报名当前应聘申请吗', function (r) {
+            if (r) {
+                globalUtils.globalAjax("@Url.Action("ApplyJob")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
+                    $.messageBox5s('@Resource.Tip', result.Message);
+                    QueryList();
+                }, "post");
+            }
+        });
+    }
+    //查看详情
+    function showDetails(rowId, rowTitle) {
+        var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
+        window.parent.addTab("查看职位" + rowTitle, "@Url.Action("Details")?id=" + rowId + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
+    }
+    function initPosTree(treeData) {
+        $('#tt').tree({
+            data: treeData,
+            animate: true,
+            checkbox: true,
+            onlyLeafCheck: true,
+            onLoadSuccess: function (node, data) {
+                var ids = $("#PositionId").val();
+                if (ids != '') {
+                    var idArr = ids.split(",");
+                    for (var i = 0; i < idArr.length; i++) {
+                        // find a node and then select it
+                        var node = $('#tt').tree('find', idArr[i]);
+                        $('#tt').tree('check', node.target);
+                    }
+                }
+            }
+        });
+        $("#positiontree").window({
+            title: '职位',
+            width: 600,
+            height: 400,
+            top: 350,
+            iconCls: 'fa fa-pencil'
+        }).window('open');
+    }
+    function QueryList() {
+        var CustomerName = $("#CustomerName").val();
+        var Sex = $("#Sex").val();
+        var CustomerPhone = $("#CustomerPhone").val();
+        var AgeLow = $("#AgeLow").val();
+        var AgeHigh = $("#AgeHigh").val();
+        $("#List").datagrid("load", { CustomerName: CustomerName, Sex: Sex, CustomerPhone: CustomerPhone, WorkLimitAgeLow: AgeLow, WorkLimitAgeHigh: AgeHigh, });
+    }
+</script>

@@ -195,8 +195,7 @@ namespace Apps.Web.Areas.App.Controllers
         #endregion
 
         #region 详细
-        [SupportFilter]
-        public ActionResult Details(string id)
+        public ActionResult Details(string id, string flagWin)
         {
             App_CustomerModel entity = m_BLL.GetById(id);
             entity.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", entity.EnumCustomerLevel);
@@ -207,6 +206,7 @@ namespace Apps.Web.Areas.App.Controllers
             entity.SwitchBtnPassport = entity.SwitchBtnPassport == "1" ? "有" : "无";
             entity.SwitchBtnRecommend = entity.SwitchBtnRecommend == "1" ? "推荐" : "无";
             entity.JobIntension = app_PositionBLL.GetNames(entity.JobIntension);
+            ViewBag.flagWin = flagWin;
             return View(entity);
         }
         #endregion
