@@ -604,6 +604,13 @@
             <param name="SysMessageId">消息主键</param>
             <returns></returns>
         </member>
+        <member name="M:Apps.WebApi.Controllers.SysMessageController.GetUnreadSysMessageCount(System.String)">
+            <summary>
+            获取未读消息总数
+            </summary>
+            <param name="UserId">登录人</param>
+            <returns></returns>
+        </member>
         <member name="T:Apps.WebApi.Controllers.WebPayController">
             <summary>
             H5支付宝支付 页面端调用例子参考：AlipaySample.cshtml

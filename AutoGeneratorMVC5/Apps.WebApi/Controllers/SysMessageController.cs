@@ -87,5 +87,25 @@ namespace Apps.WebApi.Controllers
             }
         }
         #endregion
+
+        #region 获取未读消息总数
+        /// <summary>
+        /// 获取未读消息总数
+        /// </summary>
+        /// <param name="UserId">登录人</param>
+        /// <returns></returns>
+        [HttpGet]
+        public object GetUnreadSysMessageCount(string UserId)
+        {
+            LogHandler.WriteServiceLog(UserId, "", "开始", "GetUnreadSysMessageCount", "SysMessageController");
+            string ErrorMsg = "";
+            int DataCount = 0;
+            var sysMessageCount = sysMessageBLL.GetUnreadSysMessageCount(UserId, ref DataCount, ref ErrorMsg);
+            LogHandler.WriteServiceLog(UserId, "DataCount:" + DataCount + ",ErrorMsg:" + ErrorMsg, "结束", "GetUnreadSysMessageCount", "SysMessageController");
+            return Json(
+                ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, sysMessageCount, DataCount)
+                );
+        }
+        #endregion
     }
 }

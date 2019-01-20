@@ -167,6 +167,46 @@ namespace Apps.BLL.Sys
             return sysMessageVms;
         }
         #endregion
+
+        #region 【后台】获取未读消息总数
+        /// <summary>
+        /// 【后台】获取未读消息总数
+        /// </summary>
+        /// <param name="sysMessageQuery"></param>
+        /// <returns></returns>
+        public int GetUnreadSysMessageCount(SysMessageQuery sysMessageQuery)
+        {
+            //获取当前登录人所辖属的所有工人列表
+            IQueryable<App_Customer> queryData = customerRepository.GetList(EF => EF.ParentId != null);
+            if (!sysMessageQuery.AdminFlag)
+            {
+                queryData = queryData.Where(EF => EF.ParentId == sysMessageQuery.CustomerId);
+            }
+            //获取所有的用户主键集合
+            var arrCustomerId = queryData.Select(EF => EF.Id).ToArray();
+            var sysMessages = m_Rep.FindList(EF => arrCustomerId.Contains(EF.PK_App_Customer_CustomerName)).ToList();
+            var iCount = sysMessages.Count;
+            return iCount;
+        }
+        #endregion
+
+        #region 获取未读消息总数
+        /// <summary>
+        /// 获取未读消息总数
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="DataCount"></param>
+        /// <param name="ErrorMsg"></param>
+        /// <returns></returns>
+        public int GetUnreadSysMessageCount(string UserId, ref int DataCount, ref string ErrorMsg)
+        {
+            sysLog.WriteServiceLog(UserId, "", "开始", "GetUnreadSysMessageCount", "SysMessageBLL");
+            var sysMessageCount = m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == UserId && EF.SwitchBtnRead == "0").Count();
+            ErrorMsg = "获取未读消息成功";
+            sysLog.WriteServiceLog(UserId, "DataCount:" + DataCount + ",ErrorMsg:" + ErrorMsg, "结束", "GetUnreadSysMessageCount", "SysMessageBLL");
+            return sysMessageCount;
+        }
+        #endregion
     }
 }
 

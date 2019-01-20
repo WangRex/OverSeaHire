@@ -210,6 +210,36 @@ namespace Apps.Web.Controllers
 
         }
         #endregion
+
+        #region 获取未读消息数
+        /// <summary>
+        /// 获取未读消息数
+        /// </summary>
+        /// <param name="sysMessageQuery"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetUnreadSysMessageCount(SysMessageQuery sysMessageQuery)
+        {
+            var account = GetAccount();
+            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
+            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
+            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
+            if (ohadmin || admin)
+            {
+                sysMessageQuery.AdminFlag = true;
+            }
+            else
+            {
+                //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
+                sysMessageQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
+            }
+            int iCount = m_BLL.GetUnreadSysMessageCount(sysMessageQuery);
+            return Json(new
+            {
+                unReadCount = iCount
+            });
+        }
+        #endregion
     }
 }
 

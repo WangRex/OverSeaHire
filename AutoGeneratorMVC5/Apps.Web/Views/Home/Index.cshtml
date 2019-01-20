@@ -264,8 +264,8 @@
     <script>
         $(function () {
             function refresh_SysMessageCount() {
-                globalUtils.globalAjax("/SysMessage/GetList", { page: 0, SwitchBtnRead: "0" }, function (result) {
-                    $("#MessageCount").html(result.total);
+                globalUtils.globalAjax("/SysMessage/GetUnreadSysMessageCount", {}, function (result) {
+                    $("#MessageCount").html(result.unReadCount);
                 }, "post");
             }
             //定时更新
