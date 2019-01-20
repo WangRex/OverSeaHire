@@ -1043,32 +1043,22 @@ namespace Apps.BLL.App
         public bool InviteWorker(string CustomerId, string RequirementId, string WorkerId, ref string ErrorMsg)
         {
             sysLog.WriteServiceLog(CustomerId, "RequirementId:" + RequirementId + ",WorkerId:" + WorkerId, "开始", "InviteWorker", "App_RequirementBLL");
+            string PK_App_Customer_CustomerName = WorkerId;
             var now = ResultHelper.NowTime;
-            SysMessage sysMessage = new SysMessage();
-            sysMessage.Id = ResultHelper.NewId;
-            sysMessage.CreateTime = now;
-            sysMessage.CreateUserName = CustomerId;
-            sysMessage.ModificationTime = now;
-            sysMessage.ModificationUserName = CustomerId;
-            sysMessage.WorkerId = WorkerId;
-            sysMessage.PK_App_Customer_CustomerName = WorkerId;
-            //增加判断，如果这个邀请的是个工友，则需要推送消息给工人
-            var customer = customerRepository.GetById(WorkerId);
-            if (!string.IsNullOrEmpty(customer.ParentId))
-            {
-                sysMessage.PK_App_Customer_CustomerName = customer.ParentId;
-            }
-            sysMessage.BusinessTable = "Requirement";
-            sysMessage.BusinessID = RequirementId;
-            sysMessage.Title = "面试邀请";
-            sysMessage.Content = "您收到一份面试邀请！";
-            sysMessage.SwitchBtnRead = "0";
-            sysMessage.EnumMessageType = "1";
-            sysMessage.SwitchBtnButton = "1";
-            sysMessage.ShowMessage = "";
+            //发起邀请，往邀请表里增加数据
+            App_RequirementInvite app_RequirementInvite = new App_RequirementInvite();
+            app_RequirementInvite.Id = ResultHelper.NewId;
+            app_RequirementInvite.CreateTime = now;
+            app_RequirementInvite.CreateUserName = CustomerId;
+            app_RequirementInvite.ModificationTime = now;
+            app_RequirementInvite.ModificationUserName = CustomerId;
+            app_RequirementInvite.InitiatorId = CustomerId;
+            app_RequirementInvite.Inviter = WorkerId;
+            app_RequirementInvite.PK_App_Requirement_Title = RequirementId;
             try
             {
-                sysMessageRepository.Create(sysMessage);
+                requirementInviteRepository.Create(app_RequirementInvite);
+                sysMessageRepository.CrtSysMessage(CustomerId, PK_App_Customer_CustomerName, RequirementId, "面试邀请", "恭喜，您收到一份雇主面试邀请，点击查看详情", "1", "1", "");
                 ErrorMsg = "邀请成功";
                 sysLog.WriteServiceLog(CustomerId, "RequirementId:" + RequirementId + ",WorkerId:" + WorkerId + ",ErrorMsg:" + ErrorMsg, "结束", "InviteWorker", "App_RequirementBLL");
                 return true;

@@ -590,7 +590,7 @@
             获取消息列表
             </summary>
             <param name="UserId">登录人</param>
-            <param name="EnumMessageType">消息类型</param>
+            <param name="EnumMessageType">消息类型(0:系统公告,1:应聘相关,2:其他消息)</param>
             <param name="SwitchBtnRead">是否已读</param>
             <param name="PageNum">0不分页</param>
             <param name="RecordNum"></param>

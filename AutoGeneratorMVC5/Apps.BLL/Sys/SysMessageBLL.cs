@@ -129,7 +129,7 @@ namespace Apps.BLL.Sys
             IQueryable<App_Customer> queryData = customerRepository.GetList(EF => EF.ParentId != null);
             if (!sysMessageQuery.AdminFlag)
             {
-                queryData = queryData.Where(EF => EF.ParentId == sysMessageQuery.CustomerId);
+                queryData = queryData.Where(EF => EF.ParentId == sysMessageQuery.CustomerId || EF.Id == sysMessageQuery.CustomerId);
             }
             //获取所有的用户主键集合
             var arrCustomerId = queryData.Select(EF => EF.Id).ToArray();
@@ -180,7 +180,7 @@ namespace Apps.BLL.Sys
             IQueryable<App_Customer> queryData = customerRepository.GetList(EF => EF.ParentId != null);
             if (!sysMessageQuery.AdminFlag)
             {
-                queryData = queryData.Where(EF => EF.ParentId == sysMessageQuery.CustomerId);
+                queryData = queryData.Where(EF => EF.ParentId == sysMessageQuery.CustomerId || EF.Id == sysMessageQuery.CustomerId);
             }
             //获取所有的用户主键集合
             var arrCustomerId = queryData.Select(EF => EF.Id).ToArray();
