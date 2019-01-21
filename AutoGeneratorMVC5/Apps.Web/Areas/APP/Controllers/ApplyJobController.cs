@@ -137,13 +137,28 @@ namespace Apps.Web.Areas.App.Controllers
         [SupportFilter]
         public JsonResult Edit(App_ApplyJobModel model)
         {
+            string strUserId = GetUserId();
+            var now = ResultHelper.NowTime;
             if (model != null && ModelState.IsValid)
             {
-
-                model.ModificationUserName = GetUserId();
-                model.ModificationTime = ResultHelper.NowTime;
+                model.ModificationUserName = strUserId;
+                model.ModificationTime = now;
                 if (m_BLL.Edit(ref errors, model))
                 {
+                    var customer = _App_CustomerBLL.m_Rep.GetById(model.PK_App_Customer_CustomerName);
+                    customer.ModificationTime = now;
+                    customer.ModificationUserName = strUserId;
+                    if ("0".Equals(model.EnumApplyStatus))
+                    {
+                        //如果修改了申请，只要是进行中，则把用户锁定
+                        customer.SwitchBtnInterview = "1";
+                    }
+                    else
+                    {
+                        //如果修改了申请，只要不是进行中，则把用户锁定解除
+                        customer.SwitchBtnInterview = "0";
+                    }
+                    _App_CustomerBLL.m_Rep.Edit(customer);
                     LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "修改", "App_ApplyJob");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
@@ -200,27 +215,39 @@ namespace Apps.Web.Areas.App.Controllers
         public JsonResult NextStep(App_ApplyJobRecordModel model)
         {
             var now = ResultHelper.NowTime;
+            string strUserId = GetUserId();
             var iPreStep = Utils.ObjToInt(model.Step, 0) - 1;
             if (model != null && ModelState.IsValid)
             {
+                var customer = _App_CustomerBLL.m_Rep.GetById(model.PK_App_Customer_CustomerName);
                 //首先更新申请主信息
                 App_ApplyJobModel entity = m_BLL.GetById(model.PK_App_ApplyJob_Id);
                 entity.ModificationTime = now;
-                entity.ModificationUserName = GetUserId();
+                entity.ModificationUserName = strUserId;
                 entity.CurrentStep = model.Step;
+                if (model.Step == "3")
+                {
+                    //如果步骤到3了，就锁定成面试中，不可面试其他职位
+                    customer.SwitchBtnInterview = "1";
+                }
                 if (model.Step == "9")
                 {
                     //如果步骤到9了，就改成已完成
                     entity.EnumApplyStatus = "1";
+                    //如果步骤到9了，就把用户面试锁定解除
+                    customer.SwitchBtnInterview = "0";
                 }
                 m_BLL.Edit(ref errors, entity);
+                customer.ModificationTime = now;
+                customer.ModificationUserName = strUserId;
+                _App_CustomerBLL.m_Rep.Edit(customer);
                 SysMessage sysMessage = new SysMessage()
                 {
                     Id = ResultHelper.NewId,
                     CreateTime = now,
-                    CreateUserName = GetUserId(),
+                    CreateUserName = strUserId,
                     ModificationTime = now,
-                    ModificationUserName = GetUserId(),
+                    ModificationUserName = strUserId,
                     BusinessTable = "ApplyJob",
                     BusinessID = model.PK_App_ApplyJob_Id,
                     PK_App_Customer_CustomerName = model.PK_App_Customer_CustomerName,
@@ -230,7 +257,6 @@ namespace Apps.Web.Areas.App.Controllers
                 };
                 sysMessage.WorkerId = model.PK_App_Customer_CustomerName;
                 //增加判断，如果这个邀请的是个工友，则需要推送消息给工人
-                var customer = _App_CustomerBLL.m_Rep.GetById(model.PK_App_Customer_CustomerName);
                 if (!string.IsNullOrEmpty(customer.ParentId))
                 {
                     sysMessage.PK_App_Customer_CustomerName = customer.ParentId;
@@ -264,7 +290,7 @@ namespace Apps.Web.Areas.App.Controllers
                     sysMessage.Content = "您的应聘完成啦~~祝一切顺利";
                 }
                 sysMessageBLL.m_Rep.Create(sysMessage);
-                model.ModificationUserName = GetUserId();
+                model.ModificationUserName = strUserId;
                 model.ModificationTime = ResultHelper.NowTime;
                 if (applyJobRecordBLL.Create(ref errors, model))
                 {
@@ -273,19 +299,19 @@ namespace Apps.Web.Areas.App.Controllers
                     App_ApplyJobRecord applyJobRecord = applyJobRecordBLL.m_Rep.Find(EF => EF.PK_App_ApplyJob_Id == model.PK_App_ApplyJob_Id && EF.Step == PreStep);
                     applyJobRecord.Result = "已完成";
                     applyJobRecord.ModificationTime = now;
-                    applyJobRecord.ModificationUserName = GetUserId();
+                    applyJobRecord.ModificationUserName = strUserId;
                     if (string.IsNullOrEmpty(applyJobRecord.HappenDate))
                     {
                         applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
                     }
                     applyJobRecordBLL.m_Rep.Edit(applyJobRecord);
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "创建记录", "App_ApplyJob");
+                    LogHandler.WriteServiceLog(strUserId, "Id" + model.Id + ",CreateTime" + model.CreateTime, "成功", "创建记录", "App_ApplyJob");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
                 }
                 else
                 {
                     string ErrorCol = errors.Error;
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + model.Id + ",CreateTime" + model.CreateTime + "," + ErrorCol, "失败", "创建记录", "App_ApplyJob");
+                    LogHandler.WriteServiceLog(strUserId, "Id" + model.Id + ",CreateTime" + model.CreateTime + "," + ErrorCol, "失败", "创建记录", "App_ApplyJob");
                     return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
                 }
             }
@@ -368,14 +394,21 @@ namespace Apps.Web.Areas.App.Controllers
         {
             LogHandler.WriteServiceLog(GetUserId(), "applyJobId:" + applyJobId, "开始", "RejectApplyJob", "App_ApplyJob");
             var now = ResultHelper.NowTime;
+            string strUserId = GetUserId();
             //首先更新申请主信息
             App_ApplyJobModel entity = m_BLL.GetById(applyJobId);
             entity.ModificationTime = now;
-            entity.ModificationUserName = GetUserId();
+            entity.ModificationUserName = strUserId;
             entity.EnumApplyStatus = "4";
             try
             {
                 m_BLL.Edit(ref errors, entity);
+                var customer = _App_CustomerBLL.m_Rep.GetById(entity.PK_App_Customer_CustomerName);
+                //如果拒绝了申请，则把用户锁定解除
+                customer.ModificationTime = now;
+                customer.ModificationUserName = strUserId;
+                customer.SwitchBtnInterview = "0";
+                _App_CustomerBLL.m_Rep.Edit(customer);
                 var account = GetAccount();
                 sysMessageRepository.CrtSysMessage(account.Id, entity.PK_App_Customer_CustomerName, applyJobId, "应聘申请提醒", "非常遗憾，您的面试申请被驳回，请选择其他职位或重新提交", "1", "0", "");
                 LogHandler.WriteServiceLog(GetUserId(), "applyJobId:" + applyJobId + ",ErrorMsg:拒绝成功", "结束", "RejectApplyJob", "App_ApplyJob");

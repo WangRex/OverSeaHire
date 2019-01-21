@@ -56,5 +56,6 @@ namespace Apps.Models.App
 			public virtual string PassportNo { get; set; }
 			public virtual string Religion { get; set; }
 			public virtual string ExpectCountry { get; set; }
+			public virtual string SwitchBtnInterview { get; set; }
 		}
 }

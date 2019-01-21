@@ -146,6 +146,7 @@
           <Property Name="PassportNo" Type="nvarchar(max)" />
           <Property Name="Religion" Type="nvarchar(max)" />
           <Property Name="ExpectCountry" Type="nvarchar(max)" />
+          <Property Name="SwitchBtnInterview" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="App_CustomerCertificate">
           <Key>
@@ -5694,6 +5695,7 @@
           <Property Name="PassportNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Religion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ExpectCountry" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SwitchBtnInterview" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7567,6 +7569,7 @@
           <EntitySetMapping Name="App_Customer">
             <EntityTypeMapping TypeName="DB.App_Customer">
               <MappingFragment StoreEntitySet="App_Customer">
+                <ScalarProperty Name="SwitchBtnInterview" ColumnName="SwitchBtnInterview" />
                 <ScalarProperty Name="ExpectCountry" ColumnName="ExpectCountry" />
                 <ScalarProperty Name="Religion" ColumnName="Religion" />
                 <ScalarProperty Name="PassportNo" ColumnName="PassportNo" />

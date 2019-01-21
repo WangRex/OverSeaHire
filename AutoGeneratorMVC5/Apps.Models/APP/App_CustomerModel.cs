@@ -141,6 +141,12 @@ namespace Apps.Models.App
         [Display(Name = "宗教信仰")]
         public override string Religion { get; set; }
 
+        [Display(Name = "期望国家")]
+        public override string ExpectCountry { get; set; }
+
+        [Display(Name = "面试中")]
+        public override string SwitchBtnInterview { get; set; }
+
         public override string ToString()
         {
             return "Record:" + Record + ",Info:" + Info + ",EnumCustomerLevel:" + EnumCustomerLevel
@@ -154,7 +160,8 @@ namespace Apps.Models.App
                 + ",EnumDriverLicence:" + EnumDriverLicence + ",SwitchBtnRecommend:" + SwitchBtnRecommend + ",VideoPath:" + VideoPath
                 + ",WordPath:" + WordPath + ",WordName:" + WordName + ",WordExt:" + WordExt
                 + ",JobIntension:" + JobIntension + ",EnglishName:" + EnglishName + ",MaritalStatus:" + MaritalStatus
-                + ",PassportNo:" + PassportNo + ",Religion:" + Religion;
+                + ",PassportNo:" + PassportNo + ",Religion:" + Religion
+                + ",ExpectCountry:" + ExpectCountry + ",SwitchBtnInterview:" + SwitchBtnInterview;
         }
     }
     #endregion

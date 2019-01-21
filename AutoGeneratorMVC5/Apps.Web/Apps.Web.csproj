@@ -235,6 +235,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\APP\APPAreaRegistration.cs" />
+    <Compile Include="Areas\APP\Controllers\ContractorResumeController.cs" />
     <Compile Include="Areas\APP\Controllers\InviteRequirementController.cs" />
     <Compile Include="Areas\APP\Controllers\ProceedingRequirementController.cs" />
     <Compile Include="Areas\APP\Controllers\RecommendRequirementController.cs" />
@@ -733,6 +734,7 @@
     <Content Include="Areas\APP\Views\ProceedingRequirement\Details.cshtml" />
     <Content Include="Areas\APP\Views\ProceedingRequirement\Index.cshtml" />
     <Content Include="Areas\APP\Views\ProceedingRequirement\IndexResume.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorResume\Index.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

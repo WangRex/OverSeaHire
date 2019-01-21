@@ -1206,6 +1206,7 @@ namespace Apps.BLL.App
             customer.ParentId = sysUser.PK_App_Customer_CustomerName;
             customer.SwitchBtnPassport = "0";
             customer.SwitchBtnRecommend = "0";
+            customer.EnumCustomerType = "0";
             if (!string.IsNullOrEmpty(customerResumePost.CustomerPhoto))
             {
                 customer.CustomerPhoto = customerResumePost.CustomerPhoto;
@@ -1606,6 +1607,64 @@ namespace Apps.BLL.App
                 sysLog.WriteServiceLog(customerResumePost.UserId, customerResumePost.ToString() + ",ErrorMsg:" + ErrorMsg + ex.Message, "结束", "EditCustomerResume", "App_CustomerBLL");
                 return null;
             }
+        }
+        #endregion
+
+        #region 【后台】外派公司全部简历
+        /// <summary>
+        /// 【后台】外派公司全部简历
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="queryStr"></param>
+        /// <returns></returns>
+        public List<App_CustomerModel> GetContractorResumeList(ref GridPager pager, CustomerResumeQuery customerResumeQuery)
+        {
+            IQueryable<App_Customer> queryData = m_Rep.GetList(EF => EF.ParentId != null && EF.SwitchBtnInterview == "0" && EF.EnumCustomerType == "0");
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
+            {
+                queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));
+            }
+            if (customerResumeQuery.Recommend)
+            {
+                queryData = queryData.Where(EF => EF.SwitchBtnRecommend == "1");
+            }
+            if (customerResumeQuery.Video)
+            {
+                queryData = queryData.Where(EF => EF.VideoPath != "" && EF.VideoPath != null);
+            }
+            if (customerResumeQuery.DriverLicence)
+            {
+                queryData = queryData.Where(EF => EF.EnumDriverLicence != "0" && EF.EnumDriverLicence != null);
+            }
+            if (customerResumeQuery.AbroadExp)
+            {
+                queryData = queryData.Where(EF => EF.EnumDriverLicence == "1");
+            }
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.Sex))
+            {
+                queryData = queryData.Where(a => a.Sex == customerResumeQuery.Sex);
+            }
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerPhone))
+            {
+                queryData = queryData.Where(a => a.Phone != null && a.Phone.Contains(customerResumeQuery.CustomerPhone));
+            }
+            if (customerResumeQuery.WorkLimitAgeHigh != 0)
+            {
+                queryData = queryData.Where(a => a.Age <= customerResumeQuery.WorkLimitAgeHigh);
+            }
+            if (customerResumeQuery.WorkLimitAgeLow != 0)
+            {
+                queryData = queryData.Where(a => a.Age >= customerResumeQuery.WorkLimitAgeLow);
+            }
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.JobIntension))
+            {
+                var arrJobIntension = customerResumeQuery.JobIntension.Split(',').ToList();
+                queryData = queryData.ToList().Where(a => a.JobIntension != null && a.JobIntension.Split(',').Intersect(arrJobIntension).Count() > 0).AsQueryable();
+            }
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
         }
         #endregion
     }

@@ -57,5 +57,6 @@ namespace Apps.Models
         public string PassportNo { get; set; }
         public string Religion { get; set; }
         public string ExpectCountry { get; set; }
+        public string SwitchBtnInterview { get; set; }
     }
 }

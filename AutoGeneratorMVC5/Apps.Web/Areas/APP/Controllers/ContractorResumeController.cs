@@ -11,7 +11,10 @@ using Newtonsoft.Json;
 
 namespace Apps.Web.Areas.App.Controllers
 {
-    public class CustomerResumeController : BaseController
+    /// <summary>
+    /// 外派公司-全部简历
+    /// </summary>
+    public class ContractorResumeController : BaseController
     {
         #region BLLs
         [Dependency]
@@ -53,18 +56,9 @@ namespace Apps.Web.Areas.App.Controllers
             //先获取当前用户的对应customerId
             var account = GetAccount();
             var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
-            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
-            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
-            if (ohadmin || admin)
-            {
-                customerResumeQuery.AdminFlag = true;
-            }
-            else
-            {
-                //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
-                customerResumeQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
-            }
-            List<App_CustomerModel> list = m_BLL.GetResumeList(ref pager, customerResumeQuery);
+            //外派公司可以看到所有的简历，这里让他默认是admin
+            customerResumeQuery.AdminFlag = true;
+            List<App_CustomerModel> list = m_BLL.GetContractorResumeList(ref pager, customerResumeQuery);
             List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
             foreach (var Item in list)
             {
@@ -96,102 +90,6 @@ namespace Apps.Web.Areas.App.Controllers
         }
         #endregion
 
-        #region 创建
-        [SupportFilter]
-        public ActionResult Create()
-        {
-            ViewBag.EnumCustomerLevel = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.EnumCustomerLevel"), "ItemValue", "ItemName");
-            ViewBag.EnumCustomerType = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.EnumCustomerType"), "ItemValue", "ItemName");
-            ViewBag.EnumForeignLangGrade = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.EnumForeignLangGrade"), "ItemValue", "ItemName");
-            ViewBag.EnumDriverLicence = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.EnumDriverLicence"), "ItemValue", "ItemName");
-            ViewBag.Sex = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.Sex"), "ItemValue", "ItemName");
-            ViewBag.AbroadExp = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.AbroadExp"), "ItemValue", "ItemName");
-            return View();
-        }
-
-        [HttpPost]
-        [SupportFilter]
-        public JsonResult Create(string strCustomerResumePost, string eduPosts, string workPosts, string memberPosts)
-        {
-            //自己反序列化处理，更灵活处理
-            CustomerResumePost customerResumePost = JsonConvert.DeserializeObject<CustomerResumePost>(strCustomerResumePost);
-            List<EduExpPost> listEdu = JsonConvert.DeserializeObject<List<EduExpPost>>(eduPosts);
-            List<WorkExpPost> listWork = JsonConvert.DeserializeObject<List<WorkExpPost>>(workPosts);
-            List<FamilyPost> listMember = JsonConvert.DeserializeObject<List<FamilyPost>>(memberPosts);
-            string strUserId = GetUserId();
-            string ErrorMsg = "";
-            customerResumePost.eduExpPosts = listEdu;
-            customerResumePost.workExpPosts = listWork;
-            customerResumePost.familyPosts = listMember;
-            customerResumePost.UserId = strUserId;
-            string CustomerId = m_BLL.CreateCustomerResume(customerResumePost, ref ErrorMsg);
-            if (CustomerId != null)
-            {
-                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",CreateTime:" + ResultHelper.NowTime, "成功", "创建", "APP_Customer");
-                return Json(JsonHandler.CreateMessage(1, Resource.InsertSucceed));
-            }
-            else
-            {
-                string ErrorCol = errors.Error;
-                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",CreateTime:" + ResultHelper.NowTime + "," + ErrorMsg, "失败", "创建", "APP_Customer");
-                return Json(JsonHandler.CreateMessage(0, Resource.InsertFail + ErrorCol));
-            }
-        }
-        #endregion
-
-        #region 修改
-        [SupportFilter]
-        public ActionResult Edit(string id)
-        {
-            App_CustomerModel entity = m_BLL.GetById(id);
-            ViewBag.EnumCustomerLevel = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.EnumCustomerLevel"), "ItemValue", "ItemName");
-            ViewBag.EnumCustomerType = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.EnumCustomerType"), "ItemValue", "ItemName");
-            ViewBag.EnumForeignLangGrade = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.EnumForeignLangGrade"), "ItemValue", "ItemName");
-            ViewBag.EnumDriverLicence = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.EnumDriverLicence"), "ItemValue", "ItemName");
-            ViewBag.Sex = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.Sex"), "ItemValue", "ItemName");
-            ViewBag.AbroadExp = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.AbroadExp"), "ItemValue", "ItemName");
-            entity.JobIntensionNames = app_PositionBLL.GetNames(entity.JobIntension);
-            return View(entity);
-        }
-
-        [HttpPost]
-        [SupportFilter]
-        public JsonResult Edit(string strCustomerResumePost, string eduPosts, string workPosts, string memberPosts)
-        {
-            //自己反序列化处理，更灵活处理
-            CustomerResumePost customerResumePost = JsonConvert.DeserializeObject<CustomerResumePost>(strCustomerResumePost);
-            List<EduExpPost> listEdu = JsonConvert.DeserializeObject<List<EduExpPost>>(eduPosts);
-            List<WorkExpPost> listWork = JsonConvert.DeserializeObject<List<WorkExpPost>>(workPosts);
-            List<FamilyPost> listMember = JsonConvert.DeserializeObject<List<FamilyPost>>(memberPosts);
-            string strUserId = GetUserId();
-            string ErrorMsg = "";
-            customerResumePost.eduExpPosts = listEdu;
-            customerResumePost.workExpPosts = listWork;
-            customerResumePost.familyPosts = listMember;
-            customerResumePost.UserId = strUserId;
-            string CustomerId = m_BLL.EditCustomerResume(customerResumePost, ref ErrorMsg);
-            if (CustomerId != null)
-            {
-                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",ModificationTime" + ResultHelper.NowTime, "成功", "修改", "APP_Customer");
-                return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed));
-            }
-            else
-            {
-                string ErrorCol = ErrorMsg;
-                LogHandler.WriteServiceLog(GetUserId(), "Id" + CustomerId + ",ModificationTime" + ResultHelper.NowTime + "," + ErrorCol, "失败", "修改", "APP_Customer");
-                return Json(JsonHandler.CreateMessage(0, Resource.EditFail + ErrorCol));
-            }
-        }
-
-        [HttpPost]
-        public JsonResult EditInit(string id)
-        {
-            string ErrorMsg = "";
-            CustomerResumePost customerResumePost = m_BLL.InitEdit(id, ref ErrorMsg);
-            return Json(customerResumePost);
-        }
-        #endregion
-
         #region 详细
         public ActionResult Details(string id, string flagWin)
         {
@@ -206,35 +104,6 @@ namespace Apps.Web.Areas.App.Controllers
             entity.JobIntension = app_PositionBLL.GetNames(entity.JobIntension);
             ViewBag.flagWin = flagWin;
             return View(entity);
-        }
-        #endregion
-
-        #region 删除
-        [HttpPost]
-        [SupportFilter]
-        public JsonResult Delete(string id)
-        {
-            string ErrorMsg = "";
-            if (!string.IsNullOrWhiteSpace(id))
-            {
-                if (m_BLL.DeleteCustomerResume(GetUserId(), id, ref ErrorMsg))
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "APP_Customer");
-                    return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
-                }
-                else
-                {
-                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorMsg, "失败", "删除", "APP_Customer");
-                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorMsg));
-                }
-            }
-            else
-            {
-                ErrorMsg = "要删除的主键为空";
-                return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorMsg));
-            }
-
-
         }
         #endregion
 

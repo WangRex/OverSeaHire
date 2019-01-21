@@ -77,6 +77,7 @@ namespace Apps.BLL.App
 								|| a.PassportNo.Contains(queryStr)
 								|| a.Religion.Contains(queryStr)
 								|| a.ExpectCountry.Contains(queryStr)
+								|| a.SwitchBtnInterview.Contains(queryStr)
 								);
             }
             else
@@ -137,6 +138,7 @@ namespace Apps.BLL.App
 													PassportNo = r.PassportNo,
 													Religion = r.Religion,
 													ExpectCountry = r.ExpectCountry,
+													SwitchBtnInterview = r.SwitchBtnInterview,
           
                                               }).ToList();
 
@@ -197,6 +199,7 @@ namespace Apps.BLL.App
 				entity.PassportNo = model.PassportNo;
 				entity.Religion = model.Religion;
 				entity.ExpectCountry = model.ExpectCountry;
+				entity.SwitchBtnInterview = model.SwitchBtnInterview;
   
 
                 if (m_Rep.Create(entity))
@@ -326,6 +329,7 @@ namespace Apps.BLL.App
 				entity.PassportNo = model.PassportNo;
 				entity.Religion = model.Religion;
 				entity.ExpectCountry = model.ExpectCountry;
+				entity.SwitchBtnInterview = model.SwitchBtnInterview;
  
 
 
@@ -399,6 +403,7 @@ namespace Apps.BLL.App
 				model.PassportNo = entity.PassportNo;
 				model.Religion = entity.Religion;
 				model.ExpectCountry = entity.ExpectCountry;
+				model.SwitchBtnInterview = entity.SwitchBtnInterview;
  
                 return model;
             }
