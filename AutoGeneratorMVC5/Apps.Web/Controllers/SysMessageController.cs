@@ -220,20 +220,24 @@ namespace Apps.Web.Controllers
         [HttpPost]
         public JsonResult GetUnreadSysMessageCount(SysMessageQuery sysMessageQuery)
         {
+            int iCount = 0;
             var account = GetAccount();
-            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
-            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
-            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
-            if (ohadmin || admin)
+            if (null != account)
             {
-                sysMessageQuery.AdminFlag = true;
+                var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
+                bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
+                bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
+                if (ohadmin || admin)
+                {
+                    sysMessageQuery.AdminFlag = true;
+                }
+                else
+                {
+                    //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
+                    sysMessageQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
+                }
+                iCount = m_BLL.GetUnreadSysMessageCount(sysMessageQuery);
             }
-            else
-            {
-                //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
-                sysMessageQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
-            }
-            int iCount = m_BLL.GetUnreadSysMessageCount(sysMessageQuery);
             return Json(new
             {
                 unReadCount = iCount

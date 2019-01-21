@@ -1602,6 +1602,70 @@ namespace Apps.BLL.App
             }
         }
         #endregion
+
+        #region 【后台】获取职位列表
+        /// <summary>
+        /// 【后台】获取职位列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="requirementQuery"></param>
+        /// <returns></returns>
+        public List<App_RequirementModel> GetContractorRequirementList(ref GridPager pager, RequirementQuery requirementQuery)
+        {
+            IQueryable<App_Requirement> queryData = m_Rep.GetList();
+            List<App_Requirement> app_Requirements = new List<App_Requirement>();
+            //获取当前登录人所创建的职位列表
+            if (!requirementQuery.AdminFlag)
+            {
+                queryData = queryData.Where(EF => EF.PK_App_Customer_CustomerName == requirementQuery.CustomerId);
+            }
+            var ReqIds = queryData.Select(EF => EF.Id).ToList();
+            var listApplyJob = applyJobRepository.FindList().ToList().Where(EF => ReqIds.Contains(EF.PK_App_Requirement_Title)).ToList();
+            if (requirementQuery.QueryFlag == "Applyed")
+            {
+                listApplyJob = listApplyJob.Where(EF => EF.EnumApplyStatus == "0" && EF.CurrentStep == "1").ToList();
+                ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
+            }
+            queryData = queryData.Where(EF => ReqIds.Contains(EF.Id));
+            if (!string.IsNullOrWhiteSpace(requirementQuery.Title))
+            {
+                queryData = queryData.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title));
+            }
+            if (!string.IsNullOrWhiteSpace(requirementQuery.PositionId))
+            {
+                var arrPositionId = requirementQuery.PositionId.Split(',').ToList();
+                queryData = queryData.ToList().Where(EF => EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrPositionId).Count() > 0).AsQueryable();
+            }
+            if (!string.IsNullOrWhiteSpace(requirementQuery.Sex))
+            {
+                queryData = queryData.Where(EF => EF.WorkLimitSex == requirementQuery.Sex);
+            }
+            if (requirementQuery.AgeLow != 0)
+            {
+                queryData = queryData.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeLow && EF.WorkLimitAgeHigh >= requirementQuery.AgeLow);
+            }
+            if (requirementQuery.AgeHigh != 0)
+            {
+                queryData = queryData.Where(EF => EF.WorkLimitAgeLow <= requirementQuery.AgeHigh && EF.WorkLimitAgeHigh >= requirementQuery.AgeHigh);
+            }
+            if (requirementQuery.SallaryLow != 0)
+            {
+                queryData = queryData.ToList().Where(EF => EF.SalaryLow != null && Utils.ObjToDecimal(EF.SalaryLow, 0) >= requirementQuery.SallaryLow).AsQueryable();
+            }
+            if (requirementQuery.SallaryHigh != 0)
+            {
+                queryData = queryData.ToList().Where(EF => EF.SalaryHigh != null && Utils.ObjToDecimal(EF.SalaryHigh, 0) >= requirementQuery.SallaryHigh).AsQueryable();
+            }
+            if (!string.IsNullOrWhiteSpace(requirementQuery.Country))
+            {
+                queryData = queryData.Where(EF => EF.PK_App_Country_Name == requirementQuery.Country);
+            }
+            pager.totalRows = queryData.Count();
+            //排序
+            queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
+            return CreateModelList(ref queryData);
+        }
+        #endregion
     }
 }
 

@@ -1,0 +1,68 @@
+﻿@using Apps.Web.Core;
+@using Apps.Web;
+@using Apps.Common;
+@using Apps.Models.Sys;
+@using Apps.Locale;
+@{
+    ViewBag.Title = "ApplyedRequirement";
+    Layout = "~/Views/Shared/_Index_Layout.cshtml";
+    List<permModel> perm = null;
+}
+<div class="mvctool">
+    <div style="float:left;">
+        @*将查询条件作为部分页面，并传递参数*@
+        @Html.Partial("~/Views/Shared/App/_PartialResumeQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetCustomerResumeList") + "?RequirementId=" + @ViewBag.ReqId }, { "ReqId", @ViewBag.ReqId } })
+    </div>
+    <div style="float:left;">
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
+    </div>
+</div>
+<table id="List"></table>
+
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+@Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
+<script type="text/javascript">
+    var ReqId = "@ViewBag.ReqId";
+    $(function () {
+        $('#List').datagrid({
+            url: '@Url.Action("GetIndexResume")?RequirementId='+ ReqId,
+            width:SetGridWidthSub(10),
+            method: 'post',
+            height: SetGridHeightSub(45),
+            fitColumns: true,
+            sortName: 'CreateTime',
+            sortOrder: 'desc',
+            idField: 'Id',
+            pageSize: 15,
+            pageList: [15, 20, 30, 40, 50],
+            pagination: true,
+            striped: true, //奇偶行是否区分
+            singleSelect: true,//单选模式
+            //rownumbers: true,//行号
+            columns: [[
+                { field: 'Id', title: '主键', width: 80, checkbox: true },
+                { field: 'CustomerName', title: '姓名', width: 80, sortable: true },
+                { field: 'Sex', title: '性别', width: 80, sortable: true },
+                { field: 'Age', title: '年龄', width: 80, sortable: true },
+                { field: 'JobIntensionNames', title: '工种', width: 80, sortable: true },
+                { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
+                { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
+                {
+                    field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
+                        var btn = '<a class="fa fa-times" onclick="CancelApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;取消</a>';
+                        return btn;
+                    } }
+            ]]
+        });
+    });
+    function CancelApply(CustomerId, ReqId) {
+        $.messager.confirm('@Resource.Tip', '确定要取消当前应聘申请吗', function (r) {
+            if (r) {
+                globalUtils.globalAjax("@Url.Action("CancelApply")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
+                    $.messageBox5s('@Resource.Tip', result.Message);
+                    queryList();
+                }, "post");
+            }
+        });
+    }
+</script>

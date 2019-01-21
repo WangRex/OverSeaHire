@@ -235,6 +235,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\APP\APPAreaRegistration.cs" />
+    <Compile Include="Areas\APP\Controllers\ContractorApplyedResumeController.cs" />
+    <Compile Include="Areas\APP\Controllers\ContractorRequirementController.cs" />
     <Compile Include="Areas\APP\Controllers\ContractorResumeController.cs" />
     <Compile Include="Areas\APP\Controllers\InviteRequirementController.cs" />
     <Compile Include="Areas\APP\Controllers\ProceedingRequirementController.cs" />
@@ -735,6 +737,15 @@
     <Content Include="Areas\APP\Views\ProceedingRequirement\Index.cshtml" />
     <Content Include="Areas\APP\Views\ProceedingRequirement\IndexResume.cshtml" />
     <Content Include="Areas\APP\Views\ContractorResume\Index.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorApplyedResume\Details.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorApplyedResume\Index.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorApplyedResume\IndexResume.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorRequirement\Details.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorRequirement\Index.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorRequirement\IndexResume.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorRequirement\AddTag.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorRequirement\Create.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorRequirement\Edit.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
