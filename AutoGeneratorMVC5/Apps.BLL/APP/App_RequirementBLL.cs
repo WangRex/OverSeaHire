@@ -1522,6 +1522,10 @@ namespace Apps.BLL.App
             var customerResume = customerRepository.GetById(strCustomerId);
             var arrJobIntension = customerResume.JobIntension.Split(',');
             var requirements = m_Rep.FindList(EF => EF.SwitchBtnOpen == "1").ToList();
+            if (!requirementQuery.AdminFlag)
+            {
+                requirements = requirements.Where(EF => EF.PK_App_Customer_CustomerName == requirementQuery.PublisherId).ToList();
+            }
             var applyJobList = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
             //这里包括了这个简历，所关联的所有职位，包括应聘的，系统推荐的，雇主面试邀请 ，办理中的职位
             //获取应聘的需求列表（就是发起申请的，申请里状态是1的那些）
@@ -1613,6 +1617,7 @@ namespace Apps.BLL.App
         public List<App_RequirementModel> GetContractorRequirementList(ref GridPager pager, RequirementQuery requirementQuery)
         {
             IQueryable<App_Requirement> queryData = m_Rep.GetList();
+            List<string> listReqIds = new List<string>();
             List<App_Requirement> app_Requirements = new List<App_Requirement>();
             //获取当前登录人所创建的职位列表
             if (!requirementQuery.AdminFlag)
@@ -1624,6 +1629,33 @@ namespace Apps.BLL.App
             if (requirementQuery.QueryFlag == "Applyed")
             {
                 listApplyJob = listApplyJob.Where(EF => EF.EnumApplyStatus == "0" && EF.CurrentStep == "1").ToList();
+                ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
+            }
+            if (requirementQuery.QueryFlag == "Recommend")
+            {
+                foreach (var item in queryData.ToList())
+                {
+                    var customers = GetRecommenUsers(item);
+                    if (customers.Count > 0)
+                    {
+                        listReqIds.Add(item.Id);
+                    }
+                }
+                ReqIds = listReqIds;
+            }
+            if (requirementQuery.QueryFlag == "Invite")
+            {
+                var listInvite = requirementInviteRepository.FindList(EF => EF.InitiatorId == requirementQuery.CustomerId);
+                ReqIds = listInvite.Select(EF => EF.PK_App_Requirement_Title).ToList();
+            }
+            if (requirementQuery.QueryFlag == "Proceeding")
+            {
+                listApplyJob = listApplyJob.Where(EF => EF.EnumApplyStatus == "0").ToList().Where(EF => Utils.ObjToInt(EF.CurrentStep, 0) > 3).ToList();
+                ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
+            }
+            if (requirementQuery.QueryFlag == "RelateJob")
+            {
+                listApplyJob = listApplyJob.Where(EF => EF.EnumApplyStatus == "0").ToList().Where(EF => Utils.ObjToInt(EF.CurrentStep, 0) > 3).ToList();
                 ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
             }
             queryData = queryData.Where(EF => ReqIds.Contains(EF.Id));

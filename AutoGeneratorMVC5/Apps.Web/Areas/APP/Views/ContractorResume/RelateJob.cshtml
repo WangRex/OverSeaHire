@@ -4,7 +4,7 @@
 @using Apps.Models.Sys;
 @using Apps.Locale;
 @{
-    ViewBag.Title = "APP_Customer";
+    ViewBag.Title = "App_Requirement";
     Layout = "~/Views/Shared/_Index_Layout.cshtml";
     List<permModel> perm = null;
 }
@@ -26,34 +26,37 @@
         font-weight: bolder;
     }
 </style>
-
 <div class="mvctool">
     <div style="float:left;">
-        <input type="hidden" id="JobIntension" />
+        <input type="hidden" id="PositionId" />
         <label>
-            姓 名:
-        </label><input id="CustomerName" type="text" style="width:120px;" />
+            标题:
+        </label><input id="Title" type="text" style="width:120px;" />
         <label>
             工 种:
         </label><input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
         <label>
-            手机号:
-        </label> <input id="CustomerPhone" type="text" style="width:120px;" />
+            性 别:
+        </label><input id="Sex" type="text" style="width:40px;" />
+        <label>
+            国 家:
+        </label><input id="Country" type="text" style="width:120px;" />
         <label>
             年 龄:
         </label><input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
         <label>
-            系统推荐:
-        </label> <input class="easyui-switchbutton" onText="是" offText="否" id="Recommend">
+            薪 资:
+        </label><input id="SallaryLow" type="text" style="width:60px;" />~<input id="SallaryHigh" type="text" style="width:60px;" />
+        <label>
+            标 签:
+        </label><input id="Tag" type="text" style="width:60px;" />
     </div>
     <div style="float:left;">
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
         @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
         @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
+        @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
         @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
-        @Html.ToolButton("btnDetails", "fa fa-list", "简历详情", ref perm, "Details", true)
-        @Html.ToolButton("btnRelateJob", "fa fa-list", "相关职位", ref perm, "Create", true)
-        @Html.ToolButton("btnCustomerApply", "fa fa-list", "业务记录", ref perm, "Create", true)
     </div>
 </div>
 <table id="List"></table>
@@ -67,11 +70,23 @@
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
 <script type="text/javascript">
+    var CustomerId = "@ViewBag.CustomerId";
     var treeData = {};
+    var countryCombo = [];
     $(function () {
+        var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
+        globalUtils.globalAjax(url, {}, function (data) {
+            countryCombo = data.Data;
+            countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
+            $('#Country').combobox({
+                valueField: 'Id',
+                textField: 'Name',
+                data: countryCombo
+            });
+        }, "get");
         $('#List').datagrid({
-            url: '@Url.Action("GetList")',
-            width: SetGridWidthSub(10),
+            url: '@Url.Action("RelateJob")?CustomerId=' + CustomerId,
+            width:SetGridWidthSub(10),
             method: 'post',
             height: SetGridHeightSub(45),
             fitColumns: true,
@@ -85,41 +100,52 @@
             singleSelect: true,//单选模式
             //rownumbers: true,//行号
             columns: [[
-                { field: 'Id', title: '主键', width: 80, checkbox: true },
-                { field: 'CustomerName', title: '姓名', width: 80, sortable: true },
-                { field: 'Sex', title: '性别', width: 80, sortable: true },
-                { field: 'Age', title: '年龄', width: 80, sortable: true },
-                { field: 'JobIntensionNames', title: '工种', width: 80, sortable: true },
-                { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
-                { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
-                {
-                    field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
-                        var btn = '<a class="fa fa-check-square-o" onclick="ApplyJob(\'' + rec.Id + '\',\'' + rec.CustomerName + '\')" href="javascript:void(0)">&nbsp;选人</a>';
-                        return btn;
-                    }
-                }
+                { field: 'Id', title: '主键', width: 80,hidden:true },
+                { field: 'Title', title: '职位名称', width: 160,sortable:false },
+                { field: 'Position', title: '职位类型', width: 80,sortable:false },
+                { field: 'Country', title: '国家', width: 80,sortable:false },
+                { field: 'Sex', title: '性别', width: 80,sortable:false },
+                { field: 'AgeLimit', title: '年龄要求', width: 80,sortable:false },
+                { field: 'YearSalary', title: '年收入', width: 80,sortable:false },
+                { field: 'TotalHire', title: '招聘人数', width: 80,sortable:false },
+                { field: 'Tag', title: '职位标签', width: 80,sortable:false },
+                { field: 'TotalServiceMoney', title: '总服务费', width: 80,sortable:false },
+                { field: 'PublishDate', title: '发布时间', width: 80,sortable:false },
+                { field: 'ReqType', title: '类型', width: 80,hidden:true },
             ]]
+        });
+        $("#btnCreate").click(function () {
+            window.parent.addTab("新增需求", "@Url.Action("Create")", "fa fa-plus");
+        });
+        $("#btnEdit").click(function () {
+            var row = $('#List').datagrid('getSelected');
+            if (row != null) {
+                window.parent.addTab("修改需求", "@Url.Action("Edit")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-pencil");
+            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                window.parent.addTab("简历详情", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+                window.parent.addTab("查看需求", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-        });
+         });
         $("#btnQuery").click(function () {
             QueryList();
         });
-        $("#btnRelateJob").click(function () {
+        $("#btnDelete").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                window.parent.addTab(row.CustomerName + "的相关职位", "@Url.Action("RelateJob")?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-        });
-        $("#btnCustomerApply").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                window.parent.addTab("查看订单", "@Url.Action("ViewOrder")?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
+                $.messager.confirm('@Resource.Tip', '@Resource.YouWantToDeleteTheSelectedRecords', function (r) {
+                     if (r) {
+                         $.post("@Url.Action("Delete")?id=" + row.Id, function (data) {
+                             if (data.type == 1)
+                                 $("#List").datagrid('load');
+                             $.messageBox5s('@Resource.Tip', data.message);
+                         }, "json");
+
+                     }
+                 });
+             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
         });
         $("#btnReturnTree").click(function () {
             $("#positiontree").window('close');
@@ -136,7 +162,7 @@
                 ids = ids.substring(1);
                 texts = texts.substring(1);
             }
-            $("#JobIntension").val(ids);
+            $("#PositionId").val(ids);
             $("#positiontreeinput").val(texts);
             $("#positiontree").window('close');
         });
@@ -151,12 +177,10 @@
             }
         });
     });
-    function ApplyJob(rowId, CustomerName) {
-        window.parent.addTab(CustomerName + "的相关职位", "@Url.Action("RelateJob")?CustomerId=" + rowId + "&Ieguid=" + GetGuid() + "", "fa fa-list");
-    }
     //ifram 返回
     function frameReturnByClose() {
         $("#modalwindow").window('close');
+        window.parent.closeTab("@Resource.Create", "@Url.Action("Create")", "fa fa-plus");
     }
     function frameReturnByReload(flag) {
         if (flag)
@@ -174,7 +198,7 @@
             checkbox: true,
             onlyLeafCheck: true,
             onLoadSuccess: function (node, data) {
-                var ids = $("#JobIntension").val();
+                var ids = $("#PositionId").val();
                 if (ids != '') {
                     var idArr = ids.split(",");
                     for (var i = 0; i < idArr.length; i++) {
@@ -194,20 +218,27 @@
         }).window('open');
     }
     function QueryList() {
-        var SwitchbtnRecommend = $("#Recommend");//获取switchbutton对象
-        var Recommend = SwitchbtnRecommend.switchbutton("options").checked;//获取switchbtn值
-        var CustomerName = $("#CustomerName").val();
-        var CustomerPhone = $("#CustomerPhone").val();
-        var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
-        var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
-        var JobIntension = $("#JobIntension").val();
-        $("#List").datagrid("load", {
-            CustomerName: CustomerName,
-            CustomerPhone: CustomerPhone,
-            WorkLimitAgeLow: WorkLimitAgeLow,
-            WorkLimitAgeHigh: WorkLimitAgeHigh,
-            JobIntension: JobIntension,
-            Recommend: Recommend,
-        });
-    }
+        var Title = $("#Title").val();
+        var Sex = $("#Sex").val();
+        var Country = $('#Country').combobox('getValue');
+        var AgeLow = $("#AgeLow").val();
+        var AgeHigh = $("#AgeHigh").val();
+        var SallaryLow = $("#SallaryLow").val();
+        var SallaryHigh = $("#SallaryHigh").val();
+        var Tag = $("#Tag").val();
+        var PositionId = $("#PositionId").val();
+        var data = {
+            Title: Title,
+            Sex: Sex,
+            Country: Country,
+            AgeLow: AgeLow,
+            AgeHigh: AgeHigh,
+            SallaryLow: SallaryLow,
+            SallaryHigh: SallaryHigh,
+            Tag: Tag,
+            PositionId: PositionId,
+        };
+        $("#List").datagrid("load", data);
+    };
 </script>
+

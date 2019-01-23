@@ -12,9 +12,9 @@ using Newtonsoft.Json;
 namespace Apps.Web.Areas.App.Controllers
 {
     /// <summary>
-    /// 外派公司-全部简历
+    /// 外派公司-推荐的简历
     /// </summary>
-    public class ContractorResumeController : BaseController
+    public class ContractorRecommendResumeController : BaseController
     {
         #region BLLs
         [Dependency]
@@ -51,40 +51,40 @@ namespace Apps.Web.Areas.App.Controllers
         }
         [HttpPost]
         [SupportFilter(ActionName = "Index")]
-        public JsonResult GetList(GridPager pager, CustomerResumeQuery customerResumeQuery)
+        public JsonResult GetList(GridPager pager, RequirementQuery requirementQuery)
         {
             //先获取当前用户的对应customerId
-            var account = GetAccount();
-            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
-            //外派公司可以看到所有的简历，这里让他默认是admin
-            customerResumeQuery.AdminFlag = true;
-            List<App_CustomerModel> list = m_BLL.GetContractorResumeList(ref pager, customerResumeQuery);
-            List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
+            if ("1" == Session["IdFlag"] as string || Session["ohadmin"] as string == "1")
+            {
+                requirementQuery.AdminFlag = true;
+            }
+            else
+            {
+                //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
+                requirementQuery.CustomerId = Session["PK_App_Customer_CustomerName"] as string;
+            }
+            List<App_RequirementModel> list = app_RequirementBLL.GetContractorRequirementList(ref pager, requirementQuery);
+            List<RequirementInfoVm> requirementInfoVms = new List<RequirementInfoVm>();
             foreach (var Item in list)
             {
-                CustomerResumeVm customerResumeVm = new CustomerResumeVm();
-                customerResumeVm.Id = Item.Id;
-                customerResumeVm.CustomerName = Item.CustomerName;
-                customerResumeVm.Sex = Item.Sex;
-                customerResumeVm.Age = Item.Age;
-                customerResumeVm.JobIntensionNames = Item.JobIntensionNames;
-                customerResumeVm.AbroadExp = Item.AbroadExp;
-                customerResumeVm.EnumDriverLicence = Item.EnumDriverLicence;
-                customerResumeVm.Phone = Item.Phone;
-                customerResumeVm.OwnerName = Item.OwnerName;
-                customerResumeVm.BusinessStatus = "暂无";
-                customerResumeVm.ApplyJobId = "";
-                //获取当前用户的应聘申请
-                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && EF.EnumApplyStatus == "0");
-                if (null != applyJob)
+                requirementInfoVms.Add(new RequirementInfoVm()
                 {
-                    customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
-                    customerResumeVm.ApplyJobId = applyJob.Id;
-                }
-                customerResumeVms.Add(customerResumeVm);
+                    Id = Item.Id,
+                    Title = Item.Title,
+                    Position = app_PositionBLL.GetNames(Item.PK_App_Position_Name),
+                    Country = app_CountryBLL.GetName(Item.PK_App_Country_Name),
+                    Sex = Item.WorkLimitSex,
+                    AgeLimit = Item.WorkLimitAgeLow + "-" + Item.WorkLimitAgeHigh,
+                    YearSalary = Utils.ObjToDecimal(Item.SalaryLow, 0) / 10000 + "万-" + Utils.ObjToDecimal(Item.SalaryHigh, 0) / 10000 + "万",
+                    TotalHire = Item.TotalHire,
+                    Tag = Item.Tag,
+                    TotalServiceMoney = Utils.ObjToDecimal(Item.TotalServiceMoney, 0) / 10000 + "万",
+                    PublishDate = Item.PublishDate,
+                    ReqType = Item.ReqType,
+                });
             }
-            GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
-            grs.rows = customerResumeVms;
+            GridRows<RequirementInfoVm> grs = new GridRows<RequirementInfoVm>();
+            grs.rows = requirementInfoVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }
@@ -177,16 +177,6 @@ namespace Apps.Web.Areas.App.Controllers
         public JsonResult RelateJob(GridPager pager, RequirementQuery requirementQuery)
         {
             LogHandler.WriteServiceLog(GetUserId(), requirementQuery.ToString(), "开始", "RelateJob", "CustomerResumeController");
-            //先获取当前用户的对应customerId
-            if ("1" == Session["IdFlag"] as string || Session["ohadmin"] as string == "1")
-            {
-                requirementQuery.AdminFlag = true;
-            }
-            else
-            {
-                //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
-                requirementQuery.PublisherId = Session["PK_App_Customer_CustomerName"] as string;
-            }
             var list = app_RequirementBLL.GetRelateJobs(ref pager, requirementQuery);
             List<RequirementInfoVm> requirementInfoVms = new List<RequirementInfoVm>();
             foreach (var Item in list)

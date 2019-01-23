@@ -436,13 +436,17 @@ namespace Apps.Models.App
         /// Applyed:已经应聘的,InterView:面试中的,Recommend:推荐的,Invite:雇主邀请的
         /// </summary>
         public string QueryFlag { get; set; }
+        /// <summary>
+        /// 职位发布人
+        /// </summary>
+        public string PublisherId { get; set; }
         public override string ToString()
         {
             return "Title:" + Title + ",Sex:" + Sex
                 + ",Country:" + Country + ",AgeLow:" + AgeLow + ",AdminFlag:" + AdminFlag
                 + ",QueryFlag:" + QueryFlag + ",AgeHigh:" + AgeHigh + ",Tag:" + Tag
                 + ",SallaryLow:" + SallaryLow + ",SallaryHigh:" + SallaryHigh
-                + ",CustomerId:" + CustomerId;
+                + ",CustomerId:" + CustomerId + ",PublisherId:" + PublisherId;
         }
     }
     #endregion

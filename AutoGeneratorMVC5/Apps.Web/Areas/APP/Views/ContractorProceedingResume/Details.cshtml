@@ -1,0 +1,30 @@
+﻿@model Apps.Models.App.RequirementDetailsVm
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function () {
+        $("#btnReturn").click(function () {
+            frameReturnByClose();
+        });
+        $("#btnApplyJob").click(function () {
+            var rowId = "@Model.Id";
+            $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("IndexResume")?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
+            $("#modalwindow").window({ title: '推荐人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+        });
+    });
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "查看应聘列表", false)
+</div>
+@Html.Partial("~/Views/Shared/App/_PartialReqDetails.cshtml")
