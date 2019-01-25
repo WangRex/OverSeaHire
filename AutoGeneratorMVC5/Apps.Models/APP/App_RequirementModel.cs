@@ -424,6 +424,9 @@ namespace Apps.Models.App
         /// 国家
         /// </summary>
         public string Country { get; set; }
+        /// <summary>
+        /// 工人主键
+        /// </summary>
         public string CustomerId { get; set; }
         public int AgeLow { get; set; }
         public int AgeHigh { get; set; }

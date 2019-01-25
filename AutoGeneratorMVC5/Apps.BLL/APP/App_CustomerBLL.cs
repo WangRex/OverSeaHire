@@ -1619,7 +1619,7 @@ namespace Apps.BLL.App
         /// <returns></returns>
         public List<App_CustomerModel> GetContractorResumeList(ref GridPager pager, CustomerResumeQuery customerResumeQuery)
         {
-            IQueryable<App_Customer> queryData = m_Rep.GetList(EF => EF.ParentId != null && EF.SwitchBtnInterview == "0" && EF.EnumCustomerType == "0");
+            IQueryable<App_Customer> queryData = m_Rep.GetList(EF => EF.ParentId != null && EF.SwitchBtnInterview != "1" && EF.EnumCustomerType == "0");
             if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
             {
                 queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));

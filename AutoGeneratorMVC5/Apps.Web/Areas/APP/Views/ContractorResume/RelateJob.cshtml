@@ -85,7 +85,7 @@
             });
         }, "get");
         $('#List').datagrid({
-            url: '@Url.Action("RelateJob")?CustomerId=' + CustomerId,
+            url: '@Url.Action("RelateJob")?CustomerId=' + CustomerId + '&QueryFlag=Recommend',
             width:SetGridWidthSub(10),
             method: 'post',
             height: SetGridHeightSub(45),

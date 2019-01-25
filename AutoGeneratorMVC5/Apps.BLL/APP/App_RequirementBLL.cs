@@ -1519,59 +1519,82 @@ namespace Apps.BLL.App
             List<string> listReqId = new List<string>();
             List<App_RequirementModel> listReq = new List<App_RequirementModel>();
             string strCustomerId = requirementQuery.CustomerId;
-            var customerResume = customerRepository.GetById(strCustomerId);
-            var arrJobIntension = customerResume.JobIntension.Split(',');
             var requirements = m_Rep.FindList(EF => EF.SwitchBtnOpen == "1").ToList();
+            var customerResume = customerRepository.GetById(strCustomerId);
+            var arrJobIntension = new List<string>();
+            if (!string.IsNullOrEmpty(customerResume.JobIntension))
+            {
+                arrJobIntension = customerResume.JobIntension.Split(',').ToList();
+            }
             if (!requirementQuery.AdminFlag)
             {
                 requirements = requirements.Where(EF => EF.PK_App_Customer_CustomerName == requirementQuery.PublisherId).ToList();
             }
-            var applyJobList = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
-            //这里包括了这个简历，所关联的所有职位，包括应聘的，系统推荐的，雇主面试邀请 ，办理中的职位
-            //获取应聘的需求列表（就是发起申请的，申请里状态是1的那些）
-            var applyingJobList = applyJobList.Where(EF => EF.EnumApplyStatus == "0" && EF.CurrentStep == "1");
-            string strReqIds = string.Join(",", applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
-            var applyingJobReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
-            foreach (var applyingJobReq in applyingJobReqList)
+            if ("Recommend".Equals(requirementQuery.QueryFlag))
             {
-                App_RequirementModel app_RequirementModel = new App_RequirementModel();
-                LinqHelper.ModelTrans(applyingJobReq, app_RequirementModel);
-                app_RequirementModel.ReqType = "1";
-                listReq.Add(app_RequirementModel);
+                //系统推荐的
+                var recommendRequirementList = requirements.Where(EF =>
+                            EF.WorkLimitAgeLow <= customerResume.Age
+                            && EF.WorkLimitAgeHigh >= customerResume.Age
+                            && EF.WorkLimitSex == customerResume.Sex
+                            && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
+                foreach (var recommendReq in recommendRequirementList)
+                {
+                    App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                    LinqHelper.ModelTrans(recommendReq, app_RequirementModel);
+                    app_RequirementModel.ReqType = "2";
+                    listReq.Add(app_RequirementModel);
+                }
             }
-            //系统推荐的
-            var recommendReqList = requirements.Where(EF =>
-                        EF.WorkLimitAgeLow <= customerResume.Age
-                        && EF.WorkLimitAgeHigh >= customerResume.Age
-                        && EF.WorkLimitSex == customerResume.Sex
-                        && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
-            foreach (var recommendReq in recommendReqList)
+            else
             {
-                App_RequirementModel app_RequirementModel = new App_RequirementModel();
-                LinqHelper.ModelTrans(recommendReq, app_RequirementModel);
-                app_RequirementModel.ReqType = "2";
-                listReq.Add(app_RequirementModel);
-            }
-            //雇主面试邀请
-            var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId);
-            strReqIds = string.Join(",", inviteList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
-            var inviteReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
-            foreach (var inviteReq in inviteReqList)
-            {
-                App_RequirementModel app_RequirementModel = new App_RequirementModel();
-                LinqHelper.ModelTrans(inviteReq, app_RequirementModel);
-                app_RequirementModel.ReqType = "3";
-                listReq.Add(app_RequirementModel);
-            }
-            //办理中的职位
-            strReqIds = string.Join(",", applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
-            var applyJobReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
-            foreach (var applyJobReq in applyJobReqList)
-            {
-                App_RequirementModel app_RequirementModel = new App_RequirementModel();
-                LinqHelper.ModelTrans(applyJobReq, app_RequirementModel);
-                app_RequirementModel.ReqType = "4";
-                listReq.Add(app_RequirementModel);
+                var applyJobList = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
+                //这里包括了这个简历，所关联的所有职位，包括应聘的，系统推荐的，雇主面试邀请 ，办理中的职位
+                //获取应聘的需求列表（就是发起申请的，申请里状态是1的那些）
+                var applyingJobList = applyJobList.Where(EF => EF.EnumApplyStatus == "0" && EF.CurrentStep == "1");
+                string strReqIds = string.Join(",", applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+                var applyingJobReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
+                foreach (var applyingJobReq in applyingJobReqList)
+                {
+                    App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                    LinqHelper.ModelTrans(applyingJobReq, app_RequirementModel);
+                    app_RequirementModel.ReqType = "1";
+                    listReq.Add(app_RequirementModel);
+                }
+                //系统推荐的
+                var recommendReqList = requirements.Where(EF =>
+                            EF.WorkLimitAgeLow <= customerResume.Age
+                            && EF.WorkLimitAgeHigh >= customerResume.Age
+                            && EF.WorkLimitSex == customerResume.Sex
+                            && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
+                foreach (var recommendReq in recommendReqList)
+                {
+                    App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                    LinqHelper.ModelTrans(recommendReq, app_RequirementModel);
+                    app_RequirementModel.ReqType = "2";
+                    listReq.Add(app_RequirementModel);
+                }
+                //雇主面试邀请
+                var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId);
+                strReqIds = string.Join(",", inviteList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+                var inviteReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
+                foreach (var inviteReq in inviteReqList)
+                {
+                    App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                    LinqHelper.ModelTrans(inviteReq, app_RequirementModel);
+                    app_RequirementModel.ReqType = "3";
+                    listReq.Add(app_RequirementModel);
+                }
+                //办理中的职位
+                strReqIds = string.Join(",", applyJobList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+                var applyJobReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
+                foreach (var applyJobReq in applyJobReqList)
+                {
+                    App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                    LinqHelper.ModelTrans(applyJobReq, app_RequirementModel);
+                    app_RequirementModel.ReqType = "4";
+                    listReq.Add(app_RequirementModel);
+                }
             }
             pager.totalRows = listReq.Count();
             if (pager.page > 0)

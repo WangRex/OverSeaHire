@@ -58,6 +58,7 @@
 </style>
 
 <script type="text/javascript">
+    var treeData = {};
     $(function () {
         $("#btnSave").click(function () {
             var objsubmit = $("form").serializeJSON();
@@ -163,35 +164,42 @@
             $("#positiontree").window('close');
         });
         $("#positiontreeinput").click(function () {
-            globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
-                var tree = data;
-                $('#tt').tree({
-                    data: tree,
-                    animate: true,
-                    checkbox: true,
-                    onlyLeafCheck: true,
-                    onLoadSuccess: function (node, data) {
-                        var ids = $("#JobIntension").val();
-                        if (ids != '') {
-                            var idArr = ids.split(",");
-                            for (var i = 0; i < idArr.length; i++) {
-                                // find a node and then select it
-                                var node = $('#tt').tree('find', idArr[i]);
-                                $('#tt').tree('check', node.target);
-                            }
-                        }
-                    }
-                });
-                $("#positiontree").window({
-                    title: '职位',
-                    width: 600,
-                    height: 400,
-                    top: 350,
-                    iconCls: 'fa fa-pencil'
-                }).window('open');
-            }, "post");
+            if (treeData.length) {
+                initPosTree(treeData);
+            } else {
+                globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
+                    treeData = data;
+                    initPosTree(treeData);
+                }, "post");
+            }
         });
     });
+    function initPosTree(treeData) {
+        $('#tt').tree({
+            data: treeData,
+            animate: true,
+            checkbox: true,
+            onlyLeafCheck: true,
+            onLoadSuccess: function (node, data) {
+                var ids = $("#JobIntension").val();
+                if (ids != '') {
+                    var idArr = ids.split(",");
+                    for (var i = 0; i < idArr.length; i++) {
+                        // find a node and then select it
+                        var node = $('#tt').tree('find', idArr[i]);
+                        $('#tt').tree('check', node.target);
+                    }
+                }
+            }
+        });
+        $("#positiontree").window({
+            title: '职位',
+            width: 600,
+            height: 400,
+            top: 350,
+            iconCls: 'fa fa-pencil'
+        }).window('open');
+    }
     //ifram 返回
     function frameReturnByClose() {
         window.parent.closeTab("新增简历", "简历管理", "app/CustomerResume", "fa fa-child");
@@ -277,6 +285,7 @@
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.JobIntension)
     <input id="CreateTime" type="hidden" name="CreateTime" value="2017-12-31" />
     <input id="ModificationTime" type="hidden" name="ModificationTime" value="2017-12-31" />
     <table id="CustomerInfo">
@@ -294,8 +303,7 @@
                 </tr>
             }
             <tr>
-                <td colspan="2" align="center">申请职位:</td>
-                <td colspan="4">@Html.EditorFor(model => model.JobIntension)</td>
+                <td colspan="6" align="center">简历信息:</td>
                 <td rowspan="5">
                     @Html.HiddenFor(model => model.CustomerPhoto)
                     <img class="expic" src="/Content/Images/NotPic.jpg" /><br />
@@ -433,7 +441,7 @@
                     期望职位
                 </td>
                 <td>
-                    <input type="text" name="JobIntension" />
+                    <input type="text" id="positiontreeinput" readonly="readonly" />
                 </td>
                 <td align="center">
                     期望国家
