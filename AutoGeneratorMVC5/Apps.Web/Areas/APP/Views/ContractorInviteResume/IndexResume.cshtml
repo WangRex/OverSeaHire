@@ -11,7 +11,7 @@
 <div class="mvctool">
     <div style="float:left;">
         @*将查询条件作为部分页面，并传递参数*@
-        @Html.Partial("~/Views/Shared/App/_PartialResumeQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetCustomerResumeList") + "?RequirementId=" + @ViewBag.ReqId }, { "ReqId", @ViewBag.ReqId } })
+        @Html.Partial("~/Views/Shared/App/_PartialResumeQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetIndexResume") + "?RequirementId=" + @ViewBag.ReqId }, { "ReqId", @ViewBag.ReqId }, { "Grid", "0" } })
     </div>
     <div style="float:left;">
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -48,8 +48,14 @@
                 { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
                 { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
                 {
-                    field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
-                        var btn = '<a class="fa fa-times" onclick="CancelApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;取消</a>';
+                    field: 'Ope', title: '操作', width: 120, formatter: function (value, rec) {
+                        var btn = "等待用户确定";
+                        if (rec.SwitchBtnAgree == '1') {
+                            btn = '<a class="fa fa-check" onclick="RequirementInvite(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;面试通过</a>';
+                            btn += ' <a class="fa fa-ban" onclick="RejectRequirementInvite(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;面试失败</a>';
+                        } else {
+                            btn = "用户拒绝邀请";
+                        }
                         return btn;
                     } }
             ]]

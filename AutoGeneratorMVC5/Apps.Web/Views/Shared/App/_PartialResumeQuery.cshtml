@@ -45,6 +45,7 @@
     var countryCombo = [];
     var gridurl = '@Html.ViewData["url"]';
     var ReqId = '@Html.ViewData["ReqId"]';
+    var Grid = '@Html.ViewData["Grid"]';
     $(function () {
         var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
         globalUtils.globalAjax(url, {}, function (data) {
@@ -56,31 +57,33 @@
                 data: countryCombo
             });
         }, "get");
-        $('#List').datagrid({
-            url: gridurl,
-            width: SetGridWidthSub(10),
-            method: 'post',
-            height: SetGridHeightSub(45),
-            fitColumns: true,
-            sortName: 'CreateTime',
-            sortOrder: 'desc',
-            idField: 'Id',
-            pageSize: 15,
-            pageList: [15, 20, 30, 40, 50],
-            pagination: true,
-            striped: true, //奇偶行是否区分
-            singleSelect: true,//单选模式
-            //rownumbers: true,//行号
-            columns: [[
-                { field: 'Id', title: '主键', width: 80, checkbox: true },
-                { field: 'CustomerName', title: '姓名', width: 80, sortable: true },
-                { field: 'Sex', title: '性别', width: 80, sortable: true },
-                { field: 'Age', title: '年龄', width: 80, sortable: true },
-                { field: 'JobIntensionNames', title: '工种', width: 80, sortable: true },
-                { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
-                { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
-            ]]
-        });
+        if (Grid != "0") {
+            $('#List').datagrid({
+                url: gridurl,
+                width: SetGridWidthSub(10),
+                method: 'post',
+                height: SetGridHeightSub(45),
+                fitColumns: true,
+                sortName: 'CreateTime',
+                sortOrder: 'desc',
+                idField: 'Id',
+                pageSize: 15,
+                pageList: [15, 20, 30, 40, 50],
+                pagination: true,
+                striped: true, //奇偶行是否区分
+                singleSelect: true,//单选模式
+                //rownumbers: true,//行号
+                columns: [[
+                    { field: 'Id', title: '主键', width: 80, checkbox: true },
+                    { field: 'CustomerName', title: '姓名', width: 80, sortable: true },
+                    { field: 'Sex', title: '性别', width: 80, sortable: true },
+                    { field: 'Age', title: '年龄', width: 80, sortable: true },
+                    { field: 'JobIntensionNames', title: '工种', width: 80, sortable: true },
+                    { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
+                    { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
+                ]]
+            });
+        }
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {

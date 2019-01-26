@@ -617,6 +617,7 @@ namespace Apps.Models.App
         public string OwnerName { get; set; }
         public string BusinessStatus { get; set; }
         public string ApplyJobId { get; set; }
+        public string SwitchBtnAgree { get; set; }
     }
     #endregion
 

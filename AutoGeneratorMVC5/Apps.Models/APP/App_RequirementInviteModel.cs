@@ -38,10 +38,13 @@ namespace Apps.Models.App
         [Display(Name = "同意")]
         public override string SwitchBtnAgree { get; set; }
 
+        [Display(Name = "外派同意")]
+        public override string SwitchBtnContractorAgree { get; set; }
+
         public override string ToString()
         {
             return "PK_App_Requirement_Title:" + PK_App_Requirement_Title + ",InitiatorId:" + InitiatorId + ",Inviter:" + Inviter
-     + ",SwitchBtnAgree:" + SwitchBtnAgree;
+     + ",SwitchBtnAgree:" + SwitchBtnAgree + ",SwitchBtnContractorAgree:" + SwitchBtnContractorAgree;
         }
     }
 }

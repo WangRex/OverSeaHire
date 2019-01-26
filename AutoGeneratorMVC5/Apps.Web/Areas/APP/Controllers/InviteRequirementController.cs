@@ -36,6 +36,8 @@ namespace Apps.Web.Areas.APP.Controllers
         public SysRoleBLL sysRoleBLL { get; set; }
         [Dependency]
         public App_ApplyJobBLL app_ApplyJobBLL { get; set; }
+        [Dependency]
+        public App_RequirementInviteBLL app_RequirementInviteBLL { get; set; }
         #endregion
 
         #region 获取符合当前账号下工人工种需求的职位列表
@@ -151,7 +153,7 @@ namespace Apps.Web.Areas.APP.Controllers
                 //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
                 customerResumeQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
             }
-            customerResumeQuery.QueryFlag = "Recommend";
+            customerResumeQuery.QueryFlag = "Invite";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
             foreach (var Item in list)
@@ -167,27 +169,55 @@ namespace Apps.Web.Areas.APP.Controllers
         }
         #endregion
 
-        #region 发起应聘申请
+        #region 同意应聘申请
+        /// <summary>
+        /// 同意应聘申请
+        /// </summary>
+        /// <param name="ReqId"></param>
+        /// <param name="CustomerId"></param>
+        /// <returns></returns>
         [HttpPost]
-        [SupportFilter(ActionName = "ApplyJob")]
-        public JsonResult ApplyJob(string ReqId, string CustomerId)
+        [SupportFilter(ActionName = "RequirementInvite")]
+        public JsonResult RequirementInvite(string ReqId, string CustomerId, string Flag)
         {
+            var now = ResultHelper.NowTime;
+            string strUserId = GetUserId(), applyJobId = "";
             ApplyJobPost applyJobPost = new ApplyJobPost();
             applyJobPost.CustomerId = CustomerId;
             applyJobPost.RequirementId = ReqId;
-            applyJobPost.UserId = GetUserId();
+            applyJobPost.UserId = strUserId;
+            var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.Inviter == CustomerId);
+            ReqInvite.ModificationTime = now;
+            ReqInvite.ModificationUserName = strUserId;
+            ReqInvite.SwitchBtnAgree = Flag;
             try
             {
+                var ReqInviteFlag = app_RequirementInviteBLL.m_Rep.Edit(ReqInvite);
                 string ErrorMsg = "";
-                var applyJobId = app_ApplyJobBLL.CreateApplyJob(applyJobPost, ref ErrorMsg);
-                if (null != applyJobId)
+                if (ReqInviteFlag)
                 {
+                    if ("1".Equals(Flag))
+                    {
+                        ErrorMsg = "同意邀请成功";
+                    }
+                    else
+                    {
+                        ErrorMsg = "拒绝邀请成功";
+                    }
                     return Json(
-                        ResponseHelper.IsSuccess_Msg_Data_HttpCode("应聘成功", applyJobId, 1)
+                        ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, applyJobId, 1)
                     );
                 }
                 else
                 {
+                    if ("1".Equals(Flag))
+                    {
+                        ErrorMsg = "同意邀请失败";
+                    }
+                    else
+                    {
+                        ErrorMsg = "拒绝邀请失败";
+                    }
                     return Json(
                        ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
                        );

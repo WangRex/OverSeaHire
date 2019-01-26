@@ -45,6 +45,7 @@ namespace Apps.BLL.App
 								|| a.InitiatorId.Contains(queryStr)
 								|| a.Inviter.Contains(queryStr)
 								|| a.SwitchBtnAgree.Contains(queryStr)
+								|| a.SwitchBtnContractorAgree.Contains(queryStr)
 								);
             }
             else
@@ -73,6 +74,7 @@ namespace Apps.BLL.App
 													InitiatorId = r.InitiatorId,
 													Inviter = r.Inviter,
 													SwitchBtnAgree = r.SwitchBtnAgree,
+													SwitchBtnContractorAgree = r.SwitchBtnContractorAgree,
           
                                               }).ToList();
 
@@ -101,6 +103,7 @@ namespace Apps.BLL.App
 				entity.InitiatorId = model.InitiatorId;
 				entity.Inviter = model.Inviter;
 				entity.SwitchBtnAgree = model.SwitchBtnAgree;
+				entity.SwitchBtnContractorAgree = model.SwitchBtnContractorAgree;
   
 
                 if (m_Rep.Create(entity))
@@ -198,6 +201,7 @@ namespace Apps.BLL.App
 				entity.InitiatorId = model.InitiatorId;
 				entity.Inviter = model.Inviter;
 				entity.SwitchBtnAgree = model.SwitchBtnAgree;
+				entity.SwitchBtnContractorAgree = model.SwitchBtnContractorAgree;
  
 
 
@@ -239,6 +243,7 @@ namespace Apps.BLL.App
 				model.InitiatorId = entity.InitiatorId;
 				model.Inviter = entity.Inviter;
 				model.SwitchBtnAgree = entity.SwitchBtnAgree;
+				model.SwitchBtnContractorAgree = entity.SwitchBtnContractorAgree;
  
                 return model;
             }

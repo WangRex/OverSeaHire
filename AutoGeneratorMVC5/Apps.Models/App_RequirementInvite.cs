@@ -25,5 +25,6 @@ namespace Apps.Models
         public string InitiatorId { get; set; }
         public string Inviter { get; set; }
         public string SwitchBtnAgree { get; set; }
+        public string SwitchBtnContractorAgree { get; set; }
     }
 }

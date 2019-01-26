@@ -49,18 +49,29 @@
                 { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
                 {
                     field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
-                        var btn = '<a class="fa fa-save" onclick="ApplyJob(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;报名</a>';
+                        var btn = '<a class="fa fa-check" onclick="RequirementInvite(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;同意</a>';
+                        btn += ' <a class="fa fa-ban" onclick="RejectRequirementInvite(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;拒绝</a>';
                         return btn;
                     } }
             ]]
         });
     });
-    function ApplyJob(CustomerId, ReqId) {
-        $.messager.confirm('@Resource.Tip', '确定要报名当前应聘申请吗', function (r) {
+    function RequirementInvite(CustomerId, ReqId) {
+        $.messager.confirm('@Resource.Tip', '确定要同意当前应聘邀请吗', function (r) {
             if (r) {
-                globalUtils.globalAjax("@Url.Action("ApplyJob")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
+                globalUtils.globalAjax("@Url.Action("RequirementInvite")", { ReqId: ReqId, CustomerId: CustomerId, Flag:"1" }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);
-                    queryList();
+                    QueryList();
+                }, "post");
+            }
+        });
+    }
+    function RejectRequirementInvite(CustomerId, ReqId) {
+        $.messager.confirm('@Resource.Tip', '确定要拒绝当前应聘邀请吗', function (r) {
+            if (r) {
+                globalUtils.globalAjax("@Url.Action("RequirementInvite")", { ReqId: ReqId, CustomerId: CustomerId, Flag: "0"  }, function (result) {
+                    $.messageBox5s('@Resource.Tip', result.Message);
+                    QueryList();
                 }, "post");
             }
         });

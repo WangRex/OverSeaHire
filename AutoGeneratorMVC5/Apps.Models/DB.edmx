@@ -376,6 +376,7 @@
           <Property Name="InitiatorId" Type="nvarchar(max)" />
           <Property Name="Inviter" Type="nvarchar(max)" />
           <Property Name="SwitchBtnAgree" Type="nvarchar(max)" />
+          <Property Name="SwitchBtnContractorAgree" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="App_RequirementSearch">
           <Key>
@@ -5647,6 +5648,7 @@
           <Property Name="InitiatorId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Inviter" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SwitchBtnAgree" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SwitchBtnContractorAgree" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="App_Customer">
           <Key>
@@ -7552,6 +7554,7 @@
           <EntitySetMapping Name="App_RequirementInvite">
             <EntityTypeMapping TypeName="DB.App_RequirementInvite">
               <MappingFragment StoreEntitySet="App_RequirementInvite">
+                <ScalarProperty Name="SwitchBtnContractorAgree" ColumnName="SwitchBtnContractorAgree" />
                 <ScalarProperty Name="SwitchBtnAgree" ColumnName="SwitchBtnAgree" />
                 <ScalarProperty Name="Inviter" ColumnName="Inviter" />
                 <ScalarProperty Name="InitiatorId" ColumnName="InitiatorId" />

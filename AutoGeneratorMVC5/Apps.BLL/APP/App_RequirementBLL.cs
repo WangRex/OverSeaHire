@@ -1359,6 +1359,20 @@ namespace Apps.BLL.App
                 string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
                 queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
             }
+            //查询邀请的工人列表
+            if ("Invite" == customerResumeQuery.QueryFlag)
+            {
+                var listReq = requirementInviteRepository.FindList(EF => EF.PK_App_Requirement_Title == customerResumeQuery.RequirementId && EF.SwitchBtnAgree == null);
+                string strCustomerIds = string.Join(",", listReq.Select(EF => EF.Inviter).ToArray());
+                queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
+            }
+            //外派公司查询邀请的工人列表
+            if ("ContractorInvite" == customerResumeQuery.QueryFlag)
+            {
+                var listReq = requirementInviteRepository.FindList(EF => EF.PK_App_Requirement_Title == customerResumeQuery.RequirementId);
+                string strCustomerIds = string.Join(",", listReq.Select(EF => EF.Inviter).ToArray());
+                queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
+            }
             if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
             {
                 queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));
@@ -1469,7 +1483,7 @@ namespace Apps.BLL.App
             }
             string strCustomerIds = string.Join(",", queryDataCustomer.Select(EF => EF.Id).ToArray());
             //获取所有的当前工人下的邀请数据
-            var app_RequirementInvites = requirementInviteRepository.FindList(EF => strCustomerIds.Contains(EF.Inviter));
+            var app_RequirementInvites = requirementInviteRepository.FindList(EF => strCustomerIds.Contains(EF.Inviter) && EF.SwitchBtnAgree == null);
             string reqIds = string.Join(",", app_RequirementInvites.Select(EF => EF.PK_App_Requirement_Title).ToArray());
             var app_Requirements = queryDataRequirement.ToList().Where(EF => reqIds.Contains(EF.Id)).ToList();
             if (!string.IsNullOrEmpty(requirementQuery.Title))
@@ -1540,10 +1554,15 @@ namespace Apps.BLL.App
                             && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
                 foreach (var recommendReq in recommendRequirementList)
                 {
-                    App_RequirementModel app_RequirementModel = new App_RequirementModel();
-                    LinqHelper.ModelTrans(recommendReq, app_RequirementModel);
-                    app_RequirementModel.ReqType = "2";
-                    listReq.Add(app_RequirementModel);
+                    //并且不在邀请的列表里
+                    var reqInvite = requirementInviteRepository.Find(EF => EF.PK_App_Requirement_Title == recommendReq.Id && EF.Inviter == strCustomerId);
+                    if (null == reqInvite)
+                    {
+                        App_RequirementModel app_RequirementModel = new App_RequirementModel();
+                        LinqHelper.ModelTrans(recommendReq, app_RequirementModel);
+                        app_RequirementModel.ReqType = "2";
+                        listReq.Add(app_RequirementModel);
+                    }
                 }
             }
             else

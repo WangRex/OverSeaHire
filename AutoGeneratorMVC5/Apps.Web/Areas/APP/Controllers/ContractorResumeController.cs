@@ -213,5 +213,34 @@ namespace Apps.Web.Areas.App.Controllers
             return Json(grs);
         }
         #endregion
+
+        #region 发起面试邀请
+        /// <summary>
+        /// 发起面试邀请
+        /// </summary>
+        /// <param name="ReqId"></param>
+        /// <param name="CustomerId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult RequirementInvite(string ReqId, string CustomerId)
+        {
+            string strUserId = GetUserId(), InitiatorId = Session["PK_App_Customer_CustomerName"] as string;
+            LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId, "开始", "RequirementInvite", "CustomerResumeController");
+            var boolFlag = app_RequirementInviteBLL.RequirementInvite(strUserId, InitiatorId, ReqId, CustomerId);
+            LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId + ",boolFlag:" + boolFlag, "结束", "RequirementInvite", "CustomerResumeController");
+            if (!boolFlag)
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode("发起邀请失败")
+                    );
+            }
+            else
+            {
+                return Json(
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode("发起邀请成功", boolFlag, 1)
+                    );
+            }
+        }
+        #endregion
     }
 }
