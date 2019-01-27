@@ -182,11 +182,7 @@ namespace Apps.Web.Areas.APP.Controllers
         {
             var now = ResultHelper.NowTime;
             string strUserId = GetUserId(), applyJobId = "";
-            ApplyJobPost applyJobPost = new ApplyJobPost();
-            applyJobPost.CustomerId = CustomerId;
-            applyJobPost.RequirementId = ReqId;
-            applyJobPost.UserId = strUserId;
-            var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.Inviter == CustomerId);
+            var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.Inviter == CustomerId && EF.SwitchBtnAgree == null);
             ReqInvite.ModificationTime = now;
             ReqInvite.ModificationUserName = strUserId;
             ReqInvite.SwitchBtnAgree = Flag;

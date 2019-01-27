@@ -18,13 +18,13 @@
         $("#btnApplyJob").click(function () {
             var rowId = "@Model.Id";
             $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("IndexResume")?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
-            $("#modalwindow").window({ title: '推荐人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+            $("#modalwindow").window({ title: '工人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
         });
     });
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
     @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
-    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "查看应聘列表", false)
+    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "工人列表", false)
 </div>
 @Html.Partial("~/Views/Shared/App/_PartialReqDetails.cshtml")

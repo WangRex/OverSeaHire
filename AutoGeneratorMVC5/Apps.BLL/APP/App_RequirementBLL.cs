@@ -350,36 +350,40 @@ namespace Apps.BLL.App
         private List<ApplyJobUserVm> GetRecommenUsers(App_Requirement app_Requirement)
         {
             List<ApplyJobUserVm> applyJobUserVms = new List<ApplyJobUserVm>();
-            var workMates = customerRepository.FindList(EF => EF.EnumDriverLicence != null ||
-                                                                (EF.JobIntension.Contains(app_Requirement.PK_App_Position_Name)
-                                                                && EF.Sex == app_Requirement.WorkLimitSex
+            var workMates = customerRepository.FindList(EF => (EF.Sex == app_Requirement.WorkLimitSex
                                                                 && EF.Age >= app_Requirement.WorkLimitAgeLow
                                                                 && EF.Age <= app_Requirement.WorkLimitAgeHigh
                                                                 )).ToList();
-            //继续判断国家
+            if (null != app_Requirement.PK_App_Position_Name)
+            {
+                var arrJobIntension = app_Requirement.PK_App_Position_Name.Split(',').ToList();
+                workMates = workMates.Where(EF => EF.JobIntension != null && EF.JobIntension.Split(',').Intersect(arrJobIntension).Count() > 0).ToList();
+            }
+            //继续判断不能在邀请中和面试中的工人
             foreach (var customerWorkmate in workMates)
             {
-                //var customerJobIntension = customerJobIntensionRepository.Find(EF => EF.PK_App_Customer_CustomerName == item.Id);
-                //if (customerJobIntension != null && customerJobIntension.ExpectCountry.Contains(app_Requirement.PK_App_Country_Name))
-                //{
-                //}
-                ApplyJobUserVm applyJobUserVm = new ApplyJobUserVm();
-                applyJobUserVm.CustomerId = customerWorkmate.Id;
-                applyJobUserVm.CustomerName = customerWorkmate.CustomerName;
-                applyJobUserVm.Photo = customerWorkmate.CustomerPhoto;
-                applyJobUserVm.CreateTime = customerWorkmate.CreateTime;
-                applyJobUserVm.Age = customerWorkmate.Age;
-                applyJobUserVm.BirthPlace = customerWorkmate.BirthPlace;
-                applyJobUserVm.Sex = customerWorkmate.Sex;
-                applyJobUserVm.AbroadExp = enumDictionary.GetDicName("App_CustomerJobIntension.AbroadExp", customerWorkmate.AbroadExp);
-                applyJobUserVm.EnumDriverLicence = customerWorkmate.EnumDriverLicence;
-                applyJobUserVm.DriverLicence = enumDictionary.GetDicName("App_CustomerWorkmate.EnumDriverLicence", customerWorkmate.EnumDriverLicence);
-                applyJobUserVm.JobIntension = customerWorkmate.JobIntension;
-                applyJobUserVm.JobIntensionName = app_PositionBLL.GetNames(customerWorkmate.JobIntension);
-                applyJobUserVm.SwitchBtnRecommend = customerWorkmate.SwitchBtnRecommend;
-                applyJobUserVm.VideoPath = customerWorkmate.VideoPath;
-                applyJobUserVm.EnumCustomerLevel = customerWorkmate.EnumCustomerLevel;
-                applyJobUserVms.Add(applyJobUserVm);
+                var app_ApplyJob = applyJobRepository.Find(EF => EF.PK_App_Customer_CustomerName == customerWorkmate.Id && EF.PK_App_Requirement_Title == app_Requirement.Id && EF.EnumApplyStatus == "0");
+                var app_RequirementInvite = requirementInviteRepository.Find(EF => EF.Inviter == customerWorkmate.Id && EF.PK_App_Requirement_Title == app_Requirement.Id && EF.SwitchBtnAgree == null);
+                if (app_ApplyJob == null && app_RequirementInvite == null)
+                {
+                    ApplyJobUserVm applyJobUserVm = new ApplyJobUserVm();
+                    applyJobUserVm.CustomerId = customerWorkmate.Id;
+                    applyJobUserVm.CustomerName = customerWorkmate.CustomerName;
+                    applyJobUserVm.Photo = customerWorkmate.CustomerPhoto;
+                    applyJobUserVm.CreateTime = customerWorkmate.CreateTime;
+                    applyJobUserVm.Age = customerWorkmate.Age;
+                    applyJobUserVm.BirthPlace = customerWorkmate.BirthPlace;
+                    applyJobUserVm.Sex = customerWorkmate.Sex;
+                    applyJobUserVm.AbroadExp = enumDictionary.GetDicName("App_CustomerJobIntension.AbroadExp", customerWorkmate.AbroadExp);
+                    applyJobUserVm.EnumDriverLicence = customerWorkmate.EnumDriverLicence;
+                    applyJobUserVm.DriverLicence = enumDictionary.GetDicName("App_CustomerWorkmate.EnumDriverLicence", customerWorkmate.EnumDriverLicence);
+                    applyJobUserVm.JobIntension = customerWorkmate.JobIntension;
+                    applyJobUserVm.JobIntensionName = app_PositionBLL.GetNames(customerWorkmate.JobIntension);
+                    applyJobUserVm.SwitchBtnRecommend = customerWorkmate.SwitchBtnRecommend;
+                    applyJobUserVm.VideoPath = customerWorkmate.VideoPath;
+                    applyJobUserVm.EnumCustomerLevel = customerWorkmate.EnumCustomerLevel;
+                    applyJobUserVms.Add(applyJobUserVm);
+                }
             }
             return applyJobUserVms;
         }
@@ -1340,15 +1344,14 @@ namespace Apps.BLL.App
             if ("Recommend" == customerResumeQuery.QueryFlag)
             {
                 //获取当前需求对应的工人列表
-                queryData = queryData.Where(EF => EF.Sex == req.WorkLimitSex && EF.Age >= req.WorkLimitAgeLow && EF.Age <= req.WorkLimitAgeHigh);
+                queryData = queryData.Where(EF => EF.SwitchBtnInterview != "1" && EF.Sex == req.WorkLimitSex && EF.Age >= req.WorkLimitAgeLow && EF.Age <= req.WorkLimitAgeHigh);
                 if (!string.IsNullOrWhiteSpace(req.PK_App_Position_Name))
                 {
                     var arrJobIntension = req.PK_App_Position_Name.Split(',').ToList();
                     queryData = queryData.ToList().Where(EF => EF.JobIntension != null && EF.JobIntension.Split(',').Intersect(arrJobIntension).Count() > 0).AsQueryable();
                 }
-                //排除已经在面试中的用户
-                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0");
-                string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
+                var app_RequirementInvite = requirementInviteRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.SwitchBtnAgree == null);
+                string strCustomerIds = string.Join(",", app_RequirementInvite.Select(EF => EF.Inviter).ToArray());
                 queryData = queryData.Where(EF => !strCustomerIds.Contains(EF.Id));
             }
             //查询办理中的工人列表

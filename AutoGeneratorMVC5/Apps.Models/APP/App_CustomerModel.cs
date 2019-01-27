@@ -618,6 +618,8 @@ namespace Apps.Models.App
         public string BusinessStatus { get; set; }
         public string ApplyJobId { get; set; }
         public string SwitchBtnAgree { get; set; }
+        public string SwitchBtnContractorAgree { get; set; }
+        public string EnumApplyStatus { get; set; }
     }
     #endregion
 

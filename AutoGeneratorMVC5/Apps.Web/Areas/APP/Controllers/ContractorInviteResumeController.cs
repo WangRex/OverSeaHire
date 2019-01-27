@@ -8,6 +8,7 @@ using Apps.BLL.Sys;
 using Apps.BLL.App;
 using Apps.Models.App;
 using Newtonsoft.Json;
+using System;
 
 namespace Apps.Web.Areas.App.Controllers
 {
@@ -136,21 +137,10 @@ namespace Apps.Web.Areas.App.Controllers
         [SupportFilter(ActionName = "IndexResume")]
         public JsonResult GetIndexResume(GridPager pager, CustomerResumeQuery customerResumeQuery)
         {
-            //先获取当前用户的对应customerId
-            var account = GetAccount();
-            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
-            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
-            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
-            if (ohadmin || admin)
-            {
-                customerResumeQuery.AdminFlag = true;
-            }
-            else
-            {
-                //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
-                customerResumeQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
-            }
+            //此处获取的简历就是所有的工人，无需权限
+            customerResumeQuery.AdminFlag = true;
             customerResumeQuery.QueryFlag = "ContractorInvite";
+            string strCustomerId = Session["PK_App_Customer_CustomerName"] as string;
             var queryData = app_RequirementBLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = m_BLL.CreateModelList(ref queryData);
             List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
@@ -176,10 +166,11 @@ namespace Apps.Web.Areas.App.Controllers
                     customerResumeVm.ApplyJobId = applyJob.Id;
                 }
                 //获取当前用户的邀请信息
-                var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.InitiatorId == Item.Id);
+                var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.InitiatorId == strCustomerId && EF.Inviter == Item.Id);
                 if (null != ReqInvite)
                 {
                     customerResumeVm.SwitchBtnAgree = ReqInvite.SwitchBtnAgree;
+                    customerResumeVm.SwitchBtnContractorAgree = ReqInvite.SwitchBtnContractorAgree;
                 }
                 customerResumeVms.Add(customerResumeVm);
             }
@@ -187,6 +178,54 @@ namespace Apps.Web.Areas.App.Controllers
             grs.rows = customerResumeVms;
             grs.total = pager.totalRows;
             return Json(grs);
+        }
+        #endregion
+
+        #region 外派公司面试结果
+        /// <summary>
+        /// 外派公司面试结果
+        /// </summary>
+        /// <param name="ReqId"></param>
+        /// <param name="CustomerId"></param>
+        /// <param name="Flag"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [SupportFilter(ActionName = "UpdateInterviewResult")]
+        public JsonResult UpdateInterviewResult(string ReqId, string CustomerId, string Flag)
+        {
+            var now = ResultHelper.NowTime;
+            string strUserId = GetUserId(), applyJobId = "";
+            ApplyJobPost applyJobPost = new ApplyJobPost();
+            applyJobPost.CustomerId = CustomerId;
+            applyJobPost.RequirementId = ReqId;
+            applyJobPost.UserId = strUserId;
+            var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.Inviter == CustomerId && EF.SwitchBtnContractorAgree == null);
+            ReqInvite.ModificationTime = now;
+            ReqInvite.ModificationUserName = strUserId;
+            ReqInvite.SwitchBtnContractorAgree = Flag;
+            try
+            {
+                var ReqInviteFlag = app_RequirementInviteBLL.m_Rep.Edit(ReqInvite);
+                string ErrorMsg = "";
+                if ("1".Equals(Flag))
+                {
+                    var applyJob = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, ref ErrorMsg);
+                    ErrorMsg = "更新面试通过成功";
+                }
+                else
+                {
+                    ErrorMsg = "更新面试失败成功";
+                }
+                return Json(
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, applyJobId, 1)
+                );
+            }
+            catch (Exception ex)
+            {
+                return Json(
+                   ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ex.Message)
+                   );
+            }
         }
         #endregion
     }
