@@ -8,10 +8,8 @@
 @{
     ViewBag.Title = "修改";
     Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
-    List<permModel> perm = null;
 }
 <script src="~/Scripts/template.js"></script>
-<script src="~/Scripts/jquery.serializejson.js"></script>
 
 <style>
     table, td {
@@ -53,6 +51,9 @@
         $("#btnReturn").click(function () {
             frameReturnByClose();
         });
+        $("#btnExport").click(function () {
+            window.location.href = "/App/ExportResume/GenerateDocument?ResumeId=@Model.Id";
+        });
     });
     //ifram 返回
     function frameReturnByClose() {
@@ -82,7 +83,8 @@
     }
 </script>
 <div class="mvctool bgb">
-    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, true)
+    @Html.ToolButton("btnExport", "fa fa-save", Resource.Export, false)
 </div>
 @* 教育经历tr模板 *@
 <script id="tpl-edutr" type="text/html">
@@ -297,7 +299,7 @@
                     期望国家
                 </td>
                 <td>
-                    @Model.ExpectCountry
+                    @Model.ExpectCountryName
                 </td>
                 <td align="center">
                     驾照

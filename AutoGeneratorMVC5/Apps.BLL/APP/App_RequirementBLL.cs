@@ -1351,7 +1351,10 @@ namespace Apps.BLL.App
                     queryData = queryData.ToList().Where(EF => EF.JobIntension != null && EF.JobIntension.Split(',').Intersect(arrJobIntension).Count() > 0).AsQueryable();
                 }
                 var app_RequirementInvite = requirementInviteRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.SwitchBtnAgree == null);
-                string strCustomerIds = string.Join(",", app_RequirementInvite.Select(EF => EF.Inviter).ToArray());
+                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0");
+                string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
+                strCustomerIds += string.Join(",", app_RequirementInvite.Select(EF => EF.Inviter).ToArray());
+                //这里需要排除掉邀请中的没进行操作的，和已经在进行中的那些简历
                 queryData = queryData.Where(EF => !strCustomerIds.Contains(EF.Id));
             }
             //查询办理中的工人列表

@@ -11,7 +11,7 @@
 <div class="mvctool">
     <div style="float:left;">
         @*将查询条件作为部分页面，并传递参数*@
-        @Html.Partial("~/Views/Shared/App/_PartialResumeQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetCustomerResumeList") + "?RequirementId=" + @ViewBag.ReqId }, { "ReqId", @ViewBag.ReqId } })
+        @Html.Partial("~/Views/Shared/App/_PartialResumeQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetIndexResume") + "?RequirementId=" + @ViewBag.ReqId }, { "ReqId", @ViewBag.ReqId }, { "Grid", "0" } })
     </div>
     <div style="float:left;">
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -49,20 +49,21 @@
                 { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
                 {
                     field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
-                        var btn = '<a class="fa fa-times" onclick="CancelApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;取消</a>';
+                        var btn = '<a class="fa fa-check-square-o" onclick="RequirementInvite(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;确定选人</a>';
                         return btn;
                     } }
             ]]
         });
     });
-    function CancelApply(CustomerId, ReqId) {
-        $.messager.confirm('@Resource.Tip', '确定要取消当前应聘申请吗', function (r) {
+    function RequirementInvite(ReqId, CustomerId) {
+        @*$.messager.confirm('@Resource.Tip', '确定发起邀请吗?', function (r) {
             if (r) {
-                globalUtils.globalAjax("@Url.Action("CancelApply")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
-                    $.messageBox5s('@Resource.Tip', result.Message);
-                    queryList();
+                globalUtils.globalAjax("@Url.Action("RequirementInvite")", { ReqId: ReqId, CustomerId: CustomerId }, function (data) {
+                    QueryList();
+                    $.messageBox5s('@Resource.Tip', data.Message);
                 }, "post");
             }
-        });
+        });*@
+
     }
 </script>

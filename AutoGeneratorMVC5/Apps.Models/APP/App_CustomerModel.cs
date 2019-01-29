@@ -144,6 +144,9 @@ namespace Apps.Models.App
         [Display(Name = "期望国家")]
         public override string ExpectCountry { get; set; }
 
+        [Display(Name = "期望国家")]
+        public string ExpectCountryName { get; set; }
+
         [Display(Name = "面试中")]
         public override string SwitchBtnInterview { get; set; }
 
@@ -161,7 +164,8 @@ namespace Apps.Models.App
                 + ",WordPath:" + WordPath + ",WordName:" + WordName + ",WordExt:" + WordExt
                 + ",JobIntension:" + JobIntension + ",EnglishName:" + EnglishName + ",MaritalStatus:" + MaritalStatus
                 + ",PassportNo:" + PassportNo + ",Religion:" + Religion
-                + ",ExpectCountry:" + ExpectCountry + ",SwitchBtnInterview:" + SwitchBtnInterview;
+                + ",ExpectCountry:" + ExpectCountry + ",SwitchBtnInterview:" + SwitchBtnInterview
+                + ",ExpectCountryName:" + ExpectCountryName;
         }
     }
     #endregion

@@ -204,6 +204,7 @@ namespace Apps.Web.Areas.App.Controllers
             entity.SwitchBtnPassport = entity.SwitchBtnPassport == "1" ? "有" : "无";
             entity.SwitchBtnRecommend = entity.SwitchBtnRecommend == "1" ? "推荐" : "无";
             entity.JobIntension = app_PositionBLL.GetNames(entity.JobIntension);
+            entity.ExpectCountryName = app_CountryBLL.GetName(entity.ExpectCountry);
             ViewBag.flagWin = flagWin;
             return View(entity);
         }

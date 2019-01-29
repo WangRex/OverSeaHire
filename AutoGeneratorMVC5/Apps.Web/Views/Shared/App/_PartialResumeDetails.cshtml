@@ -1,0 +1,29 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>导出简历</title>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Styles.Render("~/content/css")
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            @using (Html.BeginForm())
+            {
+                <div class="form-horizontal">
+                    <button type="submit" class="btn btn-success btn-lg">
+                        <i class="fa fa-list-alt"></i> 导出简历
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>

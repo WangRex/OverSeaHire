@@ -60,6 +60,19 @@
 <script type="text/javascript">
     var treeData = {};
     $(function () {
+        var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
+        globalUtils.globalAjax(url, {}, function (data) {
+            countryCombo = data.Data;
+            countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
+            $('#ExpectCountry').combobox({
+                valueField: 'Id',
+                textField: 'Name',
+                data: countryCombo,
+                onLoadSuccess: function () {
+                    $('#ExpectCountry').combobox('setValue', '@Model.ExpectCountry');
+                }
+            });
+        }, "get");
         initTable();
         $("#btnSave").click(function () {
             var objsubmit = $("form").serializeJSON();
@@ -521,7 +534,7 @@
                     期望国家
                 </td>
                 <td>
-                    <input type="text" />
+                    <input type="text" id="ExpectCountry" name="ExpectCountry" />
                 </td>
                 <td align="center">
                     驾照

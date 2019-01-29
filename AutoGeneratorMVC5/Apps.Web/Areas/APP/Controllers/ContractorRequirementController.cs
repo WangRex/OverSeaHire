@@ -37,6 +37,8 @@ namespace Apps.Web.Areas.App.Controllers
         public App_ApplyJobBLL app_ApplyJobBLL { get; set; }
         [Dependency]
         public App_ApplyJobStepBLL app_ApplyJobStepBLL { get; set; }
+        [Dependency]
+        public App_RequirementInviteBLL app_RequirementInviteBLL { get; set; }
         #endregion
 
         ValidationErrors errors = new ValidationErrors();
@@ -303,6 +305,69 @@ namespace Apps.Web.Areas.App.Controllers
             }
             ViewBag.Tags = Tags;
             return View();
+        }
+        #endregion
+
+        #region 获取符合条件工人列表
+        [SupportFilter]
+        public ActionResult IndexResume(string id)
+        {
+            App_RequirementModel entity = m_BLL.GetById(id);
+            entity.PK_App_Position_Name = app_PositionBLL.GetName(entity.PK_App_Position_Name);
+            entity.WorkLimitSex = enumDictionaryBLL.GetDicName("App_Requirement.WorkLimitSex", entity.WorkLimitSex);
+            entity.EnumWorkLimitDegree = enumDictionaryBLL.GetDicName("App_Requirement.EnumWorkLimitDegree", entity.EnumWorkLimitDegree);
+            entity.PK_App_Customer_CustomerName = _App_CustomerBLL.GetCustomerName(entity.PK_App_Customer_CustomerName);
+            entity.PK_App_Country_Name = app_CountryBLL.GetName(entity.PK_App_Country_Name);
+            ViewBag.ReqId = id;
+            return View(entity);
+        }
+        [HttpPost]
+        [SupportFilter(ActionName = "IndexResume")]
+        public JsonResult GetIndexResume(GridPager pager, CustomerResumeQuery customerResumeQuery)
+        {
+            customerResumeQuery.AdminFlag = true;
+            customerResumeQuery.QueryFlag = "Recommend";
+            var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
+            List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
+            foreach (var Item in list)
+            {
+                Item.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", Item.EnumCustomerLevel);
+                Item.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", Item.EnumCustomerType);
+                Item.OwnerName = _App_CustomerBLL.GetCustomerName(Item.ParentId);
+            }
+            GridRows<App_CustomerModel> grs = new GridRows<App_CustomerModel>();
+            grs.rows = list;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
+
+        #region 发起面试邀请
+        /// <summary>
+        /// 发起面试邀请
+        /// </summary>
+        /// <param name="ReqId"></param>
+        /// <param name="CustomerId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult RequirementInvite(string ReqId, string CustomerId)
+        {
+            string strUserId = GetUserId(), InitiatorId = Session["PK_App_Customer_CustomerName"] as string;
+            LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId, "开始", "RequirementInvite", "CustomerResumeController");
+            var boolFlag = app_RequirementInviteBLL.RequirementInvite(strUserId, InitiatorId, ReqId, CustomerId);
+            LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId + ",boolFlag:" + boolFlag, "结束", "RequirementInvite", "CustomerResumeController");
+            if (!boolFlag)
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode("发起邀请失败")
+                    );
+            }
+            else
+            {
+                return Json(
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode("发起邀请成功", boolFlag, 1)
+                    );
+            }
         }
         #endregion
     }
