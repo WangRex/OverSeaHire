@@ -29,22 +29,8 @@
 
 <div class="mvctool">
     <div style="float:left;">
-        <input type="hidden" id="JobIntension" />
-        <label>
-            姓 名:
-        </label><input id="CustomerName" type="text" style="width:120px;" />
-        <label>
-            工 种:
-        </label><input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
-        <label>
-            手机号:
-        </label> <input id="CustomerPhone" type="text" style="width:120px;" />
-        <label>
-            年 龄:
-        </label><input id="WorkLimitAgeLow" type="text" style="width:30px;" />~<input id="WorkLimitAgeHigh" type="text" style="width:30px;" />
-        <label>
-            系统推荐:
-        </label> <input class="easyui-switchbutton" onText="是" offText="否" id="Recommend">
+        @*将查询条件作为部分页面，并传递参数*@
+        @Html.Partial("~/Views/Shared/App/_PartialResumeQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetCustomerResumeList") + "?RequirementId=" + @ViewBag.ReqId }, { "ReqId", @ViewBag.ReqId }, { "Grid", "0" } })
     </div>
     <div style="float:left;">
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
@@ -100,15 +86,6 @@
                 }
             ]]
         });
-        $("#btnDetails").click(function () {
-            var row = $('#List').datagrid('getSelected');
-            if (row != null) {
-                window.parent.addTab("简历详情", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
-            } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
-        });
-        $("#btnQuery").click(function () {
-            QueryList();
-        });
         $("#btnRelateJob").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
@@ -121,93 +98,8 @@
                 window.parent.addTab("查看订单", "@Url.Action("ViewOrder")?CustomerId=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
         });
-        $("#btnReturnTree").click(function () {
-            $("#positiontree").window('close');
-        });
-        $("#btnSaveTree").click(function () {
-            var nodes = $('#tt').tree('getChecked');	// get checked nodes
-            var ids = '';
-            var texts = '';
-            nodes.forEach(function (value, index, array) {
-                ids += ',' + value.id;
-                texts += ',' + value.text;
-            })
-            if (ids != '') {
-                ids = ids.substring(1);
-                texts = texts.substring(1);
-            }
-            $("#JobIntension").val(ids);
-            $("#positiontreeinput").val(texts);
-            $("#positiontree").window('close');
-        });
-        $("#positiontreeinput").click(function () {
-            if (treeData.length) {
-                initPosTree(treeData);
-            } else {
-                globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
-                    treeData = data;
-                    initPosTree(treeData);
-                }, "post");
-            }
-        });
     });
     function ApplyJob(rowId, CustomerName) {
         window.parent.addTab(CustomerName + "的相关职位", "@Url.Action("RelateJob")?CustomerId=" + rowId + "&Ieguid=" + GetGuid() + "", "fa fa-list");
-    }
-    //ifram 返回
-    function frameReturnByClose() {
-        $("#modalwindow").window('close');
-    }
-    function frameReturnByReload(flag) {
-        if (flag)
-            $("#List").datagrid('load');
-        else
-            $("#List").datagrid('reload');
-    }
-    function frameReturnByMes(mes) {
-        $.messageBox5s('@Resource.Tip', mes);
-    }
-    function initPosTree(treeData) {
-        $('#tt').tree({
-            data: treeData,
-            animate: true,
-            checkbox: true,
-            onlyLeafCheck: true,
-            onLoadSuccess: function (node, data) {
-                var ids = $("#JobIntension").val();
-                if (ids != '') {
-                    var idArr = ids.split(",");
-                    for (var i = 0; i < idArr.length; i++) {
-                        // find a node and then select it
-                        var node = $('#tt').tree('find', idArr[i]);
-                        $('#tt').tree('check', node.target);
-                    }
-                }
-            }
-        });
-        $("#positiontree").window({
-            title: '职位',
-            width: 600,
-            height: 400,
-            top: 350,
-            iconCls: 'fa fa-pencil'
-        }).window('open');
-    }
-    function QueryList() {
-        var SwitchbtnRecommend = $("#Recommend");//获取switchbutton对象
-        var Recommend = SwitchbtnRecommend.switchbutton("options").checked;//获取switchbtn值
-        var CustomerName = $("#CustomerName").val();
-        var CustomerPhone = $("#CustomerPhone").val();
-        var WorkLimitAgeLow = $("#WorkLimitAgeLow").val();
-        var WorkLimitAgeHigh = $("#WorkLimitAgeHigh").val();
-        var JobIntension = $("#JobIntension").val();
-        $("#List").datagrid("load", {
-            CustomerName: CustomerName,
-            CustomerPhone: CustomerPhone,
-            WorkLimitAgeLow: WorkLimitAgeLow,
-            WorkLimitAgeHigh: WorkLimitAgeHigh,
-            JobIntension: JobIntension,
-            Recommend: Recommend,
-        });
     }
 </script>
