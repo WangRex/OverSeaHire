@@ -13,13 +13,29 @@
 <link href="~/Content/CustomStyle.css" />
 <script type="text/javascript">
     $(function () {
+        var rowId = "@Model.Id";
         $("#btnReturn").click(function () {
             frameReturnByClose();
         });
         $("#btnApplyJob").click(function () {
-            var rowId = "@Model.Id";
             $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='@Url.Action("IndexResume")?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
             $("#modalwindow").window({ title: '推荐人列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+        });
+        $("#btnApplyedResume").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/app/ContractorApplyedResume/IndexResume?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
+            $("#modalwindow").window({ title: '应聘的简历列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+        });
+        $("#btnRecommendResume").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/app/ContractorRecommendResume/IndexResume?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
+            $("#modalwindow").window({ title: '推荐的简历列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+        });
+        $("#btnInviteResume").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/app/ContractorInviteResume/IndexResume?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
+            $("#modalwindow").window({ title: '邀请和面试的简历列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
+        });
+        $("#btnProceedingResume").click(function () {
+            $("#modalwindow").html("<iframe width='100%' height='99%'  frameborder='0' src='/app/ContractorProceedingResume/IndexResume?id=" + rowId + "&Ieguid=" + GetGuid() + "'></iframe>");
+            $("#modalwindow").window({ title: '办理中的简历列表', width: 900, height: 400, iconCls: 'fa fa-pencil' }).window('open');
         });
     });
     //ifram 返回
@@ -31,8 +47,12 @@
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
-    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, false)
-    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "选人", false)
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, true)
+    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "选人", true)
+    @Html.ToolButton("btnApplyedResume", "fa fa-edit", "应聘的简历", true)
+    @Html.ToolButton("btnRecommendResume", "fa fa-diamond", "推荐的简历", true)
+    @Html.ToolButton("btnInviteResume", "fa fa-moon-o", "邀请和面试的简历", true)
+    @Html.ToolButton("btnProceedingResume", "fa fa-suitcase", "办理中的简历", false)
 </div>
 
 <div style="top:40px;position:fixed;width:100%">
