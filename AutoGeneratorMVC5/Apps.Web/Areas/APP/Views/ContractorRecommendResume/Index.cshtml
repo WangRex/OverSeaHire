@@ -11,7 +11,7 @@
 <div class="mvctool">
     <div style="float:left;">
         @*将查询条件作为部分页面，并传递参数*@
-        @Html.Partial("~/Views/Shared/App/_PartialReqQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetList") + "?QueryFlag=Recommend" } })
+        @Html.Partial("~/Views/Shared/App/_PartialReqQuery.cshtml", new ViewDataDictionary { { "url", @Url.Action("GetList") + "?QueryFlag=Recommend" }, { "module", "推荐的简历" } })
     </div>
     <div>
         @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)

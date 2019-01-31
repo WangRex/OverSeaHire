@@ -53,6 +53,7 @@
     var treeData = {};
     var countryCombo = [];
     var gridurl = '@Html.ViewData["url"]';
+    var module = '@Html.ViewData["module"]';
     $(function () {
         var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
         globalUtils.globalAjax(url, {}, function (data) {
@@ -104,7 +105,7 @@
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
                 var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
-                window.parent.addTab("查看职位" + row.Title, "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
+                window.parent.addTab(module + "_查看职位_" + row.Title, "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
          });
         $("#btnQuery").click(function () {
