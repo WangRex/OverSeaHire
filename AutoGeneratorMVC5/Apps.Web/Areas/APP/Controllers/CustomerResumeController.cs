@@ -73,9 +73,9 @@ namespace Apps.Web.Areas.App.Controllers
                 customerResumeVm.CustomerName = Item.CustomerName;
                 customerResumeVm.Sex = Item.Sex;
                 customerResumeVm.Age = Item.Age;
-                customerResumeVm.JobIntensionNames = Item.JobIntensionNames;
-                customerResumeVm.AbroadExp = Item.AbroadExp;
-                customerResumeVm.EnumDriverLicence = Item.EnumDriverLicence;
+                customerResumeVm.JobIntensionNames = app_PositionBLL.GetNames(Item.JobIntension);
+                customerResumeVm.AbroadExp = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.AbroadExp", Item.AbroadExp);
+                customerResumeVm.EnumDriverLicence = enumDictionaryBLL.GetDicName("App_CustomerWorkmate.EnumDriverLicence", Item.EnumDriverLicence);
                 customerResumeVm.Phone = Item.Phone;
                 customerResumeVm.OwnerName = Item.OwnerName;
                 customerResumeVm.BusinessStatus = "暂无";

@@ -73,37 +73,37 @@
       <publishTime>01/27/2019 21:00:26</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorApplyedResume/Index.cshtml">
-      <publishTime>01/21/2019 15:37:35</publishTime>
+      <publishTime>01/31/2019 22:02:10</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorApplyedResume/IndexResume.cshtml">
-      <publishTime>01/27/2019 21:20:12</publishTime>
+      <publishTime>01/31/2019 21:34:51</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorInviteResume/Details.cshtml">
       <publishTime>01/26/2019 18:00:50</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorInviteResume/Index.cshtml">
-      <publishTime>01/23/2019 21:12:15</publishTime>
+      <publishTime>01/31/2019 22:03:23</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorInviteResume/IndexResume.cshtml">
-      <publishTime>01/27/2019 20:57:20</publishTime>
+      <publishTime>01/31/2019 21:41:21</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorProceedingResume/Details.cshtml">
       <publishTime>01/23/2019 21:18:09</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorProceedingResume/Index.cshtml">
-      <publishTime>01/23/2019 21:18:36</publishTime>
+      <publishTime>01/31/2019 22:03:59</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorProceedingResume/IndexResume.cshtml">
-      <publishTime>01/23/2019 21:18:09</publishTime>
+      <publishTime>01/31/2019 21:35:01</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRecommendResume/Details.cshtml">
       <publishTime>01/27/2019 21:51:17</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRecommendResume/Index.cshtml">
-      <publishTime>01/23/2019 19:58:21</publishTime>
+      <publishTime>01/31/2019 22:06:46</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRecommendResume/IndexResume.cshtml">
-      <publishTime>01/27/2019 22:01:51</publishTime>
+      <publishTime>01/31/2019 21:35:25</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRequirement/AddTag.cshtml">
       <publishTime>01/21/2019 16:02:44</publishTime>
@@ -112,19 +112,19 @@
       <publishTime>01/21/2019 16:02:44</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRequirement/Details.cshtml">
-      <publishTime>01/28/2019 09:49:48</publishTime>
+      <publishTime>01/31/2019 21:57:41</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRequirement/Edit.cshtml">
       <publishTime>01/21/2019 16:02:45</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRequirement/Index.cshtml">
-      <publishTime>01/21/2019 16:02:45</publishTime>
+      <publishTime>01/31/2019 22:00:51</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRequirement/IndexResume.cshtml">
-      <publishTime>01/28/2019 20:57:03</publishTime>
+      <publishTime>01/31/2019 21:35:31</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorResume/Index.cshtml">
-      <publishTime>01/23/2019 21:34:47</publishTime>
+      <publishTime>01/31/2019 21:39:59</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorResume/RelateJob.cshtml">
       <publishTime>01/26/2019 16:40:49</publishTime>
@@ -235,7 +235,7 @@
       <publishTime>01/28/2019 21:51:49</publishTime>
     </File>
     <File Include="Areas/APP/Views/CustomerResume/Index.cshtml">
-      <publishTime>01/03/2019 20:29:40</publishTime>
+      <publishTime>01/31/2019 21:23:19</publishTime>
     </File>
     <File Include="Areas/APP/Views/CustomerResume/RelateJob.cshtml">
       <publishTime>01/05/2019 12:04:12</publishTime>
@@ -808,16 +808,16 @@
       <publishTime>01/30/2019 17:33:28</publishTime>
     </File>
     <File Include="bin/Apps.Web.dll">
-      <publishTime>01/30/2019 18:04:41</publishTime>
+      <publishTime>02/15/2019 21:03:28</publishTime>
     </File>
     <File Include="bin/Apps.Web.pdb">
-      <publishTime>01/30/2019 18:04:41</publishTime>
+      <publishTime>02/15/2019 21:03:28</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>01/30/2019 18:04:53</publishTime>
+      <publishTime>02/15/2019 21:03:44</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>01/30/2019 18:04:53</publishTime>
+      <publishTime>02/15/2019 21:03:44</publishTime>
     </File>
     <File Include="bin/ClosedXML.dll">
       <publishTime>12/16/2014 14:35:14</publishTime>
@@ -1357,7 +1357,7 @@
       <publishTime>01/29/2019 07:55:07</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>01/30/2019 18:04:46</publishTime>
+      <publishTime>02/15/2019 21:03:34</publishTime>
     </File>
     <File Include="Scripts/Account.js">
       <publishTime>11/07/2018 23:31:56</publishTime>
@@ -2500,7 +2500,7 @@
       <publishTime>01/07/2019 20:35:39</publishTime>
     </File>
     <File Include="Views/Shared/App/_PartialReqQuery.cshtml">
-      <publishTime>01/07/2019 16:57:39</publishTime>
+      <publishTime>01/31/2019 22:02:59</publishTime>
     </File>
     <File Include="Views/Shared/App/_PartialResumeDetails.cshtml">
       <publishTime>01/28/2019 20:53:57</publishTime>
