@@ -254,6 +254,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\APP\APPAreaRegistration.cs" />
+    <Compile Include="Areas\APP\Controllers\ContractorApplyingResumeController.cs" />
     <Compile Include="Areas\APP\Controllers\ContractorProceedingResumeController.cs" />
     <Compile Include="Areas\APP\Controllers\ContractorInviteResumeController.cs" />
     <Compile Include="Areas\APP\Controllers\ContractorRecommendResumeController.cs" />
@@ -779,6 +780,9 @@
     <Content Include="Areas\APP\Views\ContractorProceedingResume\Index.cshtml" />
     <Content Include="Areas\APP\Views\ContractorProceedingResume\IndexResume.cshtml" />
     <Content Include="Areas\APP\Views\ContractorResume\RelateJob.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorApplyingResume\Details.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorApplyingResume\Index.cshtml" />
+    <Content Include="Areas\APP\Views\ContractorApplyingResume\IndexResume.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

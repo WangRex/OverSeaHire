@@ -13,9 +13,9 @@ using System;
 namespace Apps.Web.Areas.App.Controllers
 {
     /// <summary>
-    /// 外派公司-应聘的简历
+    /// 外派公司-面试中的简历
     /// </summary>
-    public class ContractorApplyedResumeController : BaseController
+    public class ContractorApplyingResumeController : BaseController
     {
         #region BLLs
         [Dependency]
@@ -139,7 +139,7 @@ namespace Apps.Web.Areas.App.Controllers
         {
             //此处获取的简历就是所有的工人，无需权限
             customerResumeQuery.AdminFlag = true;
-            customerResumeQuery.QueryFlag = "Applyed";
+            customerResumeQuery.QueryFlag = "Applying";
             string strCustomerId = Session["PK_App_Customer_CustomerName"] as string;
             var queryData = app_RequirementBLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = m_BLL.CreateModelList(ref queryData);
@@ -200,7 +200,7 @@ namespace Apps.Web.Areas.App.Controllers
             applyJobPost.CustomerId = CustomerId;
             applyJobPost.RequirementId = ReqId;
             applyJobPost.UserId = strUserId;
-            var app_ApplyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.PK_App_Customer_CustomerName == CustomerId && EF.EnumApplyStatus == "0" && EF.CurrentStep == "1");
+            var app_ApplyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.PK_App_Customer_CustomerName == CustomerId && EF.EnumApplyStatus == "5" && EF.CurrentStep == "1");
             app_ApplyJob.ModificationTime = now;
             app_ApplyJob.ModificationUserName = strUserId;
             try
@@ -208,9 +208,30 @@ namespace Apps.Web.Areas.App.Controllers
                 string ErrorMsg = "";
                 if ("1".Equals(Flag))
                 {
-                    //如果同意，则更新状态为5:外派同意，并且步骤数不变，此时需要跑到外派公司的面试中的简历列表中。
-                    app_ApplyJob.EnumApplyStatus = "5";
+                    //如果同意，则更新状态为0,并且处理下一步。
+                    app_ApplyJob.EnumApplyStatus = "0";
                     app_ApplyJobBLL.m_Rep.Edit(app_ApplyJob);
+                    App_ApplyJobModel entity = app_ApplyJobBLL.GetById(app_ApplyJob.Id);
+                    ViewBag.Result = new SelectList(enumDictionaryBLL.GetDropDownList("App_ApplyJobRecord.Result"), "ItemValue", "ItemName");
+                    var iNextStep = Utils.ObjToInt(entity.CurrentStep, 0) + 1;
+                    App_ApplyJobRecordModel applyJobRecordModel = new App_ApplyJobRecordModel()
+                    {
+                        Id = ResultHelper.NewId,
+                        CreateTime = now,
+                        CreateUserName = strUserId,
+                        ModificationTime = now,
+                        ModificationUserName = strUserId,
+                        PK_App_ApplyJob_Id = app_ApplyJob.Id,
+                        PK_App_Customer_CustomerName = entity.PK_App_Customer_CustomerName,
+                        Step = iNextStep.ToString(),
+                        Result = "进行中",
+                        Content = app_ApplyJobStepBLL.GetStepName(iNextStep.ToString()) + "进行中",
+                    };
+                    if (iNextStep == 9)
+                    {
+                        applyJobRecordModel.Result = "已完成";
+                    }
+                    app_ApplyJobBLL.NextStep(strUserId, applyJobRecordModel);
                     ErrorMsg = "同意成功";
                 }
                 else

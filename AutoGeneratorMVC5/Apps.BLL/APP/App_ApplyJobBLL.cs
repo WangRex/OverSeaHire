@@ -725,6 +725,114 @@ namespace Apps.BLL.App
             }
         }
         #endregion
+
+        #region 下一步流程
+        /// <summary>
+        /// 下一步流程
+        /// </summary>
+        /// <param name="strUserId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool NextStep(string strUserId, App_ApplyJobRecordModel model)
+        {
+            var now = ResultHelper.NowTime;
+            var iPreStep = Utils.ObjToInt(model.Step, 0) - 1;
+            var customer = customerRepository.GetById(model.PK_App_Customer_CustomerName);
+            //首先更新申请主信息
+            App_ApplyJob entity = m_Rep.GetById(model.PK_App_ApplyJob_Id);
+            entity.ModificationTime = now;
+            entity.ModificationUserName = strUserId;
+            entity.CurrentStep = model.Step;
+            if (model.Step == "3")
+            {
+                //如果步骤到3了，就锁定成面试中，不可面试其他职位
+                customer.SwitchBtnInterview = "1";
+            }
+            if (model.Step == "9")
+            {
+                //如果步骤到9了，就改成已完成
+                entity.EnumApplyStatus = "1";
+                //如果步骤到9了，就把用户面试锁定解除
+                customer.SwitchBtnInterview = "0";
+            }
+            m_Rep.Edit(entity);
+            customer.ModificationTime = now;
+            customer.ModificationUserName = strUserId;
+            customerRepository.Edit(customer);
+            SysMessage sysMessage = new SysMessage()
+            {
+                Id = ResultHelper.NewId,
+                CreateTime = now,
+                CreateUserName = strUserId,
+                ModificationTime = now,
+                ModificationUserName = strUserId,
+                BusinessTable = "ApplyJob",
+                BusinessID = model.PK_App_ApplyJob_Id,
+                PK_App_Customer_CustomerName = model.PK_App_Customer_CustomerName,
+                SwitchBtnRead = "0",
+                EnumMessageType = "1",
+                Title = "应聘进度更新",
+            };
+            sysMessage.WorkerId = model.PK_App_Customer_CustomerName;
+            //增加判断，如果这个邀请的是个工友，则需要推送消息给工人
+            if (!string.IsNullOrEmpty(customer.ParentId))
+            {
+                sysMessage.PK_App_Customer_CustomerName = customer.ParentId;
+            }
+            if ("3".Equals(model.Step))
+            {
+                sysMessage.Content = "您的应聘进度有更新——待面试";
+            }
+            if ("4".Equals(model.Step))
+            {
+                sysMessage.Content = "您的应聘进度有更新——待考试";
+            }
+            if ("5".Equals(model.Step))
+            {
+                sysMessage.Content = "您的应聘进度有更新——待支付服务费";
+            }
+            if ("6".Equals(model.Step))
+            {
+                sysMessage.Content = "您的应聘进度有更新——待审核材料";
+            }
+            if ("7".Equals(model.Step))
+            {
+                sysMessage.Content = "您的应聘进度有更新——待签约";
+            }
+            if ("8".Equals(model.Step))
+            {
+                sysMessage.Content = "您的应聘进度有更新——待支付尾款";
+            }
+            if ("9".Equals(model.Step))
+            {
+                sysMessage.Content = "您的应聘完成啦~~祝一切顺利";
+            }
+            sysMessageRepository.Create(sysMessage);
+            model.ModificationUserName = strUserId;
+            model.ModificationTime = ResultHelper.NowTime;
+            App_ApplyJobRecord applyJobRecord = new App_ApplyJobRecord();
+            LinqHelper.ModelTrans(model, applyJobRecord);
+            if (applyJobRecordRepository.Create(applyJobRecord))
+            {
+                //成功后把上一个步骤的状态改成已完成
+                var PreStep = iPreStep.ToString();
+                applyJobRecord = applyJobRecordRepository.Find(EF => EF.PK_App_ApplyJob_Id == model.PK_App_ApplyJob_Id && EF.Step == PreStep);
+                applyJobRecord.Result = "已完成";
+                applyJobRecord.ModificationTime = now;
+                applyJobRecord.ModificationUserName = strUserId;
+                if (string.IsNullOrEmpty(applyJobRecord.HappenDate))
+                {
+                    applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
+                }
+                applyJobRecordRepository.Edit(applyJobRecord);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }
 

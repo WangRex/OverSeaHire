@@ -1,8 +1,18 @@
 ﻿@model Apps.Models.App.RequirementDetailsVm
 
 <link href="~/Content/CustomStyle.css" />
+<style>
+    #contentDiv {
+        top: 40px;
+        position: fixed;
+        width: 100%;
+        overflow-y: auto;
+        height: 100%;
+    }
+</style>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
-<div style="top:40px;position:fixed;width:100%">
+
+<div id="contentDiv">
     <div class="row">
         <div class="col-15 textalignright mr10">@Model.Title</div>
         <div class="col-15 textalignleft ml10">@Model.YearSalary</div>

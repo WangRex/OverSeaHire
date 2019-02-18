@@ -1340,6 +1340,14 @@ namespace Apps.BLL.App
                 string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
                 queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
             }
+            //查询面试中的人员信息
+            if ("Applying" == customerResumeQuery.QueryFlag)
+            {
+                //获取当前需求对应的工人列表
+                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "5" && EF.CurrentStep == "1");
+                string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
+                queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
+            }
             //查询推荐的工人列表
             if ("Recommend" == customerResumeQuery.QueryFlag)
             {
@@ -1704,6 +1712,11 @@ namespace Apps.BLL.App
             if (requirementQuery.QueryFlag == "RelateJob")
             {
                 listApplyJob = listApplyJob.Where(EF => EF.EnumApplyStatus == "0").ToList().Where(EF => Utils.ObjToInt(EF.CurrentStep, 0) > 3).ToList();
+                ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
+            }
+            if (requirementQuery.QueryFlag == "Applying")
+            {
+                listApplyJob = listApplyJob.Where(EF => EF.EnumApplyStatus == "5" && EF.CurrentStep == "1").ToList();
                 ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
             }
             queryData = queryData.Where(EF => ReqIds.Contains(EF.Id));

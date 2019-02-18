@@ -66,7 +66,7 @@
     function AcceptApply(CustomerId, ReqId) {
         $.messager.confirm('@Resource.Tip', '确定要同意当前应聘申请吗', function (r) {
             if (r) {
-                globalUtils.globalAjax("@Url.Action("UpdateApplywResult")", { ReqId: ReqId, CustomerId: CustomerId, Flag: "1"}, function (result) {
+                globalUtils.globalAjax("@Url.Action("UpdateApplywResult")", { ReqId: ReqId, CustomerId: CustomerId, Flag: "1" }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);
                     QueryList();
                 }, "post");
@@ -76,7 +76,7 @@
     function RejectApply(CustomerId, ReqId) {
         $.messager.confirm('@Resource.Tip', '确定要拒绝当前应聘申请吗', function (r) {
             if (r) {
-                globalUtils.globalAjax("@Url.Action("UpdateApplywResult")", { ReqId: ReqId, CustomerId: CustomerId, Flag: "0"}, function (result) {
+                globalUtils.globalAjax("@Url.Action("UpdateApplywResult")", { ReqId: ReqId, CustomerId: CustomerId, Flag: "0" }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);
                     QueryList();
                 }, "post");

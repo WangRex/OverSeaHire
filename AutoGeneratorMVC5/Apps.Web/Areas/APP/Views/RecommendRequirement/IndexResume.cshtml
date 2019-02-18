@@ -60,7 +60,7 @@
             if (r) {
                 globalUtils.globalAjax("@Url.Action("ApplyJob")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);
-                    queryList();
+                    QueryList();
                 }, "post");
             }
         });
