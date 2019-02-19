@@ -469,6 +469,7 @@ namespace Apps.Models.App
         public string TotalServiceMoney { get; set; }
         public string PublishDate { get; set; }
         public string ReqType { get; set; }
+        public string ReqTypeName { get; set; }
     }
     #endregion
 

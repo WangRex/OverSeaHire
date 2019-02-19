@@ -299,6 +299,42 @@ namespace Apps.Web.Areas.App.Controllers
         }
         #endregion
 
+        #region 获取推荐职位列表
+        public ActionResult RecommendJob(string CustomerId)
+        {
+            ViewBag.CustomerId = CustomerId;
+            return View();
+        }
+        [HttpPost]
+        public JsonResult RecommendJob(GridPager pager, RequirementQuery requirementQuery)
+        {
+            LogHandler.WriteServiceLog(GetUserId(), requirementQuery.ToString(), "开始", "RecommendJob", "CustomerResumeController");
+            var list = app_RequirementBLL.GetRecommendJobs(ref pager, requirementQuery);
+            List<RequirementInfoVm> requirementInfoVms = new List<RequirementInfoVm>();
+            foreach (var Item in list)
+            {
+                requirementInfoVms.Add(new RequirementInfoVm()
+                {
+                    Id = Item.Id,
+                    Title = Item.Title,
+                    Position = app_PositionBLL.GetNames(Item.PK_App_Position_Name),
+                    Country = app_CountryBLL.GetName(Item.PK_App_Country_Name),
+                    Sex = Item.WorkLimitSex,
+                    AgeLimit = Item.WorkLimitAgeLow + "-" + Item.WorkLimitAgeHigh,
+                    YearSalary = Utils.ObjToDecimal(Item.SalaryLow, 0) / 10000 + "万-" + Utils.ObjToDecimal(Item.SalaryHigh, 0) / 10000 + "万",
+                    TotalHire = Item.TotalHire,
+                    Tag = Item.Tag,
+                    TotalServiceMoney = Utils.ObjToDecimal(Item.TotalServiceMoney, 0) / 10000 + "万",
+                    PublishDate = Item.PublishDate,
+                });
+            }
+            GridRows<RequirementInfoVm> grs = new GridRows<RequirementInfoVm>();
+            grs.rows = requirementInfoVms;
+            grs.total = pager.totalRows;
+            return Json(grs);
+        }
+        #endregion
+
         #region 获取相关职位列表
         public ActionResult RelateJob(string CustomerId)
         {
@@ -327,6 +363,7 @@ namespace Apps.Web.Areas.App.Controllers
                     TotalServiceMoney = Utils.ObjToDecimal(Item.TotalServiceMoney, 0) / 10000 + "万",
                     PublishDate = Item.PublishDate,
                     ReqType = Item.ReqType,
+                    ReqTypeName = enumDictionaryBLL.GetDicName("App_Requirement.EnumRelateJobType", Item.ReqType),
                 });
             }
             GridRows<RequirementInfoVm> grs = new GridRows<RequirementInfoVm>();
