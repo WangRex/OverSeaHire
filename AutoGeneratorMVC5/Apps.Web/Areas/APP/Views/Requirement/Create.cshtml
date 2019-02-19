@@ -28,6 +28,7 @@
 <script src="~/Scripts/editor/ueditor.all.min.js"></script>
 
 <script type="text/javascript">
+    var treeData = {};
     $(function () {
         var ue = UE.getEditor('Description', {
             toolbars: [[
@@ -96,29 +97,42 @@
             $("#positiontree").window('close');
         });
         $("#positiontreeinput").click(function () {
-            globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
-                var tree = data;
-                $('#tt').tree({
-                    data: tree,
-                    animate: true,
-                    checkbox: true,
-                    onlyLeafCheck: true,
-                    onLoadSuccess: function (node, data) {
-                        var ids = $("#PK_App_Position_Name").val();
-                        if (ids != '') {
-                            var idArr = ids.split(",");
-                            for (var i = 0; i < idArr.length; i++) {
-                                // find a node and then select it
-                                var node = $('#tt').tree('find', idArr[i]);
-                                $('#tt').tree('check', node.target);
-                            }
-                        }
-                    }
-                });
-                $("#positiontree").window({ title: '职位', width: 600, height: 400, iconCls: 'fa fa-pencil' }).window('open');
-            }, "post");
+            if (treeData.length) {
+                initPosTree(treeData);
+            } else {
+                globalUtils.globalAjax("/App/Position/GetPosCombTree", {}, function (data) {
+                    treeData = data;
+                    initPosTree(treeData);
+                }, "post");
+            }
         });
     });
+    function initPosTree(treeData) {
+        $('#tt').tree({
+            data: treeData,
+            animate: true,
+            checkbox: true,
+            onlyLeafCheck: true,
+            onLoadSuccess: function (node, data) {
+                var ids = $("#PK_App_Position_Name").val();
+                if (ids != '') {
+                    var idArr = ids.split(",");
+                    for (var i = 0; i < idArr.length; i++) {
+                        // find a node and then select it
+                        var node = $('#tt').tree('find', idArr[i]);
+                        $('#tt').tree('check', node.target);
+                    }
+                }
+            }
+        });
+        $("#positiontree").window({
+            title: '职位',
+            width: 600,
+            height: 400,
+            top: 350,
+            iconCls: 'fa fa-pencil'
+        }).window('open');
+    }
     function CalcTotalServiceMoney() {
         var PromiseMoney = $("#PromiseMoney").val();
         var ServiceMoney = $("#ServiceMoney").val();
