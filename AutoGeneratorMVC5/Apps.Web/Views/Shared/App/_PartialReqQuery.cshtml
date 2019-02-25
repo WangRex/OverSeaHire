@@ -144,7 +144,7 @@
     //查看详情
     function showDetails(rowId, rowTitle) {
         var menuName = window.parent.$('#mainTab').tabs('getSelected').panel('options').title;
-        window.parent.addTab("查看职位" + rowTitle, "@Url.Action("Details")?id=" + rowId + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
+        window.parent.addTab(module + "_查看职位_" + rowTitle, "@Url.Action("Details")?id=" + rowId + "&Ieguid=" + GetGuid() + "", "fa fa-list", menuName);
     }
     function initPosTree(treeData) {
         $('#tt').tree({
