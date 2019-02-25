@@ -1768,7 +1768,7 @@ namespace Apps.BLL.App
             }
             if (requirementQuery.QueryFlag == "Applying")
             {
-                listApplyJob = listApplyJob.Where(EF => EF.EnumApplyStatus == "5" && EF.CurrentStep == "1").ToList();
+                listApplyJob = listApplyJob.Where(EF => (EF.EnumApplyStatus == "5" && EF.CurrentStep == "1") || (EF.EnumApplyStatus == "0" && EF.CurrentStep == "3")).ToList();
                 ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
             }
             queryData = queryData.Where(EF => ReqIds.Contains(EF.Id));

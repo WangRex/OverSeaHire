@@ -159,7 +159,7 @@ namespace Apps.Web.Areas.App.Controllers
                 customerResumeVm.BusinessStatus = "暂无";
                 customerResumeVm.ApplyJobId = "";
                 //获取当前用户的应聘申请
-                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && (EF.EnumApplyStatus == "0" || EF.EnumApplyStatus == "4"));
+                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && (EF.EnumApplyStatus == "0" || EF.EnumApplyStatus == "5"));
                 if (null != applyJob)
                 {
                     customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);

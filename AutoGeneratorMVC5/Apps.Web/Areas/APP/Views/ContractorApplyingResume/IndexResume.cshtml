@@ -52,8 +52,13 @@
                     field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
                         var btn = "";
                         if (rec.EnumApplyStatus == "0") {
-                            btn = '<a class="fa fa-check" onclick="AcceptApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;同意</a>';
-                            btn += ' <a class="fa fa-ban" onclick="RejectApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;拒绝</a>';
+                            if (rec.CurrentStep == "3") {
+                                btn = '<a class="fa fa-check" onclick="AcceptApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;面试通过</a>';
+                                btn += ' <a class="fa fa-ban" onclick="RejectApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;面试失败</a>';
+                            }
+                        }
+                        if (rec.EnumApplyStatus == "5") {
+                            btn = "待支付保证金";
                         }
                         if (rec.EnumApplyStatus == "4") {
                             btn = "外派公司已拒绝";
