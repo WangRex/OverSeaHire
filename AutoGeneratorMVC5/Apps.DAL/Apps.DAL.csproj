@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountRepository.cs" />
+    <Compile Include="App\App_ApplyJobStepRepository.cs" />
     <Compile Include="App\App_CountryRepository.cs" />
     <Compile Include="App\App_CustomerRepository.cs" />
     <Compile Include="App\App_RequirementRepository.cs" />

@@ -182,10 +182,16 @@ namespace Apps.Web.Areas.APP.Controllers
         {
             var now = ResultHelper.NowTime;
             string strUserId = GetUserId(), applyJobId = "";
+            ApplyJobPost applyJobPost = new ApplyJobPost();
+            applyJobPost.CustomerId = CustomerId;
+            applyJobPost.RequirementId = ReqId;
+            applyJobPost.UserId = strUserId;
             var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.Inviter == CustomerId && EF.SwitchBtnAgree == null);
             ReqInvite.ModificationTime = now;
             ReqInvite.ModificationUserName = strUserId;
             ReqInvite.SwitchBtnAgree = Flag;
+            //2019-02-25 Rex 修改只要代理公司点了同意，则直接创建申请，无需外派再次同意。
+            ReqInvite.SwitchBtnContractorAgree = Flag;
             try
             {
                 var ReqInviteFlag = app_RequirementInviteBLL.m_Rep.Edit(ReqInvite);
@@ -194,6 +200,7 @@ namespace Apps.Web.Areas.APP.Controllers
                 {
                     if ("1".Equals(Flag))
                     {
+                        var applyJob = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, ref ErrorMsg);
                         ErrorMsg = "同意邀请成功";
                     }
                     else

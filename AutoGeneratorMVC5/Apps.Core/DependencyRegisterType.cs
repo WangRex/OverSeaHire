@@ -7,6 +7,7 @@ using Apps.IBLL.Sys;
 using Apps.IDAL.Sys;
 using Apps.BLL.Sys;
 using Apps.DAL.Sys;
+using Apps.DAL.App;
 
 namespace Apps.Core
 {

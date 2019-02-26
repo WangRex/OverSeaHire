@@ -29,6 +29,8 @@ namespace Apps.BLL.App
         [Dependency]
         public App_ApplyJobRecordRepository applyJobRecordRepository { get; set; }
         [Dependency]
+        public App_ApplyJobStepRepository applyJobStepRepository { get; set; }
+        [Dependency]
         public App_OfficeRepository officeRepository { get; set; }
         [Dependency]
         public SysMessageRepository sysMessageRepository { get; set; }
@@ -684,8 +686,8 @@ namespace Apps.BLL.App
             applyJob.PK_App_Requirement_Title = Req.Id;
             applyJob.PK_App_Customer_CustomerName = customerId;
             applyJob.EnumApplyStatus = "0";
-            //后台发起的应聘，直接步骤是1，需要雇主同意，步骤数才到2。
-            applyJob.CurrentStep = "1";
+            //后台发起的应聘，直接步骤是2。
+            applyJob.CurrentStep = "2";
             applyJob.PromiseMoney = Utils.ObjToDecimal(Req.PromiseMoney, 0);
             applyJob.ServiceMoney = Utils.ObjToDecimal(Req.ServiceMoney, 0);
             applyJob.TailMoney = Utils.ObjToDecimal(Req.ServiceTailMoney, 0);
@@ -703,8 +705,23 @@ namespace Apps.BLL.App
                 applyJobRecord.PK_App_Customer_CustomerName = customerId;
                 applyJobRecord.Step = "1";
                 applyJobRecord.EnumApplyStatus = "1";
-                applyJobRecord.Result = "进行中";
+                applyJobRecord.Result = "已完成";
                 applyJobRecord.Content = "发起应聘";
+                applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
+                applyJobRecordRepository.Create(applyJobRecord);
+                //添加应聘记录--待支付保证金进行中
+                applyJobRecord = new App_ApplyJobRecord();
+                applyJobRecord.Id = ResultHelper.NewId;
+                applyJobRecord.CreateTime = now;
+                applyJobRecord.CreateUserName = applyJobPost.UserId;
+                applyJobRecord.ModificationTime = now;
+                applyJobRecord.ModificationUserName = applyJobPost.UserId;
+                applyJobRecord.PK_App_ApplyJob_Id = applyJob.Id;
+                applyJobRecord.PK_App_Customer_CustomerName = customerId;
+                applyJobRecord.Step = "2";
+                applyJobRecord.EnumApplyStatus = "1";
+                applyJobRecord.Result = "进行中";
+                applyJobRecord.Content = applyJobStepRepository.GetStepName("2");
                 applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
                 applyJobRecordRepository.Create(applyJobRecord);
                 Req.ApplyCount++;
