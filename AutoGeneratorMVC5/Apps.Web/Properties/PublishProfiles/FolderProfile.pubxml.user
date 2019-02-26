@@ -13,7 +13,7 @@
       <publishTime>01/07/2019 20:37:23</publishTime>
     </File>
     <File Include="Areas/APP/Views/ApplyedRequirement/Index.cshtml">
-      <publishTime>01/18/2019 15:13:08</publishTime>
+      <publishTime>02/26/2019 20:39:17</publishTime>
     </File>
     <File Include="Areas/APP/Views/ApplyedRequirement/IndexResume.cshtml">
       <publishTime>01/18/2019 14:51:45</publishTime>
@@ -94,16 +94,16 @@
       <publishTime>01/31/2019 22:03:23</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorInviteResume/IndexResume.cshtml">
-      <publishTime>01/31/2019 21:41:21</publishTime>
+      <publishTime>02/26/2019 20:30:37</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorProceedingResume/Details.cshtml">
-      <publishTime>01/23/2019 21:18:09</publishTime>
+      <publishTime>02/25/2019 20:56:13</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorProceedingResume/Index.cshtml">
       <publishTime>01/31/2019 22:03:59</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorProceedingResume/IndexResume.cshtml">
-      <publishTime>01/31/2019 21:35:01</publishTime>
+      <publishTime>02/25/2019 21:31:44</publishTime>
     </File>
     <File Include="Areas/APP/Views/ContractorRecommendResume/Details.cshtml">
       <publishTime>01/27/2019 21:51:17</publishTime>
@@ -283,7 +283,7 @@
       <publishTime>01/26/2019 17:10:29</publishTime>
     </File>
     <File Include="Areas/APP/Views/InviteRequirement/Index.cshtml">
-      <publishTime>01/26/2019 16:49:04</publishTime>
+      <publishTime>02/26/2019 20:39:33</publishTime>
     </File>
     <File Include="Areas/APP/Views/InviteRequirement/IndexResume.cshtml">
       <publishTime>01/26/2019 19:50:49</publishTime>
@@ -316,7 +316,7 @@
       <publishTime>01/07/2019 20:42:29</publishTime>
     </File>
     <File Include="Areas/APP/Views/ProceedingRequirement/Index.cshtml">
-      <publishTime>01/18/2019 15:12:46</publishTime>
+      <publishTime>02/26/2019 20:39:49</publishTime>
     </File>
     <File Include="Areas/APP/Views/ProceedingRequirement/IndexResume.cshtml">
       <publishTime>01/18/2019 14:43:46</publishTime>
@@ -325,7 +325,7 @@
       <publishTime>01/07/2019 20:38:05</publishTime>
     </File>
     <File Include="Areas/APP/Views/RecommendRequirement/Index.cshtml">
-      <publishTime>01/18/2019 15:12:35</publishTime>
+      <publishTime>02/26/2019 20:39:41</publishTime>
     </File>
     <File Include="Areas/APP/Views/RecommendRequirement/IndexResume.cshtml">
       <publishTime>02/18/2019 15:07:33</publishTime>
@@ -748,61 +748,61 @@
       <publishTime>02/22/2013 08:43:40</publishTime>
     </File>
     <File Include="bin/Apps.BLL.dll">
-      <publishTime>02/25/2019 16:58:44</publishTime>
+      <publishTime>02/26/2019 20:44:11</publishTime>
     </File>
     <File Include="bin/Apps.BLL.dll.config">
       <publishTime>11/07/2018 23:31:53</publishTime>
     </File>
     <File Include="bin/Apps.BLL.pdb">
-      <publishTime>02/25/2019 16:58:44</publishTime>
+      <publishTime>02/26/2019 20:44:11</publishTime>
     </File>
     <File Include="bin/Apps.Common.dll">
-      <publishTime>02/25/2019 13:10:30</publishTime>
+      <publishTime>02/25/2019 22:09:13</publishTime>
     </File>
     <File Include="bin/Apps.Common.pdb">
-      <publishTime>02/25/2019 13:10:30</publishTime>
+      <publishTime>02/25/2019 22:09:13</publishTime>
     </File>
     <File Include="bin/Apps.Core.dll">
-      <publishTime>02/25/2019 16:58:45</publishTime>
+      <publishTime>02/26/2019 20:44:12</publishTime>
     </File>
     <File Include="bin/Apps.Core.dll.config">
       <publishTime>11/07/2018 23:31:59</publishTime>
     </File>
     <File Include="bin/Apps.Core.pdb">
-      <publishTime>02/25/2019 16:58:45</publishTime>
+      <publishTime>02/26/2019 20:44:12</publishTime>
     </File>
     <File Include="bin/Apps.DAL.dll">
-      <publishTime>02/25/2019 16:58:43</publishTime>
+      <publishTime>02/26/2019 20:44:10</publishTime>
     </File>
     <File Include="bin/Apps.DAL.dll.config">
       <publishTime>11/07/2018 23:31:59</publishTime>
     </File>
     <File Include="bin/Apps.DAL.pdb">
-      <publishTime>02/25/2019 16:58:43</publishTime>
+      <publishTime>02/26/2019 20:44:10</publishTime>
     </File>
     <File Include="bin/Apps.IBLL.dll">
-      <publishTime>02/25/2019 16:58:43</publishTime>
+      <publishTime>02/26/2019 20:44:10</publishTime>
     </File>
     <File Include="bin/Apps.IBLL.pdb">
-      <publishTime>02/25/2019 16:58:43</publishTime>
+      <publishTime>02/26/2019 20:44:10</publishTime>
     </File>
     <File Include="bin/Apps.IDAL.dll">
-      <publishTime>02/25/2019 16:58:42</publishTime>
+      <publishTime>02/26/2019 20:44:09</publishTime>
     </File>
     <File Include="bin/Apps.IDAL.dll.config">
       <publishTime>11/07/2018 23:32:00</publishTime>
     </File>
     <File Include="bin/Apps.IDAL.pdb">
-      <publishTime>02/25/2019 16:58:42</publishTime>
+      <publishTime>02/26/2019 20:44:09</publishTime>
     </File>
     <File Include="bin/Apps.Jobs.dll">
-      <publishTime>02/25/2019 16:58:45</publishTime>
+      <publishTime>02/26/2019 20:44:13</publishTime>
     </File>
     <File Include="bin/Apps.Jobs.dll.config">
       <publishTime>11/07/2018 23:32:00</publishTime>
     </File>
     <File Include="bin/Apps.Jobs.pdb">
-      <publishTime>02/25/2019 16:58:45</publishTime>
+      <publishTime>02/26/2019 20:44:13</publishTime>
     </File>
     <File Include="bin/Apps.Locale.dll">
       <publishTime>02/25/2019 16:58:40</publishTime>
@@ -811,25 +811,25 @@
       <publishTime>02/25/2019 16:58:40</publishTime>
     </File>
     <File Include="bin/Apps.Models.dll">
-      <publishTime>02/25/2019 16:58:41</publishTime>
+      <publishTime>02/26/2019 20:44:09</publishTime>
     </File>
     <File Include="bin/Apps.Models.dll.config">
       <publishTime>01/26/2019 20:23:44</publishTime>
     </File>
     <File Include="bin/Apps.Models.pdb">
-      <publishTime>02/25/2019 16:58:41</publishTime>
+      <publishTime>02/26/2019 20:44:09</publishTime>
     </File>
     <File Include="bin/Apps.Web.dll">
-      <publishTime>02/25/2019 16:58:47</publishTime>
+      <publishTime>02/26/2019 20:44:14</publishTime>
     </File>
     <File Include="bin/Apps.Web.pdb">
-      <publishTime>02/25/2019 16:58:47</publishTime>
+      <publishTime>02/26/2019 20:44:14</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>02/25/2019 16:59:00</publishTime>
+      <publishTime>02/26/2019 20:44:25</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>02/25/2019 16:59:00</publishTime>
+      <publishTime>02/26/2019 20:44:25</publishTime>
     </File>
     <File Include="bin/ClosedXML.dll">
       <publishTime>12/16/2014 14:35:14</publishTime>
@@ -1369,7 +1369,7 @@
       <publishTime>01/29/2019 07:55:07</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>02/25/2019 16:58:52</publishTime>
+      <publishTime>02/26/2019 20:44:18</publishTime>
     </File>
     <File Include="Scripts/Account.js">
       <publishTime>11/07/2018 23:31:56</publishTime>
@@ -2509,10 +2509,10 @@
       <publishTime>11/07/2018 23:31:55</publishTime>
     </File>
     <File Include="Views/Shared/App/_PartialReqDetails.cshtml">
-      <publishTime>02/18/2019 21:12:49</publishTime>
+      <publishTime>02/26/2019 20:37:11</publishTime>
     </File>
     <File Include="Views/Shared/App/_PartialReqQuery.cshtml">
-      <publishTime>01/31/2019 22:02:59</publishTime>
+      <publishTime>02/25/2019 20:55:06</publishTime>
     </File>
     <File Include="Views/Shared/App/_PartialResumeDetails.cshtml">
       <publishTime>01/28/2019 20:53:57</publishTime>
