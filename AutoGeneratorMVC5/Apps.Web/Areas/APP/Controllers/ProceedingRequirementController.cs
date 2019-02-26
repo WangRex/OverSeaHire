@@ -176,8 +176,17 @@ namespace Apps.Web.Areas.APP.Controllers
                 var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && EF.EnumApplyStatus == "0");
                 if (null != applyJob)
                 {
-                    customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
+                    int iStep = Utils.ObjToInt(applyJob.CurrentStep, 0);
+                    if (iStep ==3)
+                    {
+                        customerResumeVm.BusinessStatus = "面试进行中";
+                    }
+                    if (iStep > 3)
+                    {
+                        customerResumeVm.BusinessStatus = "签证办理中";
+                    }
                     customerResumeVm.ApplyJobId = applyJob.Id;
+                    customerResumeVm.EnumApplyStatus = applyJob.EnumApplyStatus;
                 }
                 customerResumeVms.Add(customerResumeVm);
             }
