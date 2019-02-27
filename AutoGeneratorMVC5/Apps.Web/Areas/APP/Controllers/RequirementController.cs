@@ -379,7 +379,7 @@ namespace Apps.Web.Areas.App.Controllers
             applyJobPost.UserId = strUserId;
             LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString(), "开始", "CreateApplyJobs", "ApplyJobController");
             string ErrorMsg = "";
-            var iApplyJobCount = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, ref ErrorMsg);
+            var iApplyJobCount = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, "1", ref ErrorMsg);
             LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateApplyJobs", "ApplyJobController");
             if (iApplyJobCount != 0)
             {

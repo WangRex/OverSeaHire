@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using Apps.Web.Core;
-using Apps.Locale;
 using System.Web.Mvc;
 using Apps.Common;
 using Microsoft.Practices.Unity;
 using Apps.BLL.Sys;
 using Apps.BLL.App;
 using Apps.Models.App;
-using Newtonsoft.Json;
 using System;
+using System.Linq;
 
 namespace Apps.Web.Areas.App.Controllers
 {
@@ -159,9 +158,10 @@ namespace Apps.Web.Areas.App.Controllers
                 customerResumeVm.BusinessStatus = "暂无";
                 customerResumeVm.ApplyJobId = "";
                 //获取当前用户的应聘申请
-                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && (EF.EnumApplyStatus == "0" || EF.EnumApplyStatus == "4"));
-                if (null != applyJob)
+                var applyJobs = app_ApplyJobBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == Item.Id && (EF.EnumApplyStatus == "0" || EF.EnumApplyStatus == "4")).OrderByDescending(EF => EF.ModificationTime);
+                if (null != applyJobs)
                 {
+                    var applyJob = applyJobs.FirstOrDefault();
                     customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
                     customerResumeVm.ApplyJobId = applyJob.Id;
                     customerResumeVm.EnumApplyStatus = applyJob.EnumApplyStatus;

@@ -177,6 +177,10 @@ namespace Apps.Web.Areas.APP.Controllers
                 if (null != applyJob)
                 {
                     int iStep = Utils.ObjToInt(applyJob.CurrentStep, 0);
+                    if (iStep == 2)
+                    {
+                        customerResumeVm.BusinessStatus = "待支付保证金";
+                    }
                     if (iStep ==3)
                     {
                         customerResumeVm.BusinessStatus = "面试进行中";

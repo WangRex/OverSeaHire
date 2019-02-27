@@ -200,7 +200,7 @@ namespace Apps.Web.Areas.APP.Controllers
                 {
                     if ("1".Equals(Flag))
                     {
-                        var applyJob = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, ref ErrorMsg);
+                        var applyJob = app_ApplyJobBLL.CreateApplyJobs(applyJobPost,"1", ref ErrorMsg);
                         ErrorMsg = "同意邀请成功";
                     }
                     else

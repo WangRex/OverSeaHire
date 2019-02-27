@@ -1370,7 +1370,7 @@ namespace Apps.BLL.App
             {
                 //获取当前需求对应的处理中的工人列表
                 var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && EF.EnumApplyStatus == "0");
-                listApplyJob = listApplyJob.ToList().Where(EF => Utils.ObjToInt(EF.CurrentStep, 0) > 2).AsQueryable();
+                listApplyJob = listApplyJob.ToList().Where(EF => Utils.ObjToInt(EF.CurrentStep, 0) >= 2).AsQueryable();
                 string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
                 queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
             }

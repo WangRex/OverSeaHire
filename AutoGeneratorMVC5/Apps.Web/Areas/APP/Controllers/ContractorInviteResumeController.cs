@@ -209,7 +209,7 @@ namespace Apps.Web.Areas.App.Controllers
                 string ErrorMsg = "";
                 if ("1".Equals(Flag))
                 {
-                    var applyJob = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, ref ErrorMsg);
+                    var applyJob = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, "2", ref ErrorMsg);
                     ErrorMsg = "更新面试通过成功";
                 }
                 else
