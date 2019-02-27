@@ -1,0 +1,32 @@
+﻿@model Apps.Models.App.RequirementDetailsVm
+@using Apps.Web.Core;
+@using Apps.Common;
+@using Apps.Models.App;
+@using Apps.Web;
+@using Apps.Locale;
+@using Apps.Models.Sys;
+@{
+    ViewBag.Title = "详情";
+    Layout = "~/Views/Shared/_Index_LayoutEdit.cshtml";
+    List<permModel> perm = null;
+}
+<script type="text/javascript">
+    $(function () {
+        $("#btnReturn").click(function () {
+            frameReturnByClose();
+        });
+        $("#btnApplyJob").click(function () {
+            var ReqId = "@Model.Id";
+            var CustomerId = "@ViewBag.CustomerId";
+            globalUtils.globalAjax("@Url.Action("CreateApplyJobs")", { RequirementId: ReqId, CustomerId: CustomerId }, function (result) {
+                $.messageBox5s('@Resource.Tip', result.Message);
+            }, "post");
+        });
+    });
+</script>
+<div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
+<div class="mvctool bgb">
+    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, true)
+    @Html.ToolButton("btnApplyJob", "fa fa-pencil", "送人", false)
+</div>
+@Html.Partial("~/Views/Shared/App/_PartialReqDetails.cshtml")

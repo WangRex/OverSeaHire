@@ -1659,6 +1659,13 @@ namespace Apps.BLL.App
             string strCustomerId = requirementQuery.CustomerId;
             var requirements = m_Rep.FindList(EF => EF.SwitchBtnOpen == "1").ToList();
             var customerResume = customerRepository.GetById(strCustomerId);
+            //判断是否有进行中的应聘申请
+            var applyJob = applyJobRepository.Find(EF => EF.PK_App_Customer_CustomerName == strCustomerId && EF.EnumApplyStatus == "0");
+            if (applyJob != null)
+            {
+                //如果在面试中，则直接返回空
+                return listReq;
+            }
             var arrJobIntension = new List<string>();
             if (!string.IsNullOrEmpty(customerResume.JobIntension))
             {

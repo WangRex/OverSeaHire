@@ -52,11 +52,8 @@
         </label><input id="Tag" type="text" style="width:60px;" />
     </div>
     <div style="float:left;">
-        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, ref perm, "Query", true)
-        @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
-        @Html.ToolButton("btnEdit", "fa fa-pencil", Resource.Edit, ref perm, "Edit", true)
-        @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, ref perm, "Details", true)
-        @Html.ToolButton("btnDelete", "fa fa-trash", Resource.Delete, ref perm, "Delete", true)
+        @Html.ToolButton("btnQuery", "fa fa-search", Resource.Query, true)
+        @Html.ToolButton("btnDetails", "fa fa-list", Resource.Details, true)
     </div>
 </div>
 <table id="List"></table>
@@ -116,7 +113,7 @@
         $("#btnDetails").click(function () {
             var row = $('#List').datagrid('getSelected');
             if (row != null) {
-                window.parent.addTab("查看需求", "@Url.Action("Details")?id=" + row.Id + "&Ieguid=" + GetGuid() + "", "fa fa-list");
+                window.parent.addTab("查看需求", "@Url.Action("ReqDetails")?id=" + row.Id + "&Ieguid=" + GetGuid() + "&CustomerId=" + CustomerId +"", "fa fa-list");
             } else { $.messageBox5s('@Resource.Tip', '@Resource.PlaseChooseToOperatingRecords'); }
          });
         $("#btnQuery").click(function () {

@@ -784,6 +784,7 @@
     <Content Include="Areas\APP\Views\ContractorApplyingResume\Index.cshtml" />
     <Content Include="Areas\APP\Views\ContractorApplyingResume\IndexResume.cshtml" />
     <Content Include="Areas\APP\Views\CustomerResume\RecommendJob.cshtml" />
+    <Content Include="Areas\APP\Views\CustomerResume\ReqDetails.cshtml" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>

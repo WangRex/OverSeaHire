@@ -372,5 +372,61 @@ namespace Apps.Web.Areas.App.Controllers
             return Json(grs);
         }
         #endregion
+
+        #region 职位详细
+        public ActionResult ReqDetails(string id, string CustomerId, string flagWin)
+        {
+            App_RequirementModel entity = app_RequirementBLL.GetById(id);
+            RequirementDetailsVm requirementDetailsVm = new RequirementDetailsVm();
+            requirementDetailsVm.Id = entity.Id;
+            requirementDetailsVm.Title = entity.Title;
+            requirementDetailsVm.Position = app_PositionBLL.GetNames(entity.PK_App_Position_Name);
+            requirementDetailsVm.Country = app_CountryBLL.GetName(entity.PK_App_Country_Name);
+            requirementDetailsVm.Sex = entity.WorkLimitSex;
+            requirementDetailsVm.AgeLimit = entity.WorkLimitAgeLow + "-" + entity.WorkLimitAgeHigh;
+            requirementDetailsVm.YearSalary = Utils.ObjToDecimal(entity.SalaryLow, 0) / 10000 + "万-" + Utils.ObjToDecimal(entity.SalaryHigh, 0) / 10000 + "万";
+            requirementDetailsVm.TotalHire = entity.TotalHire;
+            requirementDetailsVm.Tag = entity.Tag;
+            requirementDetailsVm.TotalServiceMoney = entity.TotalServiceMoney;
+            requirementDetailsVm.PublishDate = entity.PublishDate;
+            requirementDetailsVm.Description = entity.Description;
+            requirementDetailsVm.PromiseMoney = entity.PromiseMoney;
+            requirementDetailsVm.ServiceTailMoney = entity.ServiceTailMoney;
+            requirementDetailsVm.ServiceMoney = entity.ServiceMoney;
+            ViewBag.CustomerId = CustomerId;
+            return View(requirementDetailsVm);
+        }
+        #endregion
+
+        #region 提交应聘申请
+        /// <summary>
+        /// 提交应聘申请【后台批量】
+        /// 目的是可以一次性给多人报名
+        /// </summary>
+        /// <param name="applyJobPost"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public object CreateApplyJobs(ApplyJobPost applyJobPost)
+        {
+            string strUserId = GetUserId();
+            applyJobPost.UserId = strUserId;
+            LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString(), "开始", "CreateApplyJobs", "ApplyJobController");
+            string ErrorMsg = "";
+            var iApplyJobCount = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, "1", ref ErrorMsg);
+            LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateApplyJobs", "ApplyJobController");
+            if (iApplyJobCount != 0)
+            {
+                return Json(
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, iApplyJobCount, 1)
+                    );
+            }
+            else
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                    );
+            }
+        }
+        #endregion
     }
 }
