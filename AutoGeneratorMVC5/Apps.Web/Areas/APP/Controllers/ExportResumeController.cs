@@ -137,7 +137,6 @@ namespace Apps.Web.Areas.APP.Controllers
             cellSex.SetText(Utils.ObjectToStr(entity.Sex));
             //获取英文名称单元格
             var cellEnglishName = doc.Tables[0].Rows[2].GetCell(2);
-            var cellENT = doc.Tables[0].Rows[2].GetCell(1);
             cellEnglishName.SetText(Utils.ObjectToStr(entity.EnglishName));
             //获取婚姻单元格
             var cellMaritalStatus = doc.Tables[0].Rows[2].GetCell(4);
