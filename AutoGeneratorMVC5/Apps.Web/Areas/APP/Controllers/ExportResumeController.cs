@@ -64,7 +64,7 @@ namespace Apps.Web.Areas.APP.Controllers
                     ReplaceKey(para, entity);
                 }
                 ReplaceTableKey(doc, entity);
-                string outputdoc = Server.MapPath("/" + ResultHelper.NewId + ".docx");
+                string outputdoc = Server.MapPath("/" + ResumeId + ".docx");
                 FileStream sw = System.IO.File.Create(outputdoc);
                 doc.Write(sw);
                 sw.Close();
@@ -128,58 +128,59 @@ namespace Apps.Web.Areas.APP.Controllers
             var rows = doc.Tables[0].Rows;
             //获取求职意向单元格
             var cellJobIntension = doc.Tables[0].Rows[0].GetCell(0);
-            cellJobIntension.SetText("申请职位：" + entity.JobIntension);
+            cellJobIntension.SetText("申请职位：" + Utils.ObjectToStr(entity.JobIntension));
             //获取中文名称单元格
             var cellCustomerName = doc.Tables[0].Rows[1].GetCell(2);
-            cellCustomerName.SetText(entity.CustomerName);
+            cellCustomerName.SetText(Utils.ObjectToStr(entity.CustomerName));
             //获取性别单元格
             var cellSex = doc.Tables[0].Rows[1].GetCell(4);
-            cellSex.SetText(entity.Sex);
+            cellSex.SetText(Utils.ObjectToStr(entity.Sex));
             //获取英文名称单元格
             var cellEnglishName = doc.Tables[0].Rows[2].GetCell(2);
-            cellEnglishName.SetText(entity.EnglishName);
+            var cellENT = doc.Tables[0].Rows[2].GetCell(1);
+            cellEnglishName.SetText(Utils.ObjectToStr(entity.EnglishName));
             //获取婚姻单元格
             var cellMaritalStatus = doc.Tables[0].Rows[2].GetCell(4);
-            cellMaritalStatus.SetText(entity.MaritalStatus);
+            cellMaritalStatus.SetText(Utils.ObjectToStr(entity.MaritalStatus));
             //获取电话单元格
             var cellPhone = doc.Tables[0].Rows[3].GetCell(1);
-            cellPhone.SetText(entity.Phone);
+            cellPhone.SetText(Utils.ObjectToStr(entity.Phone));
             //获取年龄单元格
             var cellAge = doc.Tables[0].Rows[3].GetCell(3);
-            cellAge.SetText(entity.Age.ToString());
+            cellAge.SetText(Utils.ObjectToStr(entity.Age.ToString()));
             //获取护照号码单元格
             var cellPassportNo = doc.Tables[0].Rows[4].GetCell(1);
-            cellPassportNo.SetText(entity.PassportNo);
+            cellPassportNo.SetText(Utils.ObjectToStr(entity.PassportNo));
             //获取身高单元格
             var cellHeight = doc.Tables[0].Rows[4].GetCell(3);
-            cellHeight.SetText(entity.Height);
+            cellHeight.SetText(Utils.ObjectToStr(entity.Height));
             //获取籍贯单元格
             var cellBirthPlace = doc.Tables[0].Rows[5].GetCell(1);
-            cellBirthPlace.SetText(entity.BirthPlace);
+            cellBirthPlace.SetText(Utils.ObjectToStr(entity.BirthPlace));
             //获取体重单元格
             var cellWeight = doc.Tables[0].Rows[5].GetCell(3);
-            cellWeight.SetText(entity.Weight);
+            cellWeight.SetText(Utils.ObjectToStr(entity.Weight));
             //获取民族单元格
             var cellNation = doc.Tables[0].Rows[5].GetCell(5);
-            cellNation.SetText(entity.Nation);
+            cellNation.SetText(Utils.ObjectToStr(entity.Nation));
             //获取出国经历单元格
             var cellAbroadExp = doc.Tables[0].Rows[6].GetCell(1);
-            cellAbroadExp.SetText(entity.AbroadExp);
+            cellAbroadExp.SetText(Utils.ObjectToStr(entity.AbroadExp));
             //获取英语单元格
             var cellEnumForeignLangGrade = doc.Tables[0].Rows[6].GetCell(3);
-            cellEnumForeignLangGrade.SetText(entity.EnumForeignLangGrade);
+            cellEnumForeignLangGrade.SetText(Utils.ObjectToStr(entity.EnumForeignLangGrade));
             //获取宗教信仰单元格
             var cellReligion = doc.Tables[0].Rows[6].GetCell(5);
-            cellReligion.SetText(entity.Religion);
+            cellReligion.SetText(Utils.ObjectToStr(entity.Religion));
             //获取期望职位单元格
             var cellExpectPosition = doc.Tables[0].Rows[7].GetCell(1);
-            cellExpectPosition.SetText(entity.JobIntension);
+            cellExpectPosition.SetText(Utils.ObjectToStr(entity.JobIntension));
             //获取期望国家单元格
             var cellExpectCountry = doc.Tables[0].Rows[7].GetCell(3);
-            cellExpectCountry.SetText(entity.ExpectCountry);
+            cellExpectCountry.SetText(Utils.ObjectToStr(entity.ExpectCountry));
             //获取驾照单元格
             var cellEnumDriverLicence = doc.Tables[0].Rows[7].GetCell(5);
-            cellEnumDriverLicence.SetText(entity.EnumDriverLicence);
+            cellEnumDriverLicence.SetText(Utils.ObjectToStr(entity.EnumDriverLicence));
             //获取教育经历
             var workExps = customerWorkExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == entity.Id).ToList();
             var eduExps = customerEduExpBLL.m_Rep.FindList(EF => EF.PK_App_Customer_CustomerName == entity.Id).ToList();
@@ -193,13 +194,13 @@ namespace Apps.Web.Areas.APP.Controllers
                     var cellEduDate = doc.Tables[0].Rows[10 + i].GetCell(0);
                     cellEduDate.SetText(item.StartDate + "~" + item.EndDate);
                     var cellEduSchool = doc.Tables[0].Rows[10 + i].GetCell(1);
-                    cellEduSchool.SetText(item.School);
+                    cellEduSchool.SetText(Utils.ObjectToStr(item.School));
                     var cellEduMajor = doc.Tables[0].Rows[10 + i].GetCell(2);
-                    cellEduMajor.SetText(item.Major);
+                    cellEduMajor.SetText(Utils.ObjectToStr(item.Major));
                     var cellEduDegree = doc.Tables[0].Rows[10 + i].GetCell(3);
-                    cellEduDegree.SetText(item.Degree);
+                    cellEduDegree.SetText(Utils.ObjectToStr(item.Degree));
                     var cellEduCertificate = doc.Tables[0].Rows[10 + i].GetCell(4);
-                    cellEduCertificate.SetText(item.Certificate);
+                    cellEduCertificate.SetText(Utils.ObjectToStr(item.Certificate));
                 }
             }
             if (workCount > 0)
@@ -210,11 +211,11 @@ namespace Apps.Web.Areas.APP.Controllers
                     var cellWorkDate = doc.Tables[0].Rows[17 + i].GetCell(0);
                     cellWorkDate.SetText(item.StartDate + "~" + item.EndDate);
                     var cellWorkCompany = doc.Tables[0].Rows[17 + i].GetCell(1);
-                    cellWorkCompany.SetText(item.Company);
+                    cellWorkCompany.SetText(Utils.ObjectToStr(item.Company));
                     var cellWorkPosition = doc.Tables[0].Rows[17 + i].GetCell(2);
-                    cellWorkPosition.SetText(item.Position);
+                    cellWorkPosition.SetText(Utils.ObjectToStr(item.Position));
                     var cellWorkJobDescription = doc.Tables[0].Rows[17 + i].GetCell(3);
-                    cellWorkJobDescription.SetText(item.JobDescription);
+                    cellWorkJobDescription.SetText(Utils.ObjectToStr(item.JobDescription));
                 }
             }
             if (familyCount > 0)
@@ -223,23 +224,23 @@ namespace Apps.Web.Areas.APP.Controllers
                 {
                     var item = families[i];
                     var cellFamilyName = doc.Tables[0].Rows[24 + i].GetCell(0);
-                    cellFamilyName.SetText(item.Name);
+                    cellFamilyName.SetText(Utils.ObjectToStr(item.Name));
                     var cellFamilyRelation = doc.Tables[0].Rows[24 + i].GetCell(1);
-                    cellFamilyRelation.SetText(item.Relation);
+                    cellFamilyRelation.SetText(Utils.ObjectToStr(item.Relation));
                     var cellFamilyAge = doc.Tables[0].Rows[24 + i].GetCell(2);
-                    cellFamilyAge.SetText(item.Age.ToString());
+                    cellFamilyAge.SetText(Utils.ObjectToStr(item.Age.ToString()));
                     var cellFamilyOccupation = doc.Tables[0].Rows[24 + i].GetCell(3);
-                    cellFamilyOccupation.SetText(item.Occupation);
+                    cellFamilyOccupation.SetText(Utils.ObjectToStr(item.Occupation));
                 }
             }
             //获取自我评价单元格
             var cellIntroduction = doc.Tables[0].Rows[rows.Count - 1].GetCell(1);
-            cellIntroduction.SetText(entity.Introduction);
+            cellIntroduction.SetText(Utils.ObjectToStr(entity.Introduction));
         }
 
         private XWPFDocument delEmptyRow(XWPFDocument doc)
         {
-            for (int i = 0; i < doc.Tables[0].Rows.Count; i++)
+            for (int i = 10; i < doc.Tables[0].Rows.Count; i++)
             {
                 if (doc.Tables[0].Rows[i].GetCell(0).GetText() == "")
                 {
