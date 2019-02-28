@@ -331,7 +331,7 @@
                     性别
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.Sex)
+                    @Html.DropDownListFor(model => model.Sex, ViewBag.Sex as SelectList)
                 </td>
             </tr>
             <tr>
