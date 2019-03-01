@@ -59,7 +59,18 @@
 
 <script type="text/javascript">
     var treeData = {};
+    var countryCombo = [];
     $(function () {
+        var url = Constants.globalHomeUrl + Constants.Requirement.GetCountries + "?UserId=0&PageNum=0&RecordNum=0";
+        globalUtils.globalAjax(url, {}, function (data) {
+            countryCombo = data.Data;
+            countryCombo.splice(0, 0, { Id: "", Name: "--请选择--" });
+            $('#Country').combobox({
+                valueField: 'Id',
+                textField: 'Name',
+                data: countryCombo
+            });
+        }, "get");
         $("#btnSave").click(function () {
             var objsubmit = $("form").serializeJSON();
             var arrEdu = new Array();
@@ -447,7 +458,7 @@
                     期望国家
                 </td>
                 <td>
-                    <input type="text" />
+                    <input id="Country" type="text" name="ExpectCountry" style="width:120px;" />
                 </td>
                 <td align="center">
                     驾照
