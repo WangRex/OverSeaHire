@@ -297,7 +297,8 @@ namespace Apps.Web.Controllers
         {
             //SysUser user = accountBLL.Login(GetUserId(), ValueConvert.MD5(oldPwd));
             string ErrorMsg = "";
-            SysUser user = accountBLL.Login(GetUserId(), oldPwd, ref ErrorMsg);
+            var account = GetAccount();
+            SysUser user = accountBLL.Login(account.UserName, oldPwd, ref ErrorMsg);
             if (user == null)
             {
                 return Json(JsonHandler.CreateMessage(0, "旧密码不匹配！"), JsonRequestBehavior.AllowGet);

@@ -16,12 +16,15 @@
     @Html.ToolButton("btnChongz", "fa fa-search", "重置", true)
     部门:<input id="DepId" type="hidden" />
     <input class="easyui-combotree" id="structTree" style="width:150px;height:28px;">
-    角色:<select id="roles" name="roles" sstyle="margin-right:50px"><option>--未选择--</option></select>
     性别:<select id="sexs" name="sexs"><option>--未选择--</option></select>
-    <div style="float:right;margin-right:50px">
-        @Html.ToolButton("btnCreateRole", "fa fa-plus", "角色管理", ref perm, "Create", true)
-        @Html.ToolButton("btnEditOrgan", "fa fa-pencil", "修改组织架构", ref perm, "Create", true)
-    </div>
+    @if (Session["IdFlag"].ToString() == "1")
+    {
+        角色:<select id="roles" name="roles" sstyle="margin-right:50px"><option>--未选择--</option></select>
+        <div style="float:right;margin-right:50px">
+            @Html.ToolButton("btnCreateRole", "fa fa-plus", "角色管理", ref perm, "Create", true)
+            @Html.ToolButton("btnEditOrgan", "fa fa-pencil", "修改组织架构", ref perm, "Create", true)
+        </div>
+    }
 </div>
 <div class="mvctool">
     @Html.ToolButton("btnCreate", "fa fa-plus", Resource.Create, ref perm, "Create", true)
