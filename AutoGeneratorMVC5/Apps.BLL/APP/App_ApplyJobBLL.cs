@@ -830,6 +830,7 @@ namespace Apps.BLL.App
             entity.ModificationTime = now;
             entity.ModificationUserName = strUserId;
             entity.CurrentStep = model.Step;
+            entity.EnumApplyStatus = "0";
             if (model.Step == "3")
             {
                 //如果步骤到3了，就锁定成面试中，不可面试其他职位

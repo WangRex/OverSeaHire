@@ -165,6 +165,7 @@ namespace Apps.Web.Areas.App.Controllers
                     customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
                     customerResumeVm.ApplyJobId = applyJob.Id;
                     customerResumeVm.EnumApplyStatus = applyJob.EnumApplyStatus;
+                    customerResumeVm.CurrentStep = applyJob.CurrentStep;
                 }
                 //获取当前用户的邀请信息
                 var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.InitiatorId == strCustomerId && EF.Inviter == Item.Id);

@@ -624,6 +624,7 @@ namespace Apps.Models.App
         public string SwitchBtnAgree { get; set; }
         public string SwitchBtnContractorAgree { get; set; }
         public string EnumApplyStatus { get; set; }
+        public string CurrentStep { get; set; }
     }
     #endregion
 
