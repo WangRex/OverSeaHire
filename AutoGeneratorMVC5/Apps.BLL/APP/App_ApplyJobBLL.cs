@@ -55,7 +55,7 @@ namespace Apps.BLL.App
                 sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
                 return null;
             }
-            string strApplyJobId = CrtApplyJob(applyJobPost, out ErrorMsg, customerId, Req);
+            string strApplyJobId = CrtStep2ApplyJob(applyJobPost, out ErrorMsg, customerId, Req);
             sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
             return strApplyJobId;
         }
@@ -761,6 +761,7 @@ namespace Apps.BLL.App
             applyJob.PromiseMoney = Utils.ObjToDecimal(Req.PromiseMoney, 0);
             applyJob.ServiceMoney = Utils.ObjToDecimal(Req.ServiceMoney, 0);
             applyJob.TailMoney = Utils.ObjToDecimal(Req.ServiceTailMoney, 0);
+            applyJob.EnumApplyJobSource = applyJobPost.EnumApplyJobSource;
             try
             {
                 m_Rep.Create(applyJob);
@@ -824,6 +825,7 @@ namespace Apps.BLL.App
         {
             var now = ResultHelper.NowTime;
             var iPreStep = Utils.ObjToInt(model.Step, 0) - 1;
+            bool createRecordFlag = true;
             var customer = customerRepository.GetById(model.PK_App_Customer_CustomerName);
             //首先更新申请主信息
             App_ApplyJob entity = m_Rep.GetById(model.PK_App_ApplyJob_Id);
@@ -833,8 +835,28 @@ namespace Apps.BLL.App
             entity.EnumApplyStatus = "0";
             if (model.Step == "3")
             {
-                //如果步骤到3了，就锁定成面试中，不可面试其他职位
-                customer.SwitchBtnInterview = "1";
+                if (entity.EnumApplyJobSource == "0")
+                {
+                    if (entity.EnumApplyStatus == "6")
+                    {
+                        //此时说明雇主可能不方便点同意，那么管理员也可以下一步，然后状态正常走到进行中的0
+                        //如果步骤到3了，就锁定成面试中，不可面试其他职位
+                        customer.SwitchBtnInterview = "1";
+                        entity.EnumApplyStatus = "0";
+                    }
+                    else
+                    {
+                        //如果是app端发起的申请，则此时不更新步骤数，也不添加记录数，只是改成已支付即可，然后把状态改成6（待雇主同意）
+                        entity.CurrentStep = "2";
+                        entity.EnumApplyStatus = "6";
+                        createRecordFlag = false;
+                    }
+                }
+                else
+                {
+                    //如果步骤到3了，就锁定成面试中，不可面试其他职位
+                    customer.SwitchBtnInterview = "1";
+                }
             }
             if (model.Step == "9")
             {
@@ -899,24 +921,75 @@ namespace Apps.BLL.App
             model.ModificationUserName = strUserId;
             model.ModificationTime = ResultHelper.NowTime;
             App_ApplyJobRecord applyJobRecord = new App_ApplyJobRecord();
-            LinqHelper.ModelTrans(model, applyJobRecord);
-            if (applyJobRecordRepository.Create(applyJobRecord))
+            if (createRecordFlag)
             {
-                //成功后把上一个步骤的状态改成已完成
-                var PreStep = iPreStep.ToString();
-                applyJobRecord = applyJobRecordRepository.Find(EF => EF.PK_App_ApplyJob_Id == model.PK_App_ApplyJob_Id && EF.Step == PreStep);
-                applyJobRecord.Result = "已完成";
+                LinqHelper.ModelTrans(model, applyJobRecord);
+                applyJobRecordRepository.Create(applyJobRecord);
+            }
+            //把上一个步骤的状态改成已完成
+            var PreStep = iPreStep.ToString();
+            applyJobRecord = applyJobRecordRepository.Find(EF => EF.PK_App_ApplyJob_Id == model.PK_App_ApplyJob_Id && EF.Step == PreStep);
+            applyJobRecord.Result = "已完成";
+            applyJobRecord.ModificationTime = now;
+            applyJobRecord.ModificationUserName = strUserId;
+            if (string.IsNullOrEmpty(applyJobRecord.HappenDate))
+            {
+                applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            applyJobRecordRepository.Edit(applyJobRecord);
+            return true;
+        }
+        #endregion
+
+        #region 雇主同意面试
+        /// <summary>
+        /// 雇主同意面试
+        /// </summary>
+        /// <param name="applyJobPost"></param>
+        /// <param name="ErrorMsg"></param>
+        /// <returns></returns>
+        public bool EmployerAgree(EmployerAgreePost employerAgreePost, ref string ErrorMsg)
+        {
+            sysLog.WriteServiceLog(employerAgreePost.UserId, employerAgreePost.ToString(), "开始", "EmployerAgree", "App_ApplyJobBLL");
+            string ApplyJobId = employerAgreePost.ApplyJobId;
+            var now = ResultHelper.NowTime;
+            var applyJob = m_Rep.GetById(ApplyJobId);
+            if (null == applyJob)
+            {
+                ErrorMsg = "修改的申请不存在";
+                sysLog.WriteServiceLog(employerAgreePost.UserId, employerAgreePost.ToString() + ErrorMsg, "结束", "EmployerAgree", "App_ApplyJobBLL");
+                return false;
+            }
+            applyJob.ModificationTime = now;
+            applyJob.ModificationUserName = employerAgreePost.UserId;
+            applyJob.EnumApplyStatus = "0";
+            applyJob.CurrentStep = "3";
+            try
+            {
+                m_Rep.Edit(applyJob);
+                App_ApplyJobRecord applyJobRecord = new App_ApplyJobRecord();
+                //添加应聘记录--增加面试进行中记录
+                applyJobRecord.Id = ResultHelper.NewId;
+                applyJobRecord.CreateTime = now;
+                applyJobRecord.CreateUserName = employerAgreePost.UserId;
                 applyJobRecord.ModificationTime = now;
-                applyJobRecord.ModificationUserName = strUserId;
-                if (string.IsNullOrEmpty(applyJobRecord.HappenDate))
-                {
-                    applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
-                }
-                applyJobRecordRepository.Edit(applyJobRecord);
+                applyJobRecord.ModificationUserName = employerAgreePost.UserId;
+                applyJobRecord.PK_App_ApplyJob_Id = applyJob.Id;
+                applyJobRecord.PK_App_Customer_CustomerName = applyJob.PK_App_Customer_CustomerName;
+                applyJobRecord.Step = "3";
+                applyJobRecord.EnumApplyStatus = "3";
+                applyJobRecord.Result = "进行中";
+                applyJobRecord.Content = "面试";
+                applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
+                applyJobRecordRepository.Create(applyJobRecord);
+                ErrorMsg = "申请更新成功";
+                sysLog.WriteServiceLog(employerAgreePost.UserId, employerAgreePost.ToString() + ErrorMsg, "结束", "EmployerAgree", "App_ApplyJobBLL");
                 return true;
             }
-            else
+            catch (Exception ex)
             {
+                ErrorMsg = "申请更新出现异常";
+                sysLog.WriteServiceLog(employerAgreePost.UserId, employerAgreePost.ToString() + ErrorMsg + ex.Message, "结束", "EmployerAgree", "App_ApplyJobBLL");
                 return false;
             }
         }

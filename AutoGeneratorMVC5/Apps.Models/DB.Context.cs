@@ -107,7 +107,6 @@ namespace Apps.Models
         public virtual DbSet<App_CustomerWorkExp> App_CustomerWorkExp { get; set; }
         public virtual DbSet<App_CustomerCertificate> App_CustomerCertificate { get; set; }
         public virtual DbSet<App_CustomerJobIntension> App_CustomerJobIntension { get; set; }
-        public virtual DbSet<App_ApplyJob> App_ApplyJob { get; set; }
         public virtual DbSet<App_Office> App_Office { get; set; }
         public virtual DbSet<SysFeedback> SysFeedback { get; set; }
         public virtual DbSet<App_Requirement> App_Requirement { get; set; }
@@ -120,6 +119,7 @@ namespace Apps.Models
         public virtual DbSet<SysUser> SysUser { get; set; }
         public virtual DbSet<App_RequirementInvite> App_RequirementInvite { get; set; }
         public virtual DbSet<App_Customer> App_Customer { get; set; }
+        public virtual DbSet<App_ApplyJob> App_ApplyJob { get; set; }
     
         public virtual int P_DEF_CreateTestJobs(string vercode)
         {

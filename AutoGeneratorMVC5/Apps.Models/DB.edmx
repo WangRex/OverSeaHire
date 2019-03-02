@@ -26,6 +26,7 @@
           <Property Name="EnumServicePayWay" Type="nvarchar(max)" />
           <Property Name="TailMoney" Type="decimal" Precision="16" Scale="2" Nullable="false" />
           <Property Name="EnumTailPayWay" Type="nvarchar(max)" />
+          <Property Name="EnumApplyJobSource" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="App_ApplyJobRecord">
           <Key>
@@ -3174,7 +3175,6 @@
           <EntitySet Name="App_CustomerWorkExp" EntityType="DB.App_CustomerWorkExp" />
           <EntitySet Name="App_CustomerCertificate" EntityType="DB.App_CustomerCertificate" />
           <EntitySet Name="App_CustomerJobIntension" EntityType="DB.App_CustomerJobIntension" />
-          <EntitySet Name="App_ApplyJob" EntityType="DB.App_ApplyJob" />
           <EntitySet Name="App_Office" EntityType="DB.App_Office" />
           <EntitySet Name="SysFeedback" EntityType="DB.SysFeedback" />
           <EntitySet Name="App_Requirement" EntityType="DB.App_Requirement" />
@@ -3227,6 +3227,7 @@
           </AssociationSet>
           <EntitySet Name="App_RequirementInvite" EntityType="DB.App_RequirementInvite" />
           <EntitySet Name="App_Customer" EntityType="DB.App_Customer" />
+          <EntitySet Name="App_ApplyJob" EntityType="DB.App_ApplyJob" />
           </EntityContainer>
         <EntityType Name="DEF_Defect">
           <Key>
@@ -5260,28 +5261,6 @@
           <Property Name="EnumForeignLangGrade" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AbroadExp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="App_ApplyJob">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModificationTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreateUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ModificationUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SortCode" Type="Int32" Nullable="false" />
-          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PK_App_Requirement_Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PK_App_Customer_CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CurrentStep" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EnumApplyStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PromiseMoney" Type="Decimal" Nullable="false" Precision="16" Scale="0" />
-          <Property Name="EnumPromisePayWay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ServiceMoney" Type="Decimal" Nullable="false" Precision="16" Scale="1" />
-          <Property Name="EnumServicePayWay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TailMoney" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
-          <Property Name="EnumTailPayWay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="App_Office">
           <Key>
             <PropertyRef Name="Id" />
@@ -5698,6 +5677,29 @@
           <Property Name="Religion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ExpectCountry" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SwitchBtnInterview" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="App_ApplyJob">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModificationTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModificationUserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SortCode" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PK_App_Requirement_Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PK_App_Customer_CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentStep" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnumApplyStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PromiseMoney" Type="Decimal" Nullable="false" Precision="16" Scale="0" />
+          <Property Name="EnumPromisePayWay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ServiceMoney" Type="Decimal" Nullable="false" Precision="16" Scale="1" />
+          <Property Name="EnumServicePayWay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TailMoney" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="EnumTailPayWay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EnumApplyJobSource" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -7283,29 +7285,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="App_ApplyJob">
-            <EntityTypeMapping TypeName="DB.App_ApplyJob">
-              <MappingFragment StoreEntitySet="App_ApplyJob">
-                <ScalarProperty Name="EnumTailPayWay" ColumnName="EnumTailPayWay" />
-                <ScalarProperty Name="TailMoney" ColumnName="TailMoney" />
-                <ScalarProperty Name="EnumServicePayWay" ColumnName="EnumServicePayWay" />
-                <ScalarProperty Name="ServiceMoney" ColumnName="ServiceMoney" />
-                <ScalarProperty Name="EnumPromisePayWay" ColumnName="EnumPromisePayWay" />
-                <ScalarProperty Name="PromiseMoney" ColumnName="PromiseMoney" />
-                <ScalarProperty Name="EnumApplyStatus" ColumnName="EnumApplyStatus" />
-                <ScalarProperty Name="CurrentStep" ColumnName="CurrentStep" />
-                <ScalarProperty Name="PK_App_Customer_CustomerName" ColumnName="PK_App_Customer_CustomerName" />
-                <ScalarProperty Name="PK_App_Requirement_Title" ColumnName="PK_App_Requirement_Title" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="SortCode" ColumnName="SortCode" />
-                <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />
-                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
-                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
-                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="App_Office">
             <EntityTypeMapping TypeName="DB.App_Office">
               <MappingFragment StoreEntitySet="App_Office">
@@ -7609,6 +7588,30 @@
                 <ScalarProperty Name="EnumCustomerLevel" ColumnName="EnumCustomerLevel" />
                 <ScalarProperty Name="Info" ColumnName="Info" />
                 <ScalarProperty Name="Record" ColumnName="Record" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="SortCode" ColumnName="SortCode" />
+                <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />
+                <ScalarProperty Name="CreateUserName" ColumnName="CreateUserName" />
+                <ScalarProperty Name="ModificationTime" ColumnName="ModificationTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="App_ApplyJob">
+            <EntityTypeMapping TypeName="DB.App_ApplyJob">
+              <MappingFragment StoreEntitySet="App_ApplyJob">
+                <ScalarProperty Name="EnumApplyJobSource" ColumnName="EnumApplyJobSource" />
+                <ScalarProperty Name="EnumTailPayWay" ColumnName="EnumTailPayWay" />
+                <ScalarProperty Name="TailMoney" ColumnName="TailMoney" />
+                <ScalarProperty Name="EnumServicePayWay" ColumnName="EnumServicePayWay" />
+                <ScalarProperty Name="ServiceMoney" ColumnName="ServiceMoney" />
+                <ScalarProperty Name="EnumPromisePayWay" ColumnName="EnumPromisePayWay" />
+                <ScalarProperty Name="PromiseMoney" ColumnName="PromiseMoney" />
+                <ScalarProperty Name="EnumApplyStatus" ColumnName="EnumApplyStatus" />
+                <ScalarProperty Name="CurrentStep" ColumnName="CurrentStep" />
+                <ScalarProperty Name="PK_App_Customer_CustomerName" ColumnName="PK_App_Customer_CustomerName" />
+                <ScalarProperty Name="PK_App_Requirement_Title" ColumnName="PK_App_Requirement_Title" />
                 <ScalarProperty Name="ParentId" ColumnName="ParentId" />
                 <ScalarProperty Name="SortCode" ColumnName="SortCode" />
                 <ScalarProperty Name="ModificationUserName" ColumnName="ModificationUserName" />

@@ -52,6 +52,7 @@ namespace Apps.WebApi.Controllers
         {
             LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString(), "开始", "CreateApplyJob", "ApplyJobController");
             string ErrorMsg = "";
+            applyJobPost.EnumApplyJobSource = "0";
             var applyJobId = app_ApplyJobBLL.CreateApplyJob(applyJobPost, ref ErrorMsg);
             LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateApplyJob", "ApplyJobController");
             if (!string.IsNullOrEmpty(applyJobId))
@@ -268,6 +269,34 @@ namespace Apps.WebApi.Controllers
             {
                 return Json(
                     ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, applyJobUserVms, DataCount)
+                    );
+            }
+            else
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                    );
+            }
+        }
+        #endregion
+
+        #region 雇主同意面试
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="employerAgreePost"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public object EmployerAgree(EmployerAgreePost employerAgreePost)
+        {
+            LogHandler.WriteServiceLog(employerAgreePost.UserId, employerAgreePost.ToString(), "开始", "EmployerAgree", "ApplyJobController");
+            string ErrorMsg = "";
+            var flag = app_ApplyJobBLL.EmployerAgree(employerAgreePost, ref ErrorMsg);
+            LogHandler.WriteServiceLog(employerAgreePost.UserId, employerAgreePost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "EmployerAgree", "ApplyJobController");
+            if (flag)
+            {
+                return Json(
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, flag, 1)
                     );
             }
             else

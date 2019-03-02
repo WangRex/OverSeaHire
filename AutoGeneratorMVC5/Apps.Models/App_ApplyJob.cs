@@ -31,5 +31,6 @@ namespace Apps.Models
         public string EnumServicePayWay { get; set; }
         public decimal TailMoney { get; set; }
         public string EnumTailPayWay { get; set; }
+        public string EnumApplyJobSource { get; set; }
     }
 }

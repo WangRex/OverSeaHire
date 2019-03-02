@@ -72,12 +72,15 @@ namespace Apps.Models.App
         [Display(Name = "尾款支付方式")]
         public override string EnumTailPayWay { get; set; }
 
+        [Display(Name = "应聘来源")]
+        public override string EnumApplyJobSource { get; set; }
+
         public override string ToString()
         {
             return "PK_App_Requirement_Title:" + PK_App_Requirement_Title + ",PK_App_Customer_CustomerName:" + PK_App_Customer_CustomerName + ",CurrentStep:" + CurrentStep
                  + ",EnumApplyStatus:" + EnumApplyStatus + ",PromiseMoney:" + PromiseMoney + ",EnumPromisePayWay:" + EnumPromisePayWay
                  + ",ServiceMoney:" + ServiceMoney + ",EnumServicePayWay:" + EnumServicePayWay + ",TailMoney:" + TailMoney
-                 + ",EnumTailPayWay:" + EnumTailPayWay;
+                 + ",EnumTailPayWay:" + EnumTailPayWay + ",EnumApplyJobSource:" + EnumApplyJobSource;
         }
     }
     #endregion
@@ -97,9 +100,14 @@ namespace Apps.Models.App
         /// 应聘人主键
         /// </summary>
         public string CustomerId { get; set; }
+        /// <summary>
+        /// 应聘来源（0:App,1:PC）
+        /// </summary>
+        public string EnumApplyJobSource { get; set; }
         public override string ToString()
         {
-            return "UserId:" + UserId + ",RequirementId:" + RequirementId + ",CustomerId:" + CustomerId;
+            return "UserId:" + UserId + ",RequirementId:" + RequirementId + ",CustomerId:" + CustomerId
+                + ",EnumApplyJobSource:" + EnumApplyJobSource;
         }
     }
     #endregion
@@ -228,6 +236,33 @@ namespace Apps.Models.App
         {
             return "Id:" + Id + ",PK_App_Requirement_Title:" + PK_App_Requirement_Title + ",CurrentStep:" + CurrentStep
                 + ",EnumApplyStatus:" + EnumApplyStatus;
+        }
+    }
+    #endregion
+
+    #region 雇主同意面试
+    public class EmployerAgreePost
+    {
+        /// <summary>
+        /// 登录人主键
+        /// </summary>
+        public string UserId { get; set; }
+        /// <summary>
+        /// 申请主键
+        /// </summary>
+        public string ApplyJobId { get; set; }
+        /// <summary>
+        /// 配置时间
+        /// </summary>
+        public string ConfigDate { get; set; }
+        /// <summary>
+        /// 配置地点
+        /// </summary>
+        public string ConfigPlace { get; set; }
+        public override string ToString()
+        {
+            return "UserId:" + UserId + ",ApplyJobId:" + ApplyJobId
+                + ",ConfigDate:" + ConfigDate + ",ConfigPlace:" + ConfigPlace;
         }
     }
     #endregion

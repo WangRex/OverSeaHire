@@ -330,7 +330,7 @@ namespace Apps.BLL.App
             requirementDetailVm.RecommendUsers = GetRecommenUsers(app_Requirement);
             var applyJobs = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == RequirementId && EF.EnumApplyStatus == "0").ToList();
             //获取申请面试的人数
-            var applyJobCount = applyJobs.Where(EF => EF.CurrentStep == "2" && EF.EnumApplyStatus == "0").Count();
+            var applyJobCount = applyJobs.Where(EF => EF.CurrentStep == "2" && (EF.EnumApplyStatus == "0" || EF.EnumApplyStatus == "6")).Count();
             requirementDetailVm.ApplyingCount = applyJobCount;
             //获取面试中的人数
             var InterviewCount = applyJobs.Where(EF => EF.EnumApplyStatus == "0" && (Utils.ObjToInt(EF.CurrentStep, 0) >= 3 && Utils.ObjToInt(EF.CurrentStep, 0) < 9)).Count();
@@ -1096,7 +1096,7 @@ namespace Apps.BLL.App
             List<ApplyJobUserVm> applyJobUserVms = new List<ApplyJobUserVm>();
             var now = ResultHelper.NowTime;
             //获取需求
-            var applyJobs = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == RequirementId && EF.EnumApplyStatus == "0").ToList();
+            var applyJobs = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == RequirementId && (EF.EnumApplyStatus == "0" || EF.EnumApplyStatus == "6")).ToList();
             var customerIds = applyJobs.Select(EF => EF.PK_App_Customer_CustomerName).ToArray();
             var customers = customerRepository.FindList(EF => customerIds.Contains(EF.Id)).ToList();
             if ("Apply".Equals(Flag))
@@ -1288,11 +1288,11 @@ namespace Apps.BLL.App
             {
                 customerResumeQuery.Sex = req.WorkLimitSex;
             }
-            if (customerResumeQuery.WorkLimitAgeLow==0)
+            if (customerResumeQuery.WorkLimitAgeLow == 0)
             {
                 customerResumeQuery.WorkLimitAgeLow = req.WorkLimitAgeLow;
             }
-            if (customerResumeQuery.WorkLimitAgeHigh==0)
+            if (customerResumeQuery.WorkLimitAgeHigh == 0)
             {
                 customerResumeQuery.WorkLimitAgeHigh = req.WorkLimitAgeHigh;
             }
@@ -1359,7 +1359,7 @@ namespace Apps.BLL.App
             if ("Applying" == customerResumeQuery.QueryFlag)
             {
                 //获取当前需求对应的工人列表
-                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && ((EF.EnumApplyStatus == "5" && EF.CurrentStep == "1") || (EF.EnumApplyStatus == "0" && EF.CurrentStep == "3")) );
+                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && ((EF.EnumApplyStatus == "5" && EF.CurrentStep == "1") || (EF.EnumApplyStatus == "0" && EF.CurrentStep == "3")));
                 string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
                 queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
             }

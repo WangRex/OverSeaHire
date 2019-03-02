@@ -11,7 +11,8 @@ using Apps.Models;
 using System;
 namespace Apps.IDAL.App
 {
-    public partial interface IApp_ApplyJobStepRepository : IBaseRepository<App_ApplyJobStep>
-    {
-    }
+	public partial interface IApp_ApplyJobStepRepository:IBaseRepository<App_ApplyJobStep>
+	{
+	
+	}
 }

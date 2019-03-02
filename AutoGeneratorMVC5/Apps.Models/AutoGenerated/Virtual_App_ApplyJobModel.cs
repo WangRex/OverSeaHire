@@ -30,5 +30,6 @@ namespace Apps.Models.App
 			public virtual string EnumServicePayWay { get; set; }
 			public virtual decimal TailMoney { get; set; }
 			public virtual string EnumTailPayWay { get; set; }
+			public virtual string EnumApplyJobSource { get; set; }
 		}
 }

@@ -51,6 +51,7 @@ namespace Apps.BLL.App
 								|| a.EnumServicePayWay.Contains(queryStr)
 								
 								|| a.EnumTailPayWay.Contains(queryStr)
+								|| a.EnumApplyJobSource.Contains(queryStr)
 								);
             }
             else
@@ -85,6 +86,7 @@ namespace Apps.BLL.App
 													EnumServicePayWay = r.EnumServicePayWay,
 													TailMoney = r.TailMoney,
 													EnumTailPayWay = r.EnumTailPayWay,
+													EnumApplyJobSource = r.EnumApplyJobSource,
           
                                               }).ToList();
 
@@ -119,6 +121,7 @@ namespace Apps.BLL.App
 				entity.EnumServicePayWay = model.EnumServicePayWay;
 				entity.TailMoney = model.TailMoney;
 				entity.EnumTailPayWay = model.EnumTailPayWay;
+				entity.EnumApplyJobSource = model.EnumApplyJobSource;
   
 
                 if (m_Rep.Create(entity))
@@ -222,6 +225,7 @@ namespace Apps.BLL.App
 				entity.EnumServicePayWay = model.EnumServicePayWay;
 				entity.TailMoney = model.TailMoney;
 				entity.EnumTailPayWay = model.EnumTailPayWay;
+				entity.EnumApplyJobSource = model.EnumApplyJobSource;
  
 
 
@@ -269,6 +273,7 @@ namespace Apps.BLL.App
 				model.EnumServicePayWay = entity.EnumServicePayWay;
 				model.TailMoney = entity.TailMoney;
 				model.EnumTailPayWay = entity.EnumTailPayWay;
+				model.EnumApplyJobSource = entity.EnumApplyJobSource;
  
                 return model;
             }
