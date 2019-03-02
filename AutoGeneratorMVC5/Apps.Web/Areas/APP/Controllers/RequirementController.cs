@@ -49,18 +49,14 @@ namespace Apps.Web.Areas.App.Controllers
         public JsonResult GetList(GridPager pager, RequirementQuery requirementQuery)
         {
             //先获取当前用户的对应customerId
-            var account = GetAccount();
-            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
-            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
-            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
-            if (ohadmin || admin)
+            if ("1" == Session["IdFlag"] as string || Session["ohadmin"] as string == "1")
             {
                 requirementQuery.AdminFlag = true;
             }
             else
             {
                 //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
-                requirementQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
+                requirementQuery.CustomerId = Session["PK_App_Customer_CustomerName"] as string;
             }
             List<App_RequirementModel> list = m_BLL.GetRequirementList(ref pager, requirementQuery);
             List<RequirementInfoVm> requirementInfoVms = new List<RequirementInfoVm>();
@@ -94,7 +90,7 @@ namespace Apps.Web.Areas.App.Controllers
         public ActionResult Create()
         {
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
-            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App_Requirement.WorkLimitSex"), "ItemValue", "ItemName");
+            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
             ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
@@ -163,7 +159,7 @@ namespace Apps.Web.Areas.App.Controllers
             App_RequirementModel entity = m_BLL.GetById(id);
             entity.App_Position_Name = app_PositionBLL.GetNames(entity.PK_App_Position_Name);
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
-            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App_Requirement.WorkLimitSex"), "ItemValue", "ItemName");
+            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
             ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");

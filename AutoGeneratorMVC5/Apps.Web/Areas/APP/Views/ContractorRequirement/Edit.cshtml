@@ -237,7 +237,7 @@
                     @Html.LabelFor(model => model.WorkLimitSex)：
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.WorkLimitSex, ViewBag.WorkLimitSex as SelectList, "---请选择---")
+                    @Html.DropDownListFor(model => model.WorkLimitSex, ViewBag.WorkLimitSex as SelectList)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.WorkLimitSex)</td>
             </tr>
@@ -340,15 +340,18 @@
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.TotalHire)</td>
             </tr>
-            <tr>
-                <th>
-                    @Html.LabelFor(model => model.PK_App_Customer_CustomerName)：
-                </th>
-                <td>
-                    @Html.DropDownListFor(model => model.PK_App_Customer_CustomerName, ViewBag.PK_App_Customer_CustomerName as SelectList, "---请选择---")
-                </td>
-                <td>@Html.ValidationMessageFor(model => model.PK_App_Customer_CustomerName)</td>
-            </tr>
+            @if (Session["ohadmin"].ToString() == "1" || Session["IdFlag"].ToString() == "1")
+            {
+                <tr>
+                    <th>
+                        @Html.LabelFor(model => model.PK_App_Customer_CustomerName)：
+                    </th>
+                    <td>
+                        @Html.DropDownListFor(model => model.PK_App_Customer_CustomerName, ViewBag.PK_App_Customer_CustomerName as SelectList, "---请选择---")
+                    </td>
+                    <td>@Html.ValidationMessageFor(model => model.PK_App_Customer_CustomerName)</td>
+                </tr>
+            }
             <tr>
                 <th>
                     @Html.LabelFor(model => model.SwitchBtnRecommend)：

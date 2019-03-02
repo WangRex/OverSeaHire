@@ -350,10 +350,13 @@ namespace Apps.BLL.App
         private List<ApplyJobUserVm> GetRecommenUsers(App_Requirement app_Requirement)
         {
             List<ApplyJobUserVm> applyJobUserVms = new List<ApplyJobUserVm>();
-            var workMates = customerRepository.FindList(EF => (EF.Sex == app_Requirement.WorkLimitSex
-                                                                && EF.Age >= app_Requirement.WorkLimitAgeLow
+            var workMates = customerRepository.FindList(EF => (EF.Age >= app_Requirement.WorkLimitAgeLow
                                                                 && EF.Age <= app_Requirement.WorkLimitAgeHigh
                                                                 )).ToList();
+            if (app_Requirement.WorkLimitSex != "不限")
+            {
+                workMates = workMates.Where(EF => EF.Sex == app_Requirement.WorkLimitSex).ToList();
+            }
             if (null != app_Requirement.PK_App_Position_Name)
             {
                 var arrJobIntension = app_Requirement.PK_App_Position_Name.Split(',').ToList();
@@ -1281,12 +1284,24 @@ namespace Apps.BLL.App
             {
                 customerResumeQuery.JobIntension = req.PK_App_Position_Name;
             }
+            if (string.IsNullOrEmpty(customerResumeQuery.Sex))
+            {
+                customerResumeQuery.Sex = req.WorkLimitSex;
+            }
+            if (customerResumeQuery.WorkLimitAgeLow==0)
+            {
+                customerResumeQuery.WorkLimitAgeLow = req.WorkLimitAgeLow;
+            }
+            if (customerResumeQuery.WorkLimitAgeHigh==0)
+            {
+                customerResumeQuery.WorkLimitAgeHigh = req.WorkLimitAgeHigh;
+            }
             #endregion
             if (!string.IsNullOrWhiteSpace(customerResumeQuery.CustomerName))
             {
                 queryData = queryData.Where(a => a.CustomerName != null && a.CustomerName.Contains(customerResumeQuery.CustomerName));
             }
-            if (!string.IsNullOrWhiteSpace(customerResumeQuery.Sex))
+            if (!string.IsNullOrWhiteSpace(customerResumeQuery.Sex) && customerResumeQuery.Sex != "不限")
             {
                 queryData = queryData.Where(a => a.Sex == customerResumeQuery.Sex);
             }
@@ -1352,7 +1367,12 @@ namespace Apps.BLL.App
             if ("Recommend" == customerResumeQuery.QueryFlag)
             {
                 //获取当前需求对应的工人列表
-                queryData = queryData.Where(EF => EF.SwitchBtnInterview != "1" && EF.Sex == req.WorkLimitSex && EF.Age >= req.WorkLimitAgeLow && EF.Age <= req.WorkLimitAgeHigh);
+                queryData = queryData.Where(EF => EF.SwitchBtnInterview != "1" && EF.Age >= req.WorkLimitAgeLow && EF.Age <= req.WorkLimitAgeHigh);
+                //当需求的性别要求是指定男女的时候才做性别匹配
+                if (req.WorkLimitSex != "不限" && !string.IsNullOrEmpty(req.WorkLimitSex))
+                {
+                    queryData = queryData.Where(EF => EF.Sex == req.WorkLimitSex);
+                }
                 if (!string.IsNullOrWhiteSpace(req.PK_App_Position_Name))
                 {
                     var arrJobIntension = req.PK_App_Position_Name.Split(',').ToList();
@@ -1441,7 +1461,7 @@ namespace Apps.BLL.App
             var strSex = string.Join(",", listCustomer.Select(EF => EF.Sex).ToArray());
             int iAgeHigh = listCustomer.OrderByDescending(EF => EF.Age).FirstOrDefault().Age;
             int iAgeLow = listCustomer.OrderBy(EF => EF.Age).FirstOrDefault().Age;
-            var app_Requirements = queryDataRequirement.ToList().Where(EF => strSex.Contains(EF.WorkLimitSex) && ((iAgeLow >= EF.WorkLimitAgeLow && iAgeLow <= EF.WorkLimitAgeHigh) || (iAgeHigh >= EF.WorkLimitAgeLow && iAgeHigh <= EF.WorkLimitAgeHigh))).ToList();
+            var app_Requirements = queryDataRequirement.ToList().Where(EF => (strSex.Contains(EF.WorkLimitSex) || EF.WorkLimitSex == "不限") && ((iAgeLow >= EF.WorkLimitAgeLow && iAgeLow <= EF.WorkLimitAgeHigh) || (iAgeHigh >= EF.WorkLimitAgeLow && iAgeHigh <= EF.WorkLimitAgeHigh))).ToList();
             //获取所有的工人的求职意向，做推荐用
             var arrJobIntension = listCustomer.Select(EF => EF.JobIntension).ToList();
             app_Requirements = app_Requirements.Where(EF => EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0).ToList();
@@ -1561,7 +1581,7 @@ namespace Apps.BLL.App
                 var recommendRequirementList = requirements.Where(EF =>
                             EF.WorkLimitAgeLow <= customerResume.Age
                             && EF.WorkLimitAgeHigh >= customerResume.Age
-                            && EF.WorkLimitSex == customerResume.Sex
+                            && (EF.WorkLimitSex == customerResume.Sex || EF.WorkLimitSex == "不限")
                             && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
                 foreach (var recommendReq in recommendRequirementList)
                 {
@@ -1591,19 +1611,6 @@ namespace Apps.BLL.App
                     app_RequirementModel.ReqType = "1";
                     listReq.Add(app_RequirementModel);
                 }
-                //系统推荐的
-                //var recommendReqList = requirements.Where(EF =>
-                //            EF.WorkLimitAgeLow <= customerResume.Age
-                //            && EF.WorkLimitAgeHigh >= customerResume.Age
-                //            && EF.WorkLimitSex == customerResume.Sex
-                //            && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
-                //foreach (var recommendReq in recommendReqList)
-                //{
-                //    App_RequirementModel app_RequirementModel = new App_RequirementModel();
-                //    LinqHelper.ModelTrans(recommendReq, app_RequirementModel);
-                //    app_RequirementModel.ReqType = "2";
-                //    listReq.Add(app_RequirementModel);
-                //}
                 //雇主面试邀请
                 var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId);
                 strReqIds = string.Join(",", inviteList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
@@ -1675,8 +1682,9 @@ namespace Apps.BLL.App
             var recommendRequirementList = requirements.Where(EF =>
                         EF.WorkLimitAgeLow <= customerResume.Age
                         && EF.WorkLimitAgeHigh >= customerResume.Age
-                        && EF.WorkLimitSex == customerResume.Sex
+                        && (EF.WorkLimitSex == customerResume.Sex || EF.WorkLimitSex == "不限")
                         && EF.PK_App_Position_Name != null && EF.PK_App_Position_Name.Split(',').Intersect(arrJobIntension).Count() > 0);
+
             foreach (var recommendReq in recommendRequirementList)
             {
                 //并且不在邀请的列表里

@@ -104,7 +104,7 @@ namespace Apps.Web.Areas.App.Controllers
             ViewBag.EnumCustomerType = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.EnumCustomerType"), "ItemValue", "ItemName");
             ViewBag.EnumForeignLangGrade = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.EnumForeignLangGrade"), "ItemValue", "ItemName");
             ViewBag.EnumDriverLicence = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.EnumDriverLicence"), "ItemValue", "ItemName");
-            ViewBag.Sex = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.Sex"), "ItemValue", "ItemName");
+            ViewBag.Sex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.AbroadExp = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.AbroadExp"), "ItemValue", "ItemName");
             return View();
         }
@@ -148,7 +148,7 @@ namespace Apps.Web.Areas.App.Controllers
             ViewBag.EnumCustomerType = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.EnumCustomerType"), "ItemValue", "ItemName");
             ViewBag.EnumForeignLangGrade = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.EnumForeignLangGrade"), "ItemValue", "ItemName");
             ViewBag.EnumDriverLicence = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.EnumDriverLicence"), "ItemValue", "ItemName");
-            ViewBag.Sex = new SelectList(enumDictionaryBLL.GetDropDownList("APP_Customer.Sex"), "ItemValue", "ItemName");
+            ViewBag.Sex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.AbroadExp = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerJobIntension.AbroadExp"), "ItemValue", "ItemName");
             entity.JobIntensionNames = app_PositionBLL.GetNames(entity.JobIntension);
             return View(entity);
