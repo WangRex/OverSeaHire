@@ -12,9 +12,6 @@
 }
 <script type="text/javascript">
     $(function () {
-        $("#btnReturn").click(function () {
-            frameReturnByClose();
-        });
         $("#btnApplyJob").click(function () {
             var ReqId = "@Model.Id";
             var CustomerId = "@ViewBag.CustomerId";
@@ -26,7 +23,6 @@
 </script>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 <div class="mvctool bgb">
-    @Html.ToolButton("btnReturn", "fa fa-reply", Resource.Reply, true)
     @Html.ToolButton("btnApplyJob", "fa fa-pencil", "送人", false)
 </div>
 @Html.Partial("~/Views/Shared/App/_PartialReqDetails.cshtml")

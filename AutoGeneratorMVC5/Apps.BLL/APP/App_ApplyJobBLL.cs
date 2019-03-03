@@ -803,6 +803,11 @@ namespace Apps.BLL.App
                 sysMessageRepository.CrtSysMessage(applyJobPost.UserId, Req.PK_App_Customer_CustomerName, applyJob.Id, "待审批提醒", customer.CustomerName + "应聘了您的职位，点击查看详情", "1", "1", "待审批");
                 ErrorMsg = "申请成功";
                 sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
+                //20190303 Rex 只要到了第二步，就给用户锁定。
+                customer.SwitchBtnInterview = "1";
+                customer.ModificationTime = now;
+                customer.ModificationUserName = applyJobPost.UserId;
+                customerRepository.Edit(customer);
                 return applyJob.Id;
             }
             catch (Exception ex)
@@ -833,6 +838,11 @@ namespace Apps.BLL.App
             entity.ModificationUserName = strUserId;
             entity.CurrentStep = model.Step;
             entity.EnumApplyStatus = "0";
+            if (model.Step == "2")
+            {
+                //20190303 Rex 也就是如果雇主点击了确认应聘，或者工人点击了接受雇主面试邀请，这两个按钮就触发了工人状态到2.这个时候在全部职位里送人界面中，就不显示了。
+                customer.SwitchBtnInterview = "1";
+            }
             if (model.Step == "3")
             {
                 if (entity.EnumApplyJobSource == "0")
@@ -962,26 +972,37 @@ namespace Apps.BLL.App
             }
             applyJob.ModificationTime = now;
             applyJob.ModificationUserName = employerAgreePost.UserId;
-            applyJob.EnumApplyStatus = "0";
-            applyJob.CurrentStep = "3";
+            if (employerAgreePost.AgreeFlag)
+            {
+                applyJob.EnumApplyStatus = "0";
+                applyJob.CurrentStep = "3";
+            }
+            else
+            {
+                //更新为雇主拒绝
+                applyJob.EnumApplyStatus = "4";
+            }
             try
             {
                 m_Rep.Edit(applyJob);
-                App_ApplyJobRecord applyJobRecord = new App_ApplyJobRecord();
-                //添加应聘记录--增加面试进行中记录
-                applyJobRecord.Id = ResultHelper.NewId;
-                applyJobRecord.CreateTime = now;
-                applyJobRecord.CreateUserName = employerAgreePost.UserId;
-                applyJobRecord.ModificationTime = now;
-                applyJobRecord.ModificationUserName = employerAgreePost.UserId;
-                applyJobRecord.PK_App_ApplyJob_Id = applyJob.Id;
-                applyJobRecord.PK_App_Customer_CustomerName = applyJob.PK_App_Customer_CustomerName;
-                applyJobRecord.Step = "3";
-                applyJobRecord.EnumApplyStatus = "3";
-                applyJobRecord.Result = "进行中";
-                applyJobRecord.Content = "面试";
-                applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
-                applyJobRecordRepository.Create(applyJobRecord);
+                if (employerAgreePost.AgreeFlag)
+                {
+                    App_ApplyJobRecord applyJobRecord = new App_ApplyJobRecord();
+                    //添加应聘记录--增加面试进行中记录
+                    applyJobRecord.Id = ResultHelper.NewId;
+                    applyJobRecord.CreateTime = now;
+                    applyJobRecord.CreateUserName = employerAgreePost.UserId;
+                    applyJobRecord.ModificationTime = now;
+                    applyJobRecord.ModificationUserName = employerAgreePost.UserId;
+                    applyJobRecord.PK_App_ApplyJob_Id = applyJob.Id;
+                    applyJobRecord.PK_App_Customer_CustomerName = applyJob.PK_App_Customer_CustomerName;
+                    applyJobRecord.Step = "3";
+                    applyJobRecord.EnumApplyStatus = "3";
+                    applyJobRecord.Result = "进行中";
+                    applyJobRecord.Content = "面试";
+                    applyJobRecord.HappenDate = now.ToString("yyyy-MM-dd HH:mm:ss");
+                    applyJobRecordRepository.Create(applyJobRecord);
+                }
                 ErrorMsg = "申请更新成功";
                 sysLog.WriteServiceLog(employerAgreePost.UserId, employerAgreePost.ToString() + ErrorMsg, "结束", "EmployerAgree", "App_ApplyJobBLL");
                 return true;

@@ -11,6 +11,7 @@ using Apps.BLL.Sys;
 using Apps.Models;
 using Apps.DAL.Sys;
 using System;
+using System.Linq;
 
 namespace Apps.Web.Areas.App.Controllers
 {
@@ -267,8 +268,19 @@ namespace Apps.Web.Areas.App.Controllers
         {
             if (!string.IsNullOrWhiteSpace(id))
             {
+                //判断如果还在进行中，则不允许删除
+                var model = m_BLL.GetById(id);
+                if (model.EnumApplyStatus == "0")
+                {
+                    string ErrorCol = "面试还在进行中，不可删除";
+                    LogHandler.WriteServiceLog(GetUserId(), "Id" + id + "," + ErrorCol, "失败", "删除", "App_ApplyJob");
+                    return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
+                }
                 if (m_BLL.Delete(ref errors, id))
                 {
+                    //删除所有的关联记录数据
+                    var applyJobRecordIds = applyJobRecordBLL.m_Rep.FindList(EF => EF.PK_App_ApplyJob_Id == id).Select(EF => EF.Id);
+                    applyJobRecordBLL.m_Rep.Delete(applyJobRecordIds);
                     LogHandler.WriteServiceLog(GetUserId(), "Id:" + id, "成功", "删除", "App_ApplyJob");
                     return Json(JsonHandler.CreateMessage(1, Resource.DeleteSucceed));
                 }
@@ -289,8 +301,6 @@ namespace Apps.Web.Areas.App.Controllers
                 }
                 return Json(JsonHandler.CreateMessage(0, Resource.DeleteFail + ErrorCol));
             }
-
-
         }
         #endregion
 

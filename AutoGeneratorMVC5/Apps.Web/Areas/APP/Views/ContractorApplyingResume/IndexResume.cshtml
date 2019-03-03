@@ -49,16 +49,16 @@
                 { field: 'AbroadExpName', title: '出国经验', width: 80, sortable: true },
                 { field: 'DriverLicence', title: '驾照', width: 80, sortable: true },
                 {
-                    field: 'Ope', title: '操作', width: 80, formatter: function (value, rec) {
+                    field: 'Ope', title: '操作', width: 120, formatter: function (value, rec) {
                         var btn = "";
                         if (rec.EnumApplyStatus == "0") {
                             if (rec.CurrentStep == "3") {
                                 btn = '<a class="fa fa-check" onclick="AcceptApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;面试通过</a>';
                                 btn += ' <a class="fa fa-ban" onclick="RejectApply(\'' + rec.Id + '\',\'' + ReqId + '\')" href="javascript:void(0)">&nbsp;面试失败</a>';
                             }
-                        }
-                        if (rec.EnumApplyStatus == "5") {
-                            btn = "待支付保证金";
+                            if (rec.CurrentStep == "2") {
+                                btn = "待支付保证金";
+                            }
                         }
                         if (rec.EnumApplyStatus == "4") {
                             btn = "外派公司已拒绝";
@@ -69,7 +69,7 @@
         });
     });
     function AcceptApply(CustomerId, ReqId) {
-        $.messager.confirm('@Resource.Tip', '确定要同意当前应聘申请吗', function (r) {
+        $.messager.confirm('@Resource.Tip', '确认面试已通过吗？', function (r) {
             if (r) {
                 globalUtils.globalAjax("@Url.Action("UpdateApplywResult")", { ReqId: ReqId, CustomerId: CustomerId, Flag: "1" }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);
@@ -79,7 +79,7 @@
         });
     }
     function RejectApply(CustomerId, ReqId) {
-        $.messager.confirm('@Resource.Tip', '确定要拒绝当前应聘申请吗', function (r) {
+        $.messager.confirm('@Resource.Tip', '确认面试未通过吗？', function (r) {
             if (r) {
                 globalUtils.globalAjax("@Url.Action("UpdateApplywResult")", { ReqId: ReqId, CustomerId: CustomerId, Flag: "0" }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);

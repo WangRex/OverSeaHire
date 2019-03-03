@@ -248,6 +248,11 @@ namespace Apps.Models.App
         /// </summary>
         public string UserId { get; set; }
         /// <summary>
+        /// 同意拒绝标志
+        /// true:同意;false:拒绝
+        /// </summary>
+        public bool AgreeFlag { get; set; }
+        /// <summary>
         /// 申请主键
         /// </summary>
         public string ApplyJobId { get; set; }
@@ -261,7 +266,7 @@ namespace Apps.Models.App
         public string ConfigPlace { get; set; }
         public override string ToString()
         {
-            return "UserId:" + UserId + ",ApplyJobId:" + ApplyJobId
+            return "UserId:" + UserId + ",AgreeFlag:" + AgreeFlag + ",ApplyJobId:" + ApplyJobId
                 + ",ConfigDate:" + ConfigDate + ",ConfigPlace:" + ConfigPlace;
         }
     }

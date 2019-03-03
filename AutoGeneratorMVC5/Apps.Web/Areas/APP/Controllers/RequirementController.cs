@@ -313,18 +313,14 @@ namespace Apps.Web.Areas.App.Controllers
         public JsonResult GetCustomerResumeList(GridPager pager, CustomerResumeQuery customerResumeQuery)
         {
             //先获取当前用户的对应customerId
-            var account = GetAccount();
-            var sysUser = sysUserBLL.m_Rep.GetById(account.Id);
-            bool ohadmin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "ohadmin");
-            bool admin = sysRoleBLL.ToBeCheckAuthorityRoleCode(account.RoleId, "SuperAdmin");
-            if (ohadmin || admin)
+            if ("1" == Session["IdFlag"] as string || Session["ohadmin"] as string == "1")
             {
                 customerResumeQuery.AdminFlag = true;
             }
             else
             {
                 //如果登录的账号不是ohadmin角色的，则按照他自己创建的显示
-                customerResumeQuery.CustomerId = sysUser.PK_App_Customer_CustomerName;
+                customerResumeQuery.CustomerId = Session["PK_App_Customer_CustomerName"] as string;
             }
             var queryData = m_BLL.GetResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);

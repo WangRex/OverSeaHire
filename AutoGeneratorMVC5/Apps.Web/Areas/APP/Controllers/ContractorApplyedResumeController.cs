@@ -208,24 +208,22 @@ namespace Apps.Web.Areas.App.Controllers
                 string ErrorMsg = "";
                 if ("1".Equals(Flag))
                 {
-                    //如果同意，则更新状态为5:外派同意，并且步骤数不变，此时需要跑到外派公司的面试中的简历列表中。
-                    //var iNextStep = Utils.ObjToInt(app_ApplyJob.CurrentStep, 0) + 1;
-                    //App_ApplyJobRecordModel applyJobRecordModel = new App_ApplyJobRecordModel()
-                    //{
-                    //    Id = ResultHelper.NewId,
-                    //    CreateTime = now,
-                    //    CreateUserName = strUserId,
-                    //    ModificationTime = now,
-                    //    ModificationUserName = strUserId,
-                    //    PK_App_ApplyJob_Id = app_ApplyJob.Id,
-                    //    PK_App_Customer_CustomerName = app_ApplyJob.PK_App_Customer_CustomerName,
-                    //    Step = iNextStep.ToString(),
-                    //    Result = "进行中",
-                    //    Content = app_ApplyJobStepBLL.GetStepName(iNextStep.ToString()) + "进行中",
-                    //};
-                    //app_ApplyJobBLL.NextStep(strUserId, applyJobRecordModel);
-                    app_ApplyJob.EnumApplyStatus = "5";
-                    app_ApplyJobBLL.m_Rep.Edit(app_ApplyJob);
+                    //如果同意，则更新状态为5:外派同意，并且步骤数不变，此时需要跑到外派公司的面试中的简历列表中。不知道为啥推翻了。。。
+                    //2019-03-03 Rex 应聘的简历，外派点了同意，直接到第二步进行中(修改第一步已完成)，同时在面试中的简历（无按钮）。
+                    App_ApplyJobRecordModel applyJobRecordModel = new App_ApplyJobRecordModel()
+                    {
+                        Id = ResultHelper.NewId,
+                        CreateTime = now,
+                        CreateUserName = strUserId,
+                        ModificationTime = now,
+                        ModificationUserName = strUserId,
+                        PK_App_ApplyJob_Id = app_ApplyJob.Id,
+                        PK_App_Customer_CustomerName = app_ApplyJob.PK_App_Customer_CustomerName,
+                        Step = "2",
+                        Result = "进行中",
+                        Content = app_ApplyJobStepBLL.GetStepName("2") + "进行中",
+                    };
+                    app_ApplyJobBLL.NextStep(strUserId, applyJobRecordModel);
                     ErrorMsg = "同意成功";
                 }
                 else

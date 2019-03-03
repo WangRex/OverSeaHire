@@ -347,10 +347,14 @@
                         @Html.LabelFor(model => model.PK_App_Customer_CustomerName)：
                     </th>
                     <td>
-                        @Html.DropDownListFor(model => model.PK_App_Customer_CustomerName, ViewBag.PK_App_Customer_CustomerName as SelectList, "---请选择---")
+                        @Html.DropDownListFor(model => model.PK_App_Customer_CustomerName, ViewBag.PK_App_Customer_CustomerName as SelectList)
                     </td>
                     <td>@Html.ValidationMessageFor(model => model.PK_App_Customer_CustomerName)</td>
                 </tr>
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.PK_App_Customer_CustomerName)
             }
             <tr>
                 <th>

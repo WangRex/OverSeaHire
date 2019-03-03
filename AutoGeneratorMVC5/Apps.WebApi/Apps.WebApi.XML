@@ -252,6 +252,13 @@
             <param name="RecordNum"></param>
             <returns></returns>
         </member>
+        <member name="M:Apps.WebApi.Controllers.ApplyJobController.EmployerAgree(Apps.Models.App.EmployerAgreePost)">
+            <summary>
+            雇主同意(拒绝)面试
+            </summary>
+            <param name="employerAgreePost"></param>
+            <returns></returns>
+        </member>
         <member name="T:Apps.WebApi.Controllers.ArticleController">
             <summary>
             文章管理

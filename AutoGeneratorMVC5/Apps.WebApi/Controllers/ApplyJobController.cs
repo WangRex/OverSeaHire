@@ -282,7 +282,7 @@ namespace Apps.WebApi.Controllers
 
         #region 雇主同意面试
         /// <summary>
-        /// 
+        /// 雇主同意(拒绝)面试
         /// </summary>
         /// <param name="employerAgreePost"></param>
         /// <returns></returns>

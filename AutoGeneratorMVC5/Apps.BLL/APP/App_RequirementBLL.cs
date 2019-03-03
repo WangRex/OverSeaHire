@@ -1268,7 +1268,7 @@ namespace Apps.BLL.App
         public IQueryable<App_Customer> GetResumeList(ref GridPager pager, CustomerResumeQuery customerResumeQuery)
         {
             //获取当前登录人所辖属的所有工人列表
-            IQueryable<App_Customer> queryData = customerRepository.GetList(EF => EF.ParentId != null);
+            IQueryable<App_Customer> queryData = customerRepository.GetList(EF => EF.ParentId != null && EF.SwitchBtnInterview != "1");
             if (!customerResumeQuery.AdminFlag)
             {
                 queryData = queryData.Where(EF => EF.ParentId == customerResumeQuery.CustomerId);
@@ -1359,7 +1359,7 @@ namespace Apps.BLL.App
             if ("Applying" == customerResumeQuery.QueryFlag)
             {
                 //获取当前需求对应的工人列表
-                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && ((EF.EnumApplyStatus == "5" && EF.CurrentStep == "1") || (EF.EnumApplyStatus == "0" && EF.CurrentStep == "3")));
+                var listApplyJob = applyJobRepository.FindList(EF => EF.PK_App_Requirement_Title == req.Id && (EF.CurrentStep == "2" || (EF.EnumApplyStatus == "0" && EF.CurrentStep == "3")));
                 string strCustomerIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Customer_CustomerName).ToArray());
                 queryData = queryData.Where(EF => strCustomerIds.Contains(EF.Id));
             }
@@ -1784,7 +1784,7 @@ namespace Apps.BLL.App
             }
             if (requirementQuery.QueryFlag == "Applying")
             {
-                listApplyJob = listApplyJob.Where(EF => (EF.EnumApplyStatus == "5" && EF.CurrentStep == "1") || (EF.EnumApplyStatus == "0" && EF.CurrentStep == "3")).ToList();
+                listApplyJob = listApplyJob.Where(EF => (EF.CurrentStep == "2") || (EF.EnumApplyStatus == "0" && EF.CurrentStep == "3")).ToList();
                 ReqIds = listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToList();
             }
             queryData = queryData.Where(EF => ReqIds.Contains(EF.Id));

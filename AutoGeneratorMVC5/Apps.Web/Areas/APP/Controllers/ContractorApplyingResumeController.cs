@@ -201,7 +201,7 @@ namespace Apps.Web.Areas.App.Controllers
             applyJobPost.CustomerId = CustomerId;
             applyJobPost.RequirementId = ReqId;
             applyJobPost.UserId = strUserId;
-            var app_ApplyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.PK_App_Customer_CustomerName == CustomerId && EF.EnumApplyStatus == "5" && EF.CurrentStep == "1");
+            var app_ApplyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Requirement_Title == ReqId && EF.PK_App_Customer_CustomerName == CustomerId && EF.EnumApplyStatus == "0" && EF.CurrentStep == "3");
             app_ApplyJob.ModificationTime = now;
             app_ApplyJob.ModificationUserName = strUserId;
             try
@@ -233,13 +233,13 @@ namespace Apps.Web.Areas.App.Controllers
                         applyJobRecordModel.Result = "已完成";
                     }
                     app_ApplyJobBLL.NextStep(strUserId, applyJobRecordModel);
-                    ErrorMsg = "同意成功";
+                    ErrorMsg = "面试已通过成功";
                 }
                 else
                 {
                     app_ApplyJob.EnumApplyStatus = "4";
                     app_ApplyJobBLL.m_Rep.Edit(app_ApplyJob);
-                    ErrorMsg = "拒绝成功";
+                    ErrorMsg = "面试未通过成功";
                 }
                 return Json(
                     ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, applyJobId, 1)
