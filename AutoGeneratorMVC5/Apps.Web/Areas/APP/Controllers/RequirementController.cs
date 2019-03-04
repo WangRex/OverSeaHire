@@ -90,7 +90,6 @@ namespace Apps.Web.Areas.App.Controllers
         public ActionResult Create()
         {
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
-            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
             ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
@@ -159,7 +158,6 @@ namespace Apps.Web.Areas.App.Controllers
             App_RequirementModel entity = m_BLL.GetById(id);
             entity.App_Position_Name = app_PositionBLL.GetNames(entity.PK_App_Position_Name);
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
-            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
             ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");

@@ -125,7 +125,6 @@ namespace Apps.Web.Areas.App.Controllers
         {
             App_RequirementModel entity = app_RequirementBLL.GetById(id);
             entity.PK_App_Position_Name = app_PositionBLL.GetName(entity.PK_App_Position_Name);
-            entity.WorkLimitSex = enumDictionaryBLL.GetDicName("App.Sex", entity.WorkLimitSex);
             entity.EnumWorkLimitDegree = enumDictionaryBLL.GetDicName("App_Requirement.EnumWorkLimitDegree", entity.EnumWorkLimitDegree);
             entity.PK_App_Customer_CustomerName = m_BLL.GetCustomerName(entity.PK_App_Customer_CustomerName);
             entity.PK_App_Country_Name = app_CountryBLL.GetName(entity.PK_App_Country_Name);
