@@ -45,6 +45,8 @@ namespace Apps.BLL.App
         public App_ApplyJobRepository applyJobRepository { get; set; }
         [Dependency]
         public App_CompanyBLL companyBLL { get; set; }
+        [Dependency]
+        public App_ApplyJobStepBLL app_ApplyJobStepBLL { get; set; }
         #endregion
 
         #region 获取用户姓名
@@ -1665,6 +1667,74 @@ namespace Apps.BLL.App
             //排序
             queryData = LinqHelper.SortingAndPaging(queryData, pager.sort, pager.order, pager.page, pager.rows);
             return CreateModelList(ref queryData);
+        }
+        #endregion
+
+        #region 【后台】获取简历列表翻译
+        /// <summary>
+        /// 【后台】获取简历列表翻译
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="strCustomerId">当前用户</param>
+        /// <param name="applyFlag">是否翻译应聘相关</param>
+        /// <param name="inviteFlag">是否翻译邀请相关</param>
+        /// <returns></returns>
+        public List<CustomerResumeVm> TransCustomerResume(List<App_CustomerModel> list, string strCustomerId, bool applyFlag = false, bool inviteFlag = false)
+        {
+            List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
+            foreach (var Item in list)
+            {
+                CustomerResumeVm customerResumeVm = new CustomerResumeVm();
+                customerResumeVm.Id = Item.Id;
+                customerResumeVm.CustomerName = Item.CustomerName;
+                customerResumeVm.Sex = Item.Sex;
+                customerResumeVm.Age = Item.Age;
+                customerResumeVm.JobIntensionNames = positionBLL.GetNames(Item.JobIntension);
+                customerResumeVm.AbroadExpName = enumDictionary.GetDicName("App_CustomerJobIntension.AbroadExp", Item.AbroadExp);
+                customerResumeVm.EnumDriverLicence = enumDictionary.GetDicName("App_CustomerWorkmate.EnumDriverLicence", Item.EnumDriverLicence);
+                customerResumeVm.DriverLicence = enumDictionary.GetDicName("App_CustomerWorkmate.EnumDriverLicence", Item.EnumDriverLicence);
+                customerResumeVm.Phone = Item.Phone;
+                customerResumeVm.OwnerName = Item.OwnerName;
+                customerResumeVm.BusinessStatus = "暂无";
+                customerResumeVm.ApplyJobId = "";
+                if (applyFlag)
+                {
+                    //获取当前用户的应聘申请
+                    var applyJob = applyJobRepository.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && EF.EnumApplyStatus == "0");
+                    if (null != applyJob)
+                    {
+                        int iStep = Utils.ObjToInt(applyJob.CurrentStep, 0);
+                        if (iStep == 2)
+                        {
+                            customerResumeVm.BusinessStatus = "待支付保证金";
+                        }
+                        if (iStep == 3)
+                        {
+                            customerResumeVm.BusinessStatus = "面试进行中";
+                        }
+                        if (iStep > 3)
+                        {
+                            customerResumeVm.BusinessStatus = "签证办理中";
+                        }
+                        customerResumeVm.ApplyJobId = applyJob.Id;
+                        customerResumeVm.EnumApplyStatus = applyJob.EnumApplyStatus;
+                        customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
+                        customerResumeVm.CurrentStep = applyJob.CurrentStep;
+                    }
+                }
+                if (inviteFlag)
+                {
+                    //获取当前用户的邀请信息
+                    var ReqInvite = requirementInviteRepository.Find(EF => EF.InitiatorId == strCustomerId && EF.Inviter == Item.Id);
+                    if (null != ReqInvite)
+                    {
+                        customerResumeVm.SwitchBtnAgree = ReqInvite.SwitchBtnAgree;
+                        customerResumeVm.SwitchBtnContractorAgree = ReqInvite.SwitchBtnContractorAgree;
+                    }
+                }
+                customerResumeVms.Add(customerResumeVm);
+            }
+            return customerResumeVms;
         }
         #endregion
     }

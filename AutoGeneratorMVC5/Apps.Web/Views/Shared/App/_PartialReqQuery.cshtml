@@ -28,7 +28,12 @@
 </label><input id="positiontreeinput" type="text" style="width:120px;" readonly="readonly" />
 <label>
     性 别:
-</label><input id="Sex" type="text" style="width:40px;" />
+</label>
+<select id="Sex">
+    <option value="不限">不限</option>
+    <option value="男">男</option>
+    <option value="女">女</option>
+</select>
 <label>
     国 家:
 </label><input id="Country" type="text" style="width:120px;" />
@@ -41,6 +46,12 @@
 <label>
     标 签:
 </label><input id="Tag" type="text" style="width:60px;" />
+@if (Session["IdFlag"].ToString() == "1" || Session["ohadmin"].ToString() == "1")
+{
+    <label>
+        公司名:
+    </label><input id="CompanyName" type="text" style="width:120px;" />
+}
 <div id="positiontree" class="easyui-window" data-options="modal:true,closed:true,minimizable:false,shadow:false" style="overflow-y:scroll">
     <div class="saveBtn">
         @Html.ToolButton("btnSaveTree", "fa fa-save", Resource.Save, true)
@@ -182,6 +193,7 @@
         var SallaryHigh = $("#SallaryHigh").val();
         var Tag = $("#Tag").val();
         var PositionId = $("#PositionId").val();
+        var CompanyName = $("#CompanyName").val();
         var data = {
             Title: Title,
             Sex: Sex,
@@ -192,6 +204,7 @@
             SallaryHigh: SallaryHigh,
             Tag: Tag,
             PositionId: PositionId,
+            CompanyName: CompanyName,
         };
         $("#List").datagrid("load", data);
     }

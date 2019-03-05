@@ -108,6 +108,9 @@ namespace Apps.Models.App
         [Display(Name = "出国经历")]
         public override string AbroadExp { get; set; }
 
+        [Display(Name = "出国经历")]
+        public string AbroadExpName { get; set; }
+
         [Display(Name = "车票")]
         public override string EnumDriverLicence { get; set; }
 

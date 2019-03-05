@@ -95,6 +95,7 @@ namespace Apps.Web.Areas.App.Controllers
         public ActionResult Create()
         {
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
+            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
             ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
@@ -163,6 +164,7 @@ namespace Apps.Web.Areas.App.Controllers
         {
             App_RequirementModel entity = m_BLL.GetById(id);
             entity.App_Position_Name = app_PositionBLL.GetNames(entity.PK_App_Position_Name);
+            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
@@ -322,14 +324,9 @@ namespace Apps.Web.Areas.App.Controllers
             customerResumeQuery.QueryFlag = "Recommend";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
-            foreach (var Item in list)
-            {
-                Item.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", Item.EnumCustomerLevel);
-                Item.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", Item.EnumCustomerType);
-                Item.OwnerName = _App_CustomerBLL.GetCustomerName(Item.ParentId);
-            }
-            GridRows<App_CustomerModel> grs = new GridRows<App_CustomerModel>();
-            grs.rows = list;
+            var customerResumeVms = _App_CustomerBLL.TransCustomerResume(list, null, true);
+            GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
+            grs.rows = customerResumeVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }
@@ -347,18 +344,29 @@ namespace Apps.Web.Areas.App.Controllers
         {
             string strUserId = GetUserId(), InitiatorId = Session["PK_App_Customer_CustomerName"] as string;
             LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId, "开始", "RequirementInvite", "CustomerResumeController");
+            string ErrorMsg = "";
+            //先判断工人对于当前职位是否有邀请的职位
+            var flag = app_ApplyJobBLL.IsApplyed(ReqId, CustomerId, ref ErrorMsg);
+            if (flag)
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                    );
+            }
             var boolFlag = app_RequirementInviteBLL.RequirementInvite(strUserId, InitiatorId, ReqId, CustomerId);
             LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId + ",boolFlag:" + boolFlag, "结束", "RequirementInvite", "CustomerResumeController");
             if (!boolFlag)
             {
+                ErrorMsg = "发起邀请失败";
                 return Json(
-                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode("发起邀请失败")
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
                     );
             }
             else
             {
+                ErrorMsg = "发起邀请成功";
                 return Json(
-                    ResponseHelper.IsSuccess_Msg_Data_HttpCode("发起邀请成功", boolFlag, 1)
+                    ResponseHelper.IsSuccess_Msg_Data_HttpCode(ErrorMsg, boolFlag, 1)
                     );
             }
         }

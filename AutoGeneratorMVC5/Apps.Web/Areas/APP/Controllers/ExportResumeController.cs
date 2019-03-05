@@ -46,8 +46,8 @@ namespace Apps.Web.Areas.APP.Controllers
             App_CustomerModel entity = app_CustomerBLL.GetById(ResumeId);
             entity.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", entity.EnumCustomerLevel);
             entity.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", entity.EnumCustomerType);
-            entity.EnumForeignLangGrade = enumDictionaryBLL.GetDicName("App_Customer.EnumForeignLangGrade", entity.EnumForeignLangGrade);
-            entity.EnumDriverLicence = enumDictionaryBLL.GetDicName("App_Customer.EnumDriverLicence", entity.EnumDriverLicence);
+            entity.EnumForeignLangGrade = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.EnumForeignLangGrade", entity.EnumForeignLangGrade);
+            entity.EnumDriverLicence = enumDictionaryBLL.GetDicName("App_CustomerWorkmate.EnumDriverLicence", entity.EnumDriverLicence);
             entity.AbroadExp = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.AbroadExp", entity.AbroadExp);
             entity.SwitchBtnPassport = entity.SwitchBtnPassport == "1" ? "有" : "无";
             entity.SwitchBtnRecommend = entity.SwitchBtnRecommend == "1" ? "推荐" : "无";

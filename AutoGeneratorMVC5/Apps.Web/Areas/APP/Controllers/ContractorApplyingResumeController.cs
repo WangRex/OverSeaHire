@@ -142,39 +142,7 @@ namespace Apps.Web.Areas.App.Controllers
             string strCustomerId = Session["PK_App_Customer_CustomerName"] as string;
             var queryData = app_RequirementBLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = m_BLL.CreateModelList(ref queryData);
-            List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
-            foreach (var Item in list)
-            {
-                CustomerResumeVm customerResumeVm = new CustomerResumeVm();
-                customerResumeVm.Id = Item.Id;
-                customerResumeVm.CustomerName = Item.CustomerName;
-                customerResumeVm.Sex = Item.Sex;
-                customerResumeVm.Age = Item.Age;
-                customerResumeVm.JobIntensionNames = app_PositionBLL.GetNames(Item.JobIntension);
-                customerResumeVm.AbroadExpName = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.AbroadExp", Item.AbroadExp);
-                customerResumeVm.DriverLicence = enumDictionaryBLL.GetDicName("App_CustomerWorkmate.EnumDriverLicence", Item.EnumDriverLicence);
-                customerResumeVm.Phone = Item.Phone;
-                customerResumeVm.OwnerName = Item.OwnerName;
-                customerResumeVm.BusinessStatus = "暂无";
-                customerResumeVm.ApplyJobId = "";
-                //获取当前用户的应聘申请
-                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && (EF.EnumApplyStatus == "0" || EF.EnumApplyStatus == "5"));
-                if (null != applyJob)
-                {
-                    customerResumeVm.BusinessStatus = app_ApplyJobStepBLL.GetStepName(applyJob.CurrentStep);
-                    customerResumeVm.ApplyJobId = applyJob.Id;
-                    customerResumeVm.EnumApplyStatus = applyJob.EnumApplyStatus;
-                    customerResumeVm.CurrentStep = applyJob.CurrentStep;
-                }
-                //获取当前用户的邀请信息
-                var ReqInvite = app_RequirementInviteBLL.m_Rep.Find(EF => EF.InitiatorId == strCustomerId && EF.Inviter == Item.Id);
-                if (null != ReqInvite)
-                {
-                    customerResumeVm.SwitchBtnAgree = ReqInvite.SwitchBtnAgree;
-                    customerResumeVm.SwitchBtnContractorAgree = ReqInvite.SwitchBtnContractorAgree;
-                }
-                customerResumeVms.Add(customerResumeVm);
-            }
+            var customerResumeVms = m_BLL.TransCustomerResume(list, strCustomerId, true, true);
             GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
             grs.rows = customerResumeVms;
             grs.total = pager.totalRows;

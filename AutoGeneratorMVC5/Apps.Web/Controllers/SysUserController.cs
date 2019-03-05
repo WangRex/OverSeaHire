@@ -336,33 +336,6 @@ namespace Apps.Web.Controllers
                 }
                 if (m_BLL.Edit(ref errors, info))
                 {
-                    #region 如果系统用户修改成功，则创建一个AppCustomer
-                    //创建用户
-                    var customer = customerBLL.m_Rep.Find(EF => EF.Phone == info.MobileNumber && EF.EnumCustomerType == info.EnumUserType);
-                    if (null == customer)
-                    {
-                        customer = new App_Customer()
-                        {
-                            Id = ResultHelper.NewId,
-                            CreateTime = dtNow,
-                            CreateUserName = strUserId,
-                            ModificationTime = dtNow,
-                            ModificationUserName = strUserId,
-                            CustomerName = info.UserName,
-                            Phone = info.MobileNumber,
-                            Sex = info.Sex,
-                            EnumCustomerType = info.EnumUserType,
-                        };
-                        customerBLL.m_Rep.Create(customer);
-                    }
-                    else
-                    {
-                        customer.ModificationTime = dtNow;
-                        customer.ModificationUserName = strUserId;
-                        customer.EnumCustomerType = info.EnumUserType;
-                        customerBLL.m_Rep.Edit(customer);
-                    }
-                    #endregion
                     LogHandler.WriteServiceLog(GetUserId(), "Id:" + info.Id + ",Name:" + info.UserName, "成功", "修改", "用户设置");
                     return Json(JsonHandler.CreateMessage(1, Resource.EditSucceed), JsonRequestBehavior.AllowGet);
                 }

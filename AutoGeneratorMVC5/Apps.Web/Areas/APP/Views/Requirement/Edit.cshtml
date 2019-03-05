@@ -251,7 +251,7 @@
                     @Html.LabelFor(model => model.WorkLimitSex)：
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.WorkLimitSex, ViewBag.WorkLimitSex as SelectList, "---请选择---")
+                    @Html.DropDownListFor(model => model.WorkLimitSex, ViewBag.WorkLimitSex as SelectList)
                 </td>
                 <td>@Html.ValidationMessageFor(model => model.WorkLimitSex)</td>
             </tr>

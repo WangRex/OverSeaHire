@@ -19,6 +19,11 @@
 </div>
 <table id="List"></table>
 
+<div id="win" class="easyui-window" title="提示" style="width:337px;height:108px;padding-left: 10px;padding-top: 10px;"
+     data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <div id="contentDiv">
+    </div>
+</div>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
 <script type="text/javascript">
@@ -59,8 +64,12 @@
         $.messager.confirm('@Resource.Tip', '确定要报名当前应聘申请吗', function (r) {
             if (r) {
                 globalUtils.globalAjax("@Url.Action("ApplyJob")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
-                    $.messageBox5s('@Resource.Tip', result.Message);
-                    QueryList();
+                    if (result.Code == 200) {
+                        QueryList();
+                    } else {
+                        $("#contentDiv").html(result.Message);
+                        $('#win').window('open');
+                    }
                 }, "post");
             }
         });

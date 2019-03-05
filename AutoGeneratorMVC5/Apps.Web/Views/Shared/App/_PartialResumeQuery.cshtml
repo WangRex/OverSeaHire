@@ -39,6 +39,12 @@
     </div>
     <div style="position:relative;top:40px;"><ul id="tt" class="easyui-tree"></ul></div>
 </div>
+
+<div id="win" class="easyui-window" title="提示" style="width:337px;height:108px;padding-left: 10px;padding-top: 10px;"
+     data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <div id="contentDiv">
+    </div>
+</div>
 <!--需求查询模板-->
 <script type="text/javascript">
     var treeData = {};
@@ -132,9 +138,13 @@
                 $.each(rows, function (idx, value) {
                     arrCustomerId.push(value.Id);
                 });
-                 globalUtils.globalAjax("@Url.Action("CreateApplyJobs")", { RequirementId: ReqId, CustomerId: arrCustomerId.toString() }, function (result) {
-                     $.messageBox5s('@Resource.Tip', result.Message);
-                     QueryList();
+                globalUtils.globalAjax("@Url.Action("CreateApplyJobs")", { RequirementId: ReqId, CustomerId: arrCustomerId.toString() }, function (result) {
+                    if (result.Code == 200) {
+                        QueryList();
+                    } else {
+                        $("#contentDiv").html(result.Message);
+                        $('#win').window('open');
+                    }
                 }, "post");
             }
         });

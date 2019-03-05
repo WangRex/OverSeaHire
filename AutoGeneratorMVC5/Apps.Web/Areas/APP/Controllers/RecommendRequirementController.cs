@@ -36,6 +36,8 @@ namespace Apps.Web.Areas.APP.Controllers
         public SysRoleBLL sysRoleBLL { get; set; }
         [Dependency]
         public App_ApplyJobBLL app_ApplyJobBLL { get; set; }
+        [Dependency]
+        public App_RequirementInviteBLL app_RequirementInviteBLL { get; set; }
         #endregion
 
         #region 获取符合当前账号下工人工种需求的职位列表
@@ -153,14 +155,9 @@ namespace Apps.Web.Areas.APP.Controllers
             customerResumeQuery.QueryFlag = "Recommend";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
-            foreach (var Item in list)
-            {
-                Item.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", Item.EnumCustomerLevel);
-                Item.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", Item.EnumCustomerType);
-                Item.OwnerName = _App_CustomerBLL.GetCustomerName(Item.ParentId);
-            }
-            GridRows<App_CustomerModel> grs = new GridRows<App_CustomerModel>();
-            grs.rows = list;
+            var customerResumeVms = _App_CustomerBLL.TransCustomerResume(list, null, true);
+            GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
+            grs.rows = customerResumeVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }
@@ -178,11 +175,19 @@ namespace Apps.Web.Areas.APP.Controllers
             try
             {
                 string ErrorMsg = "";
-                var applyJobId = app_ApplyJobBLL.CreateApplyJob(applyJobPost, ref ErrorMsg);
-                if (null != applyJobId)
+                //先判断工人对于当前职位是否有邀请的职位
+                var flag = app_RequirementInviteBLL.IsInviting(applyJobPost, ref ErrorMsg);
+                if (flag)
                 {
                     return Json(
-                        ResponseHelper.IsSuccess_Msg_Data_HttpCode("应聘成功", applyJobId, 1)
+                        ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                        );
+                }
+                var iCount = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, "1", ref ErrorMsg);
+                if (iCount > 0)
+                {
+                    return Json(
+                        ResponseHelper.IsSuccess_Msg_Data_HttpCode("应聘成功", iCount, 1)
                     );
                 }
                 else

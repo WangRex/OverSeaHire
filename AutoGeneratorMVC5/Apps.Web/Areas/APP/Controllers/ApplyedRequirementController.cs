@@ -139,14 +139,9 @@ namespace Apps.Web.Areas.APP.Controllers
             customerResumeQuery.QueryFlag = "Applyed";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
-            foreach (var Item in list)
-            {
-                Item.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", Item.EnumCustomerLevel);
-                Item.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", Item.EnumCustomerType);
-                Item.OwnerName = _App_CustomerBLL.GetCustomerName(Item.ParentId);
-            }
-            GridRows<App_CustomerModel> grs = new GridRows<App_CustomerModel>();
-            grs.rows = list;
+            var customerResumeVms = _App_CustomerBLL.TransCustomerResume(list, null);
+            GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
+            grs.rows = customerResumeVms;
             grs.total = pager.totalRows;
             return Json(grs);
         }

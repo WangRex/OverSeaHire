@@ -156,43 +156,7 @@ namespace Apps.Web.Areas.APP.Controllers
             customerResumeQuery.QueryFlag = "Proceeding";
             var queryData = m_BLL.GetReqResumeList(ref pager, customerResumeQuery);
             List<App_CustomerModel> list = _App_CustomerBLL.CreateModelList(ref queryData);
-            List<CustomerResumeVm> customerResumeVms = new List<CustomerResumeVm>();
-            foreach (var Item in list)
-            {
-                CustomerResumeVm customerResumeVm = new CustomerResumeVm();
-                customerResumeVm.Id = Item.Id;
-                customerResumeVm.CustomerName = Item.CustomerName;
-                customerResumeVm.Sex = Item.Sex;
-                customerResumeVm.Age = Item.Age;
-                customerResumeVm.JobIntensionNames = app_PositionBLL.GetNames(Item.JobIntension);
-                customerResumeVm.AbroadExp = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.AbroadExp", Item.AbroadExp);
-                customerResumeVm.EnumDriverLicence = enumDictionaryBLL.GetDicName("App_CustomerWorkmate.EnumDriverLicence", Item.EnumDriverLicence);
-                customerResumeVm.Phone = Item.Phone;
-                customerResumeVm.OwnerName = Item.OwnerName;
-                customerResumeVm.BusinessStatus = "暂无";
-                customerResumeVm.ApplyJobId = "";
-                //获取当前用户的应聘申请
-                var applyJob = app_ApplyJobBLL.m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == Item.Id && EF.EnumApplyStatus == "0");
-                if (null != applyJob)
-                {
-                    int iStep = Utils.ObjToInt(applyJob.CurrentStep, 0);
-                    if (iStep == 2)
-                    {
-                        customerResumeVm.BusinessStatus = "待支付保证金";
-                    }
-                    if (iStep ==3)
-                    {
-                        customerResumeVm.BusinessStatus = "面试进行中";
-                    }
-                    if (iStep > 3)
-                    {
-                        customerResumeVm.BusinessStatus = "签证办理中";
-                    }
-                    customerResumeVm.ApplyJobId = applyJob.Id;
-                    customerResumeVm.EnumApplyStatus = applyJob.EnumApplyStatus;
-                }
-                customerResumeVms.Add(customerResumeVm);
-            }
+            var customerResumeVms = _App_CustomerBLL.TransCustomerResume(list, null, true);
             GridRows<CustomerResumeVm> grs = new GridRows<CustomerResumeVm>();
             grs.rows = customerResumeVms;
             grs.total = pager.totalRows;

@@ -34,6 +34,8 @@ namespace Apps.Web.Areas.App.Controllers
         public App_ApplyJobBLL app_ApplyJobBLL { get; set; }
         [Dependency]
         public App_ApplyJobStepBLL app_ApplyJobStepBLL { get; set; }
+        [Dependency]
+        public App_RequirementInviteBLL app_RequirementInviteBLL { get; set; }
         #endregion
 
         ValidationErrors errors = new ValidationErrors();
@@ -90,6 +92,7 @@ namespace Apps.Web.Areas.App.Controllers
         public ActionResult Create()
         {
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
+            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
             ViewBag.PK_App_Customer_CustomerName = new SelectList(_App_CustomerBLL.m_Rep.FindList(), "Id", "CustomerName");
@@ -157,6 +160,7 @@ namespace Apps.Web.Areas.App.Controllers
         {
             App_RequirementModel entity = m_BLL.GetById(id);
             entity.App_Position_Name = app_PositionBLL.GetNames(entity.PK_App_Position_Name);
+            ViewBag.WorkLimitSex = new SelectList(enumDictionaryBLL.GetDropDownList("App.Sex"), "ItemValue", "ItemName");
             ViewBag.PK_App_Position_Name = new SelectList(app_PositionBLL.m_Rep.FindList(), "Id", "Name");
             ViewBag.EnumWorkLimitDegree = new SelectList(enumDictionaryBLL.GetDropDownList("App_CustomerWorkmate.Cultural"), "ItemValue", "ItemName");
             ViewBag.TransactProvince = new SelectList(sysAreasBLL.GetList("0"), "Id", "Name");
@@ -369,6 +373,14 @@ namespace Apps.Web.Areas.App.Controllers
             applyJobPost.UserId = strUserId;
             LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString(), "开始", "CreateApplyJobs", "ApplyJobController");
             string ErrorMsg = "";
+            //先判断工人对于当前职位是否有邀请的职位
+            var flag = app_RequirementInviteBLL.IsInviting(applyJobPost, ref ErrorMsg);
+            if (flag)
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                    );
+            }
             var iApplyJobCount = app_ApplyJobBLL.CreateApplyJobs(applyJobPost, "1", ref ErrorMsg);
             LogHandler.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ",ErrorMsg:" + ErrorMsg, "结束", "CreateApplyJobs", "ApplyJobController");
             if (iApplyJobCount != 0)

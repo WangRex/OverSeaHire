@@ -1015,6 +1015,41 @@ namespace Apps.BLL.App
             }
         }
         #endregion
+
+        #region 判断是否有发起应聘的简历
+        /// <summary>
+        /// 判断是否有发起应聘的简历
+        /// </summary>
+        /// <param name="ReqId"></param>
+        /// <param name="CustomerId"></param>
+        /// <param name="ErrorMsg"></param>
+        /// <returns></returns>
+        public bool IsApplyed(string ReqId, string CustomerId, ref string ErrorMsg)
+        {
+            var Req = requirementRepository.GetById(ReqId);
+            if (null == Req)
+            {
+                ErrorMsg = "申请的需求不存在";
+                return true;
+            }
+            if (string.IsNullOrEmpty(CustomerId))
+            {
+                ErrorMsg = "请先选择工人";
+                return true;
+            }
+            var iCount = m_Rep.FindList(EF => EF.PK_App_Requirement_Title == ReqId && EF.PK_App_Customer_CustomerName == CustomerId && EF.EnumApplyStatus == "0" && EF.CurrentStep == "1").Count();
+            if (iCount > 0)
+            {
+                ErrorMsg = "工人已应聘此职位，请到左侧<应聘的简历>中确认";
+                return true;
+            }
+            else
+            {
+                ErrorMsg = "可发起邀请";
+                return false;
+            }
+        }
+        #endregion
     }
 }
 

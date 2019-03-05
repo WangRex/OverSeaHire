@@ -226,6 +226,15 @@ namespace Apps.Web.Areas.App.Controllers
         {
             string strUserId = GetUserId(), InitiatorId = Session["PK_App_Customer_CustomerName"] as string;
             LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId, "开始", "RequirementInvite", "CustomerResumeController");
+            string ErrorMsg = "";
+            //先判断工人对于当前职位是否有邀请的职位
+            var flag = app_ApplyJobBLL.IsApplyed(ReqId, CustomerId, ref ErrorMsg);
+            if (flag)
+            {
+                return Json(
+                    ResponseHelper.Error_Msg_Ecode_Elevel_HttpCode(ErrorMsg)
+                    );
+            }
             var boolFlag = app_RequirementInviteBLL.RequirementInvite(strUserId, InitiatorId, ReqId, CustomerId);
             LogHandler.WriteServiceLog(strUserId, "ReqId:" + ReqId + ",CustomerId:" + CustomerId + ",boolFlag:" + boolFlag, "结束", "RequirementInvite", "CustomerResumeController");
             if (!boolFlag)

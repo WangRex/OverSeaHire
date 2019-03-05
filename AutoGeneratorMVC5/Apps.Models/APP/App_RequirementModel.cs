@@ -443,13 +443,17 @@ namespace Apps.Models.App
         /// 职位发布人
         /// </summary>
         public string PublisherId { get; set; }
+        /// <summary>
+        /// 公司名
+        /// </summary>
+        public string CompanyName { get; set; }
         public override string ToString()
         {
             return "Title:" + Title + ",Sex:" + Sex
                 + ",Country:" + Country + ",AgeLow:" + AgeLow + ",AdminFlag:" + AdminFlag
                 + ",QueryFlag:" + QueryFlag + ",AgeHigh:" + AgeHigh + ",Tag:" + Tag
                 + ",SallaryLow:" + SallaryLow + ",SallaryHigh:" + SallaryHigh
-                + ",CustomerId:" + CustomerId + ",PublisherId:" + PublisherId;
+                + ",CustomerId:" + CustomerId + ",PublisherId:" + PublisherId + ",CompanyName:" + CompanyName;
         }
     }
     #endregion

@@ -1201,23 +1201,6 @@ namespace Apps.BLL.App
                 queryData = queryData.Where(EF => EF.SwitchBtnOpen == "1");
                 queryDataCustomer = queryDataCustomer.Where(a => a.ParentId == requirementQuery.CustomerId);
             }
-            var listApplyJob = applyJobRepository.FindList().ToList();
-            string strCustomerIds = string.Join(",", queryDataCustomer.Select(EF => EF.Id).ToArray());
-            //根据传入的不同状态获取职位列表
-            if ("Applyed".Equals(requirementQuery.QueryFlag))
-            {
-                //获取所有的发起申请的工人主键集合
-                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0" && EF.CurrentStep == "1").ToList();
-                strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
-                queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
-            }
-            if ("Proceeding".Equals(requirementQuery.QueryFlag))
-            {
-                //获取所有的发起申请的工人主键集合
-                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0" && EF.CurrentStep != "1").ToList();
-                strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
-                queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
-            }
             if (!string.IsNullOrWhiteSpace(requirementQuery.Title))
             {
                 queryData = queryData.Where(EF => EF.Title != null && EF.Title.Contains(requirementQuery.Title));
@@ -1250,6 +1233,27 @@ namespace Apps.BLL.App
             if (!string.IsNullOrWhiteSpace(requirementQuery.Country))
             {
                 queryData = queryData.Where(EF => EF.PK_App_Country_Name == requirementQuery.Country);
+            }
+            if (!string.IsNullOrWhiteSpace(requirementQuery.CompanyName))
+            {
+                queryData = queryData.Where(EF => EF.CompanyName.Contains(requirementQuery.CompanyName));
+            }
+            var listApplyJob = applyJobRepository.FindList().ToList();
+            string strCustomerIds = string.Join(",", queryDataCustomer.Select(EF => EF.Id).ToArray());
+            //根据传入的不同状态获取职位列表
+            if ("Applyed".Equals(requirementQuery.QueryFlag))
+            {
+                //获取所有的发起申请的工人主键集合
+                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0" && EF.CurrentStep == "1").ToList();
+                strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+                queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
+            }
+            if ("Proceeding".Equals(requirementQuery.QueryFlag))
+            {
+                //获取所有的发起申请的工人主键集合
+                listApplyJob = listApplyJob.Where(EF => strCustomerIds.Contains(EF.PK_App_Customer_CustomerName) && EF.EnumApplyStatus == "0" && EF.CurrentStep != "1").ToList();
+                strReqIds = string.Join(",", listApplyJob.Select(EF => EF.PK_App_Requirement_Title).ToArray());
+                queryData = queryData.Where(EF => strReqIds.Contains(EF.Id));
             }
             pager.totalRows = queryData.Count();
             //排序

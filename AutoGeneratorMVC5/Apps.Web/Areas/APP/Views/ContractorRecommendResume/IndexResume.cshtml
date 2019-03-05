@@ -20,6 +20,11 @@
 </div>
 <table id="List"></table>
 
+<div id="win" class="easyui-window" title="提示" style="width:200px;height:100px;padding-left: 10px;padding-top: 10px;"
+     data-options="modal:true,closed:true,minimizable:false,shadow:false">
+    <div id="contentDiv">
+    </div>
+</div>
 <div id="modalwindow" class="easyui-window" style="width:800px; height:400px;" data-options="modal:true,closed:true,minimizable:false,shadow:false"></div>
 @Html.Partial("~/Views/Shared/_Partial_AutoGrid.cshtml")
 <script type="text/javascript">
@@ -60,8 +65,12 @@
         $.messager.confirm('@Resource.Tip', '确定发起邀请吗?', function (r) {
             if (r) {
                 globalUtils.globalAjax("@Url.Action("RequirementInvite")", { ReqId: ReqId, CustomerId: CustomerId }, function (data) {
-                    QueryList();
-                    $.messageBox5s('@Resource.Tip', data.Message);
+                    if (data.Code == 200) {
+                        QueryList();
+                    } else {
+                        $("#contentDiv").html(data.Message);
+                        $('#win').window('open');
+                    }
                 }, "post");
             }
         });
