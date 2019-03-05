@@ -60,7 +60,7 @@
             if (r) {
                 globalUtils.globalAjax("@Url.Action("CancelApply")", { ReqId: ReqId, CustomerId: CustomerId }, function (result) {
                     $.messageBox5s('@Resource.Tip', result.Message);
-                    queryList();
+                    QueryList();
                 }, "post");
             }
         });

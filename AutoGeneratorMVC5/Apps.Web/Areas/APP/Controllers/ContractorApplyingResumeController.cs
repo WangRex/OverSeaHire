@@ -206,6 +206,11 @@ namespace Apps.Web.Areas.App.Controllers
                 {
                     app_ApplyJob.EnumApplyStatus = "4";
                     app_ApplyJobBLL.m_Rep.Edit(app_ApplyJob);
+                    var customer = m_BLL.m_Rep.GetById(CustomerId);
+                    customer.SwitchBtnInterview = "0";
+                    customer.ModificationTime = now;
+                    customer.ModificationUserName = strUserId;
+                    m_BLL.m_Rep.Edit(customer);
                     ErrorMsg = "面试未通过成功";
                 }
                 return Json(

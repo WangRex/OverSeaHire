@@ -650,6 +650,7 @@ namespace Apps.BLL.App
                 sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJobs", "App_ApplyJobBLL");
                 return 0;
             }
+            ErrorMsg = "申请的需求成功";
             var arrCustomerId = customerId.Split(',');
             foreach (var item in arrCustomerId)
             {
@@ -666,7 +667,6 @@ namespace Apps.BLL.App
                     iCount++;
                 }
             }
-            ErrorMsg = "申请的需求成功";
             sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJobs", "App_ApplyJobBLL");
             return iCount;
         }
