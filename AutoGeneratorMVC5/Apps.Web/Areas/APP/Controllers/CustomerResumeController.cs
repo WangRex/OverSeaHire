@@ -206,6 +206,10 @@ namespace Apps.Web.Areas.App.Controllers
             entity.JobIntension = app_PositionBLL.GetNames(entity.JobIntension);
             entity.ExpectCountryName = app_CountryBLL.GetName(entity.ExpectCountry);
             ViewBag.flagWin = flagWin;
+            if ("1" != Session["IdFlag"] as string && Session["ohadmin"] as string != "1")
+            {
+                entity.Phone = "***********";
+            }
             return View(entity);
         }
         #endregion
