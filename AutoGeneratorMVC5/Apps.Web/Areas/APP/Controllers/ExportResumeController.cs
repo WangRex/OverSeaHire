@@ -44,6 +44,7 @@ namespace Apps.Web.Areas.APP.Controllers
         public void GenerateDocument(string ResumeId)
         {
             App_CustomerModel entity = app_CustomerBLL.GetById(ResumeId);
+            string customerId = Session["PK_App_Customer_CustomerName"] as string;
             entity.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", entity.EnumCustomerLevel);
             entity.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", entity.EnumCustomerType);
             entity.EnumForeignLangGrade = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.EnumForeignLangGrade", entity.EnumForeignLangGrade);
@@ -53,6 +54,10 @@ namespace Apps.Web.Areas.APP.Controllers
             entity.SwitchBtnRecommend = entity.SwitchBtnRecommend == "1" ? "推荐" : "无";
             entity.JobIntension = app_PositionBLL.GetNames(entity.JobIntension);
             entity.ExpectCountry = app_CountryBLL.GetName(entity.ExpectCountry);
+            if ("1" != Session["IdFlag"] as string && Session["ohadmin"] as string != "1" && customerId != entity.CreateUserName)
+            {
+                entity.Phone = "***********";
+            }
 
             string filepath = Server.MapPath("/template.docx");
             using (FileStream stream = System.IO.File.OpenRead(filepath))

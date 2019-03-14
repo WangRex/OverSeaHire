@@ -350,7 +350,8 @@ namespace Apps.BLL.App
         private List<ApplyJobUserVm> GetRecommenUsers(App_Requirement app_Requirement)
         {
             List<ApplyJobUserVm> applyJobUserVms = new List<ApplyJobUserVm>();
-            var workMates = customerRepository.FindList(EF => (EF.Age >= app_Requirement.WorkLimitAgeLow
+            var customers = customerRepository.FindList(EF => EF.EnumCustomerType == "0" && (EF.ParentId != null && EF.ParentId != "admin")).ToList();
+            var workMates = customers.Where(EF => (EF.Age >= app_Requirement.WorkLimitAgeLow
                                                                 && EF.Age <= app_Requirement.WorkLimitAgeHigh
                                                                 )).ToList();
             if (app_Requirement.WorkLimitSex != "不限")
@@ -934,7 +935,7 @@ namespace Apps.BLL.App
             //如果未登录，或者登陆了，没有发布过职位，则需要显示所有人
             if (string.IsNullOrEmpty(recommendUserSearchForm.EmployerId))
             {
-                var workMates = customerRepository.FindList().ToList();
+                var workMates = customerRepository.FindList(EF => EF.EnumCustomerType == "0" && (EF.ParentId != null && EF.ParentId != "admin")).ToList();
                 foreach (var customerWorkmate in workMates)
                 {
                     ApplyJobUserVm applyJobUserVm = new ApplyJobUserVm();
@@ -1616,7 +1617,7 @@ namespace Apps.BLL.App
                     listReq.Add(app_RequirementModel);
                 }
                 //雇主面试邀请
-                var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId);
+                var inviteList = requirementInviteRepository.FindList(EF => EF.Inviter == strCustomerId && EF.SwitchBtnAgree == null);
                 strReqIds = string.Join(",", inviteList.Select(EF => EF.PK_App_Requirement_Title).ToArray());
                 var inviteReqList = requirements.Where(EF => strReqIds.Contains(EF.Id)).ToList();
                 foreach (var inviteReq in inviteReqList)

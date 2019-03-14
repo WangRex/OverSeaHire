@@ -265,6 +265,7 @@ namespace Apps.Web.Controllers
                             CreateUserName = userId,
                             ModificationTime = _NowDT,
                             ModificationUserName = userId,
+                            ParentId = "admin",
                             CustomerName = model.UserName,
                             Phone = model.MobileNumber,
                             Sex = model.Sex,
@@ -276,6 +277,7 @@ namespace Apps.Web.Controllers
                     {
                         customer.ModificationTime = _NowDT;
                         customer.ModificationUserName = userId;
+                        customer.ParentId = "admin";
                         customer.EnumCustomerType = model.EnumUserType;
                         customerBLL.m_Rep.Edit(customer);
                     }

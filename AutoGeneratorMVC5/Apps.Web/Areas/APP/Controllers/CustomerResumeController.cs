@@ -196,6 +196,7 @@ namespace Apps.Web.Areas.App.Controllers
         public ActionResult Details(string id, string flagWin)
         {
             App_CustomerModel entity = m_BLL.GetById(id);
+            string customerId = Session["PK_App_Customer_CustomerName"] as string;
             entity.EnumCustomerLevel = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerLevel", entity.EnumCustomerLevel);
             entity.EnumCustomerType = enumDictionaryBLL.GetDicName("APP_Customer.EnumCustomerType", entity.EnumCustomerType);
             entity.EnumForeignLangGrade = enumDictionaryBLL.GetDicName("App_CustomerJobIntension.EnumForeignLangGrade", entity.EnumForeignLangGrade);
@@ -206,7 +207,7 @@ namespace Apps.Web.Areas.App.Controllers
             entity.JobIntension = app_PositionBLL.GetNames(entity.JobIntension);
             entity.ExpectCountryName = app_CountryBLL.GetName(entity.ExpectCountry);
             ViewBag.flagWin = flagWin;
-            if ("1" != Session["IdFlag"] as string && Session["ohadmin"] as string != "1")
+            if ("1" != Session["IdFlag"] as string && Session["ohadmin"] as string != "1" && customerId != entity.CreateUserName)
             {
                 entity.Phone = "***********";
             }

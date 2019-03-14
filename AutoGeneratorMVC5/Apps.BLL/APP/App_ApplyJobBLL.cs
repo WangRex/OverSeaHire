@@ -36,9 +36,9 @@ namespace Apps.BLL.App
         public SysMessageRepository sysMessageRepository { get; set; }
         #endregion
 
-        #region 提交应聘申请
+        #region 提交应聘申请(App端)
         /// <summary>
-        /// 提交应聘申请
+        /// 提交应聘申请(App端)
         /// </summary>
         /// <param name="applyJobPost"></param>
         /// <param name="ErrorMsg"></param>
@@ -55,7 +55,7 @@ namespace Apps.BLL.App
                 sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
                 return null;
             }
-            string strApplyJobId = CrtStep2ApplyJob(applyJobPost, out ErrorMsg, customerId, Req);
+            string strApplyJobId = CrtStep2ApplyJob(applyJobPost, out ErrorMsg, customerId, Req, "6");
             sysLog.WriteServiceLog(applyJobPost.UserId, applyJobPost.ToString() + ErrorMsg, "结束", "CreateApplyJob", "App_ApplyJobBLL");
             return strApplyJobId;
         }
@@ -734,7 +734,7 @@ namespace Apps.BLL.App
             }
         }
 
-        private string CrtStep2ApplyJob(ApplyJobPost applyJobPost, out string ErrorMsg, string customerId, App_Requirement Req)
+        private string CrtStep2ApplyJob(ApplyJobPost applyJobPost, out string ErrorMsg, string customerId, App_Requirement Req, string EnumApplyStatus = "0")
         {
             //先判断是否有未完成的应聘
             App_ApplyJob applyJob = m_Rep.Find(EF => EF.PK_App_Customer_CustomerName == customerId && EF.PK_App_Requirement_Title == Req.Id && EF.EnumApplyStatus == "0");
@@ -755,7 +755,7 @@ namespace Apps.BLL.App
             applyJob.ModificationUserName = applyJobPost.UserId;
             applyJob.PK_App_Requirement_Title = Req.Id;
             applyJob.PK_App_Customer_CustomerName = customerId;
-            applyJob.EnumApplyStatus = "0";
+            applyJob.EnumApplyStatus = EnumApplyStatus;
             //后台发起的应聘，直接步骤是2。
             applyJob.CurrentStep = "2";
             applyJob.PromiseMoney = Utils.ObjToDecimal(Req.PromiseMoney, 0);
