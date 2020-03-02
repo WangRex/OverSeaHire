@@ -251,7 +251,7 @@ namespace Apps.WebApi.Controllers
             LogHandler.WriteServiceLog(requireSearchForm.UserId, requireSearchForm.ToString(), "开始", "GetRequirementApplieds", "RequirementController");
             string ErrorMsg = "";
             int DataCount = 0;
-            var app_Requirements = app_RequirementBLL.GetRequirementCollections(requireSearchForm, ref DataCount, ref ErrorMsg);
+            var app_Requirements = app_RequirementBLL.GetRequirementApplieds(requireSearchForm, ref DataCount, ref ErrorMsg);
             LogHandler.WriteServiceLog(requireSearchForm.UserId, requireSearchForm.ToString() + ",DataCount:" + DataCount + ",ErrorMsg:" + ErrorMsg, "结束", "GetRequirementApplieds", "RequirementController");
             if (app_Requirements == null)
             {

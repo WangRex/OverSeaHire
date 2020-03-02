@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="Apps.WebApi.XML">
-      <publishTime>03/14/2019 15:31:28</publishTime>
+      <publishTime>03/14/2019 16:22:50</publishTime>
     </File>
     <File Include="bin/aliyun-net-sdk-core.dll">
       <publishTime>11/07/2018 23:32:01</publishTime>
@@ -28,13 +28,13 @@
       <publishTime>11/07/2018 23:32:28</publishTime>
     </File>
     <File Include="bin/Apps.BLL.dll">
-      <publishTime>03/14/2019 15:31:25</publishTime>
+      <publishTime>03/14/2019 16:22:47</publishTime>
     </File>
     <File Include="bin/Apps.BLL.dll.config">
       <publishTime>11/07/2018 23:31:53</publishTime>
     </File>
     <File Include="bin/Apps.BLL.pdb">
-      <publishTime>03/14/2019 15:31:25</publishTime>
+      <publishTime>03/14/2019 16:22:47</publishTime>
     </File>
     <File Include="bin/Apps.Common.dll">
       <publishTime>03/05/2019 15:45:33</publishTime>
@@ -43,13 +43,13 @@
       <publishTime>03/05/2019 15:45:33</publishTime>
     </File>
     <File Include="bin/Apps.Core.dll">
-      <publishTime>03/14/2019 15:31:26</publishTime>
+      <publishTime>03/14/2019 16:22:48</publishTime>
     </File>
     <File Include="bin/Apps.Core.dll.config">
       <publishTime>11/07/2018 23:31:59</publishTime>
     </File>
     <File Include="bin/Apps.Core.pdb">
-      <publishTime>03/14/2019 15:31:26</publishTime>
+      <publishTime>03/14/2019 16:22:48</publishTime>
     </File>
     <File Include="bin/Apps.DAL.dll">
       <publishTime>03/05/2019 22:14:26</publishTime>
@@ -91,19 +91,19 @@
       <publishTime>03/05/2019 22:14:24</publishTime>
     </File>
     <File Include="bin/Apps.WebApi.dll">
-      <publishTime>03/14/2019 15:31:28</publishTime>
+      <publishTime>03/14/2019 16:22:50</publishTime>
     </File>
     <File Include="bin/Apps.WebApi.pdb">
-      <publishTime>03/14/2019 15:31:28</publishTime>
+      <publishTime>03/14/2019 16:22:50</publishTime>
     </File>
     <File Include="bin/Apps.WebApi.XML">
-      <publishTime>03/14/2019 15:31:28</publishTime>
+      <publishTime>03/14/2019 16:22:50</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>03/14/2019 15:31:39</publishTime>
+      <publishTime>03/14/2019 16:22:56</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>03/14/2019 15:31:39</publishTime>
+      <publishTime>03/14/2019 16:22:56</publishTime>
     </File>
     <File Include="bin/en-US/Apps.Locale.resources.dll">
       <publishTime>03/05/2019 15:45:33</publishTime>
@@ -259,7 +259,7 @@
       <publishTime>11/07/2018 23:31:58</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>03/14/2019 15:31:30</publishTime>
+      <publishTime>03/14/2019 16:22:51</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>11/07/2018 23:31:58</publishTime>

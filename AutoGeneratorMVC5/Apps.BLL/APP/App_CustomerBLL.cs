@@ -927,6 +927,18 @@ namespace Apps.BLL.App
         public string CollectCustomer(string UserId, string WorkerId, ref string ErrorMsg)
         {
             sysLog.WriteServiceLog(UserId, "WorkerId:" + WorkerId, "开始", "CollectCustomer", "App_CustomerBLL");
+            if (string.IsNullOrEmpty(UserId))
+            {
+                ErrorMsg = "简历收藏失败，用户为空";
+                sysLog.WriteServiceLog(UserId, "WorkerId:" + WorkerId + ",ErrorMsg:" + ErrorMsg, "结束", "CollectCustomer", "App_CustomerBLL");
+                return null;
+            }
+            if (string.IsNullOrEmpty(WorkerId))
+            {
+                ErrorMsg = "简历收藏失败，工人为空";
+                sysLog.WriteServiceLog(UserId, "WorkerId:" + WorkerId + ",ErrorMsg:" + ErrorMsg, "结束", "CollectCustomer", "App_CustomerBLL");
+                return null;
+            }
             App_CustomerCollect customerCollect = new App_CustomerCollect();
             var now = ResultHelper.NowTime;
             customerCollect.Id = ResultHelper.NewId;

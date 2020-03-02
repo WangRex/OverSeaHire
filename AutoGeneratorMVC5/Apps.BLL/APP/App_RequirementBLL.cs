@@ -616,7 +616,7 @@ namespace Apps.BLL.App
             sysLog.WriteServiceLog(requireSearchForm.UserId, requireSearchForm.ToString(), "开始", "GetRequirementApplieds", "App_RequirementBLL");
             int PageNum = requireSearchForm.PageNum, RecordNum = requireSearchForm.RecordNum;
             List<RequirementVm> requirementVms = new List<RequirementVm>();
-            var app_RequirementApplies = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == requireSearchForm.UserId);
+            var app_RequirementApplies = applyJobRepository.FindList(EF => EF.PK_App_Customer_CustomerName == requireSearchForm.UserId && EF.EnumApplyStatus == "0" && EF.CurrentStep == "1");
             var RequirementIds = app_RequirementApplies.Select(EF => EF.PK_App_Requirement_Title).ToArray();
             var app_Requirements = m_Rep.FindList(EF => RequirementIds.Contains(EF.Id)).ToList();
             app_Requirements = GetRequirements(requireSearchForm, app_Requirements);
